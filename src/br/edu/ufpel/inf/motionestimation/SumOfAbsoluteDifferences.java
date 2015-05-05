@@ -1,41 +1,25 @@
 package br.edu.ufpel.inf.motionestimation;
 
+import br.edu.ufpel.inf.utils.Position;
+
 public class SumOfAbsoluteDifferences implements IEvaluationCriteria {
 
 	@Override
-	public int getBlockWidth() {
+	public void setActualFrame(byte[][] frame) {
 		// TODO Auto-generated method stub
-		return 0;
+		
 	}
 
 	@Override
-	public int getBlockHeight() {
+	public void setReferenceFrame(byte[][] frame) {
 		// TODO Auto-generated method stub
-		return 0;
+		
 	}
 
 	@Override
-	public int getSearchWidth() {
+	public void setActualBlockPosition(Position position) {
 		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getSearchHeight() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int[][] getSearchArea() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int[][] getActualBlock() {
-		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 	@Override
@@ -51,31 +35,7 @@ public class SumOfAbsoluteDifferences implements IEvaluationCriteria {
 	}
 
 	@Override
-	public void setSearchWidth(int width) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setSearchHeight(int height) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setSearchArea(int[][] searchArea) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setActualBlock(int[][] actualBlock) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public int calculate(int x, int y) {
+	public double calculate(int x, int y) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

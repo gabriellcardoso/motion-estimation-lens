@@ -1,6 +1,14 @@
 package br.edu.ufpel.inf.motionestimation;
 
+import br.edu.ufpel.inf.utils.Position;
+
 public class FullSearch implements ISearchAlgorithm {
+
+	@Override
+	public Position getActualBlockPosition() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	@Override
 	public int getBlockWidth() {
@@ -12,6 +20,12 @@ public class FullSearch implements ISearchAlgorithm {
 	public int getBlockHeight() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public Position getSearchAreaPosition() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
@@ -27,15 +41,27 @@ public class FullSearch implements ISearchAlgorithm {
 	}
 
 	@Override
-	public int[][] getSearchArea() {
+	public MotionEstimationResult getResult() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public int[][] getActualBlock() {
+	public void setActualFrame(int[][] frame) {
 		// TODO Auto-generated method stub
-		return null;
+		
+	}
+
+	@Override
+	public void setReferenceFrame(int[][] frame) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setActualBlockPosition(int x, int y) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -46,6 +72,12 @@ public class FullSearch implements ISearchAlgorithm {
 
 	@Override
 	public void setBlockHeight(int height) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setSearchAreaPosition(int x, int y) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -63,23 +95,9 @@ public class FullSearch implements ISearchAlgorithm {
 	}
 
 	@Override
-	public void setSearchArea(int[][] searchArea) {
+	public MotionEstimationResult run() {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
-
-	@Override
-	public void setActualBlock(int[][] actualBlock) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void run() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	
 
 }

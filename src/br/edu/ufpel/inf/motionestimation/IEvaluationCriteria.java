@@ -1,25 +1,19 @@
 package br.edu.ufpel.inf.motionestimation;
 
-public interface IEvaluationCriteria { 
+import br.edu.ufpel.inf.utils.Position;
+
+public interface IEvaluationCriteria {
 	
-	public int getBlockWidth();
-	public int getBlockHeight();
+	// Setters
+	public void setActualFrame(byte[][] frame);
+	public void setReferenceFrame(byte [][] frame);
 	
-	public int getSearchWidth();
-	public int getSearchHeight();
-	
-	public int[][] getSearchArea();
-	public int[][] getActualBlock();
+	public void setActualBlockPosition(Position position);
 	
 	public void setBlockWidth(int width);
 	public void setBlockHeight(int height);
 	
-	public void setSearchWidth(int width);
-	public void setSearchHeight(int height);
-	
-	public void setSearchArea(int[][] searchArea);
-	public void setActualBlock(int [][] actualBlock);
-	
-	public int calculate(int x, int y);
+	// Other methods
+	public double calculate(int x, int y);
 
 }
