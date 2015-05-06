@@ -1,73 +1,92 @@
 package br.edu.ufpel.inf.utils;
 
-import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
 
 public class YUVReader {
 
     private FileInputStream inputStream;
+    public FileChannel fileChannel;
 
-    private int width;
-    private int height;
-
-    public YUVReader(File file, int width, int height) throws IOException {
-        this.width = width;
-        this.height = height;
-
-        try {
-            inputStream = new FileInputStream(file);
-        }
-        catch (IOException error) {
-            throw new IOException(error.getMessage() + " : " + file.getName());
-        }
+    private int videoWidth;
+    private int videoHeight;
+    private int sampling;
+    
+    public YUVReader(int videoWidth, int videoHeight, int sampling) { 
+    	this.videoWidth = videoWidth;
+    	this.videoHeight = videoHeight;
+    	this.sampling = sampling;
+    }
+    
+    public YUVReader(String fileName, int videoWidth, int videoHeight, int sampling) {
+    	this(videoWidth, videoHeight, sampling);
+    	openInputStream(fileName);
+    }
+    
+    public void openInputStream(String fileName) {
+    	try {
+    		inputStream = new FileInputStream(fileName);
+    		fileChannel = inputStream.getChannel();
+    	}
+    	catch (FileNotFoundException error) {
+    		System.err.println(error.getMessage());
+    	}
     }
 
-    public void close() {
-        try {
-            inputStream.close();
-        } catch (IOException error) {
-            System.err.println("Error closing " + inputStream + " : " + error);
-        }
+    public void closeInputStream() {
+    	if (inputStream == null)
+    		return;
+    	
+    	try {
+    		inputStream.close();
+    		fileChannel.close();
+    	}
+    	catch (IOException error) {
+    		System.err.println(error.getMessage());
+    	}
     }
 
-    public byte[][] getNextFrame() throws IOException {
-        byte[][] frame = new byte[height][width];
-        int index;
-
-        for (index = 0; index < height; index++) {
-            frame[index] = readLine(width);
-
-            if (frame[index] == null) {
-                break;
-            }
-        }
-
-        skipCbCr();
-
-        return frame;
+    public void getFrame(byte[][] destination, int index) {
+    	int line = 0;
+    	
+    	try {
+    		goToFrame(index);
+    		
+    		for (line = 0; line < videoHeight; line++) {
+    			readLine(destination[line], videoWidth);
+    		}
+    	}
+    	catch (IOException error) {
+    		System.err.println(error.getMessage());
+    	}
+    }
+    
+    private void goToFrame(int index) throws IOException {
+    	double luminancePixels = getLuminancePixelsPerFrame();
+    	double chrominancePixels = getChrominancePixelsPerFrame();
+    	double position = (luminancePixels + chrominancePixels * 2) * index;
+    	
+    	fileChannel.position((long)position);
     }
 
-    private byte[] readLine(int size) throws IOException {
-        byte[] bytes = new byte[size];
+    private void readLine(byte[] line, int length) throws IOException {
+    	ByteBuffer buffer = ByteBuffer.wrap(line);
 
-        int offset = 0;
-        int read = 0;
-
-        while (offset < bytes.length && read >= 0) {
-            read = inputStream.read(bytes, offset, bytes.length - offset);
-            offset += read;
+        if (fileChannel.read(buffer) != length) {
+            throw new IOException();
         }
-
-        if (read != size) {
-            return null;
-        }
-
-        return bytes;
     }
-
-    private void skipCbCr() throws IOException {
-        inputStream.skip(width * height / 4);
+    
+    public double getLuminancePixelsPerFrame() {
+    	return videoWidth * videoHeight;
+    }
+    
+    public double getChrominancePixelsPerFrame() {
+    	double scale = (double) sampling / 4;
+    	return videoWidth * videoHeight * scale;
     }
 
 }
