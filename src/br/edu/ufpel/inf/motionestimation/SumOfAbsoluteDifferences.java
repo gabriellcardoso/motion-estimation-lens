@@ -1,43 +1,57 @@
 package br.edu.ufpel.inf.motionestimation;
 
-import br.edu.ufpel.inf.utils.Position;
+import br.edu.ufpel.inf.utils.CodingBlock;
+import br.edu.ufpel.inf.utils.Frame;
+
 
 public class SumOfAbsoluteDifferences implements IEvaluationCriteria {
-
-	@Override
-	public void setActualFrame(byte[][] frame) {
-		// TODO Auto-generated method stub
+	
+	private Frame actualFrame;
+	private Frame referenceFrame;
+	private CodingBlock codingBlock;
+	
+	public SumOfAbsoluteDifferences() {
+		actualFrame = null;
+		referenceFrame = null;
+		codingBlock = null;
+	}
+	
+	public int calculate(int positionX, int positionY) {
 		
-	}
-
-	@Override
-	public void setReferenceFrame(byte[][] frame) {
-		// TODO Auto-generated method stub
+		byte[][] actualImage = actualFrame.getImage();
+		byte[][] referenceImage = referenceFrame.getImage();
 		
-	}
+		int blockPositionX = codingBlock.getPosition().getX();
+		int blockPositionY = codingBlock.getPosition().getY();
 
-	@Override
-	public void setActualBlockPosition(Position position) {
-		// TODO Auto-generated method stub
+		int blockWidth = codingBlock.getWidth();
+		int blockHeight = codingBlock.getHeight();
 		
-	}
-
-	@Override
-	public void setBlockWidth(int width) {
-		// TODO Auto-generated method stub
+		int criteria = 0;
+		int i, j;
 		
-	}
-
-	@Override
-	public void setBlockHeight(int height) {
-		// TODO Auto-generated method stub
+		for (i = 0; i < blockHeight; i++) {
+			for (j = 0; j < blockWidth; j++) {
+				criteria += Math.abs(
+					actualImage[blockPositionY + i][blockPositionX + j]
+					- referenceImage[positionY + i][positionX + j]
+				);
+			}
+		}
 		
+		return criteria;
 	}
-
-	@Override
-	public double calculate(int x, int y) {
-		// TODO Auto-generated method stub
-		return 0;
+	
+	public void setActualFrame(Frame frame) {
+		actualFrame = frame;
 	}
-
+	
+	public void setReferenceFrame(Frame frame) {
+		referenceFrame = frame;
+	}
+	
+	public void setCodingBlock(CodingBlock block) {
+		codingBlock = block;
+	}
+	
 }

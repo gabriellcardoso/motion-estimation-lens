@@ -7,10 +7,10 @@ public class CodingBlock {
 	private int width;
 	private int height;
 	
-	public CodingBlock(int positionX, int positionY, int width, int height) {
+	public CodingBlock(int width, int height) {
 		this.width = width;
 		this.height = height;
-		createPosition(positionX, positionY);
+		createPosition(0, 0);
 	};
 	
 	private void createPosition(int positionX, int positionY) {

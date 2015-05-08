@@ -1,37 +1,22 @@
 package br.edu.ufpel.inf.motionestimation;
 
-import br.edu.ufpel.inf.utils.Position;
+import br.edu.ufpel.inf.utils.CodingBlock;
+import br.edu.ufpel.inf.utils.Frame;
+import br.edu.ufpel.inf.utils.MotionEstimationVector;
+
 
 public interface ISearchAlgorithm {
 	
-	// Getters
-	public Position getActualBlockPosition();
+	public MotionEstimationVector run();
 	
-	public int getBlockWidth();
-	public int getBlockHeight();
+	public void setEvaluationCriteria(IEvaluationCriteria criteria);
 	
-	public Position getSearchAreaPosition();
+	public void setActualFrame(Frame frame);
+	public void setReferenceFrame(Frame frame);
 	
-	public int getSearchWidth();
-	public int getSearchHeight();
-	
-	public MotionEstimationResult getResult();
-	
-	// Setters
-	public void setActualFrame(int[][] frame);
-	public void setReferenceFrame(int[][] frame);
-	
-	public void setActualBlockPosition(int x, int y);
-	
-	public void setBlockWidth(int width);
-	public void setBlockHeight(int height);
-	
-	public void setSearchAreaPosition(int x, int y);
+	public void setCodingBlock(CodingBlock block);
 	
 	public void setSearchWidth(int width);
 	public void setSearchHeight(int height);
-	
-	// Other methods
-	public MotionEstimationResult run();
 
 }
