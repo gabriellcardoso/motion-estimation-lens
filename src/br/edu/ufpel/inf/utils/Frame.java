@@ -1,4 +1,4 @@
-package br.edu.ufpel.inf.motionestimation;
+package br.edu.ufpel.inf.utils;
 
 public class Frame {
 
