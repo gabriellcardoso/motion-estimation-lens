@@ -1,19 +1,11 @@
 package br.edu.ufpel.inf.motionestimation;
 
-import br.edu.ufpel.inf.utils.CodingBlock;
-import br.edu.ufpel.inf.utils.Frame;
-
-
-public class SumOfAbsoluteDifferences implements IEvaluationCriteria {
-	
-	private Frame actualFrame;
-	private Frame referenceFrame;
-	private CodingBlock codingBlock;
+public class SumOfAbsoluteDifferences extends EvaluationCriteria implements IEvaluationCriteria {
 	
 	public SumOfAbsoluteDifferences() {
-		actualFrame = null;
-		referenceFrame = null;
-		codingBlock = null;
+		setActualFrame(null);
+		setReferenceFrame(null);
+		setCodingBlock(null);
 	}
 	
 	public int calculate(int positionX, int positionY) {
@@ -41,17 +33,6 @@ public class SumOfAbsoluteDifferences implements IEvaluationCriteria {
 		
 		return criteria;
 	}
-	
-	public void setActualFrame(Frame frame) {
-		actualFrame = frame;
-	}
-	
-	public void setReferenceFrame(Frame frame) {
-		referenceFrame = frame;
-	}
-	
-	public void setCodingBlock(CodingBlock block) {
-		codingBlock = block;
-	}
+
 	
 }
