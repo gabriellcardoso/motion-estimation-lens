@@ -1,13 +1,13 @@
-
-
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.smartcardio.Card;
 import javax.swing.JFrame;
 
 import br.edu.ufpel.inf.gui.MainPanel;
+import br.edu.ufpel.inf.gui.SetupPanel;
 import br.edu.ufpel.inf.motionestimation.IEvaluationCriteria;
 import br.edu.ufpel.inf.motionestimation.SumOfAbsoluteDifferences;
 import br.edu.ufpel.inf.utils.CodingBlock;
@@ -20,6 +20,9 @@ public class MotionEstimationLens extends JFrame {
 	private static final int INITIAL_BLOCK_Y = 0;
 	private static final int BLOCK_SIZE = 16;
 	private static final int HEATMAP_SIZE = 128;
+	
+	private static final String MAIN_PANEL = "Main Panel";
+	private static final String SETUP_PANEL = "Setup Panel";
 	
 	// Video file related attributes
 	private String fileName;
@@ -36,19 +39,24 @@ public class MotionEstimationLens extends JFrame {
 	private IEvaluationCriteria evaluationCriteria;
 	private CodingBlock codingBlock;
 	
-	// GUI Panels
+	// GUI attributes
+	private Container container;
+	private CardLayout layout;
+	
 	private MainPanel mainPanel;
+	private SetupPanel setupPanel;
 	
 	public MotionEstimationLens() {
 		super("Motio Estimation Lens");
 		
-		setLayout(new CardLayout());
+		container = getContentPane();
+		layout = new CardLayout();
+		
+		setLayout(layout);
 	}
 	
 	public MotionEstimationLens(String fileName, int frameWidth, int frameHeight, int samplingYCbCr) {
 		super("Motion Estimation Lens");
-		
-		setLayout(new CardLayout());
 		
 		this.fileName = fileName;
 		this.frameWidth = frameWidth;
@@ -57,22 +65,41 @@ public class MotionEstimationLens extends JFrame {
 		
 		setUpModels();
 		
-		Container container = this.getContentPane();
+		container = this.getContentPane();
+		layout = new CardLayout();
+		
+		setLayout(layout);
+		
+		setupPanel = new SetupPanel();
 		mainPanel = new MainPanel();
+		
+		setupPanel.setStartButtonListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				layout.next(container);
+			}
+			
+		});
 		
 		mainPanel.updateHeatMap(evaluationCriteria.createHeatMap(HEATMAP_SIZE, HEATMAP_SIZE));
 		mainPanel.setNextBlockButtonListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				boolean nextBlockButtonState = goToNextCodingBlock();
 				mainPanel.setNextBlockButtonState(nextBlockButtonState);
 				mainPanel.updateHeatMap(evaluationCriteria.createHeatMap(HEATMAP_SIZE, HEATMAP_SIZE));
 			}
-			
+		});
+		mainPanel.setBackButtonListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				layout.previous(container);
+			}
 		});
 		
-		container.add(mainPanel);
+		container.add(setupPanel, SETUP_PANEL);
+		container.add(mainPanel, MAIN_PANEL);
 	}
 	
 	private void setUpModels() {
@@ -120,5 +147,5 @@ public class MotionEstimationLens extends JFrame {
     	
     	return true;
     }
-    
+	 
 }

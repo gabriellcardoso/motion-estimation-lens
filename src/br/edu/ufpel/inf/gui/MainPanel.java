@@ -17,7 +17,7 @@ public class MainPanel extends JPanel {
 	
 	HeatMap heatMapPanel;
 	JButton nextBlockButton;
-	
+	JButton backButton;
 	
 	public MainPanel() {
 		super();
@@ -26,6 +26,7 @@ public class MainPanel extends JPanel {
 		
         createHeatMapPanel();
         createNextBlockButton();
+        createBackButton();
     }
     
     private void createHeatMapPanel() {
@@ -56,12 +57,21 @@ public class MainPanel extends JPanel {
     	this.add(nextBlockButton, BorderLayout.NORTH);
     }
     
+    private void createBackButton() {
+    	backButton = new JButton("Back to setup");
+    	this.add(backButton, BorderLayout.SOUTH);
+    }
+    
     public void setNextBlockButtonListener(ActionListener listener) {
     	nextBlockButton.addActionListener(listener);
     }
     
     public void setNextBlockButtonState(boolean state) {
     	nextBlockButton.setEnabled(state);
+    }
+    
+    public void setBackButtonListener(ActionListener listener) {
+    	backButton.addActionListener(listener);
     }
     
     public void updateHeatMap(double[][] heatMap) {
