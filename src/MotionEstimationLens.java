@@ -1,49 +1,124 @@
-import java.util.Date;
 
-import br.edu.ufpel.inf.motionestimation.FullSearch;
-import br.edu.ufpel.inf.motionestimation.MotionEstimation;
+
+import java.awt.CardLayout;
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JFrame;
+
+import br.edu.ufpel.inf.gui.MainPanel;
+import br.edu.ufpel.inf.motionestimation.IEvaluationCriteria;
 import br.edu.ufpel.inf.motionestimation.SumOfAbsoluteDifferences;
+import br.edu.ufpel.inf.utils.CodingBlock;
 import br.edu.ufpel.inf.utils.Frame;
 import br.edu.ufpel.inf.utils.YUVReader;
-import br.edu.ufpel.inf.utils.YUVWriter;
 
-
-public class MotionEstimationLens {
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		String fileName = args[0];
-		int width = Integer.parseInt(args[1]);
-		int height = Integer.parseInt(args[2]);
-		int sampling = Integer.parseInt(args[3]);
- 
-		YUVReader reader = new YUVReader(fileName, width, height, sampling);
-		YUVWriter writer = new YUVWriter(fileName + ".out");
+public class MotionEstimationLens extends JFrame {
+	
+	private static final int INITIAL_BLOCK_X = 0;
+	private static final int INITIAL_BLOCK_Y = 0;
+	private static final int BLOCK_SIZE = 16;
+	private static final int HEATMAP_SIZE = 128;
+	
+	// Video file related attributes
+	private String fileName;
+	private int frameWidth;
+	private int frameHeight;
+	private int samplingYCbCr;
+	
+	// Motion estimation related attributes
+	private YUVReader videoReader;
+	
+	private Frame actualFrame;
+	private Frame referenceFrame;
+	
+	private IEvaluationCriteria evaluationCriteria;
+	private CodingBlock codingBlock;
+	
+	// GUI Panels
+	private MainPanel mainPanel;
+	
+	public MotionEstimationLens() {
+		super("Motio Estimation Lens");
 		
-		Frame actualFrame = new Frame(width, height);
-		Frame referenceFrame = new Frame(width, height);
-		Frame auxiliar;
-		
-		FullSearch fs = new FullSearch(32, 32);
-		SumOfAbsoluteDifferences sad = new SumOfAbsoluteDifferences();
-		MotionEstimation me = new MotionEstimation(fs, sad, 8, 8);
-		
-		int i;
-		
-		for (i = 1; i < 300; i++) {
-			auxiliar = referenceFrame;
-			referenceFrame = actualFrame;
-			actualFrame = auxiliar;
-			
-			me.setActualFrame(actualFrame);
-			me.setReferenceFrame(referenceFrame);
-			
-			reader.setFrameWithImage(actualFrame, i);
-			writer.writeFrameOnFile(actualFrame);
-			
-			me.run();
-		}
+		setLayout(new CardLayout());
 	}
+	
+	public MotionEstimationLens(String fileName, int frameWidth, int frameHeight, int samplingYCbCr) {
+		super("Motion Estimation Lens");
+		
+		setLayout(new CardLayout());
+		
+		this.fileName = fileName;
+		this.frameWidth = frameWidth;
+		this.frameHeight = frameHeight;
+		this.samplingYCbCr = samplingYCbCr;
+		
+		setUpModels();
+		
+		Container container = this.getContentPane();
+		mainPanel = new MainPanel();
+		
+		mainPanel.updateHeatMap(evaluationCriteria.createHeatMap(HEATMAP_SIZE, HEATMAP_SIZE));
+		mainPanel.setNextBlockButtonListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				boolean nextBlockButtonState = goToNextCodingBlock();
+				mainPanel.setNextBlockButtonState(nextBlockButtonState);
+				mainPanel.updateHeatMap(evaluationCriteria.createHeatMap(HEATMAP_SIZE, HEATMAP_SIZE));
+			}
+			
+		});
+		
+		container.add(mainPanel);
+	}
+	
+	private void setUpModels() {
+		videoReader = new YUVReader(fileName, frameWidth, frameHeight, samplingYCbCr);
+		
+		actualFrame = new Frame(frameWidth, frameHeight);
+		referenceFrame = new Frame(frameWidth, frameHeight);
+		
+		evaluationCriteria = new SumOfAbsoluteDifferences();
+		codingBlock = new CodingBlock(BLOCK_SIZE, BLOCK_SIZE);
+		
+		videoReader.setFrameWithImage(actualFrame, 1);
+		videoReader.setFrameWithImage(referenceFrame, 0);
+		
+		evaluationCriteria.setActualFrame(actualFrame);
+		evaluationCriteria.setReferenceFrame(referenceFrame);
+
+		codingBlock.getPosition().setX(INITIAL_BLOCK_X);
+		codingBlock.getPosition().setY(INITIAL_BLOCK_Y);
+		
+		evaluationCriteria.setCodingBlock(codingBlock);
+	}
+	
+	 private boolean goToNextCodingBlock() {
+    	int blockWidth = codingBlock.getWidth();
+    	int blockHeight = codingBlock.getHeight();
+    	
+    	int blockCoordinateX = codingBlock.getPosition().getX();
+    	int blockCoordinateY = codingBlock.getPosition().getY();
+    	
+    	int nextCoordinateX = blockCoordinateX + blockWidth;
+    	int nextCoordinateY = blockCoordinateY + blockHeight;
+    	
+    	if (nextCoordinateX + blockWidth > frameWidth) {
+    		nextCoordinateX = 0;
+    		nextCoordinateY += blockHeight;
+    	}
+    	
+    	if (nextCoordinateY + blockHeight > frameHeight) {
+    		return false;
+    	}
+
+    	codingBlock.getPosition().setX(nextCoordinateX);
+    	codingBlock.getPosition().setY(nextCoordinateY);
+    	
+    	return true;
+    }
+    
 }
