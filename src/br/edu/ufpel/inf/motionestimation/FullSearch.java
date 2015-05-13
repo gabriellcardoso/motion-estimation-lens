@@ -1,24 +1,10 @@
 package br.edu.ufpel.inf.motionestimation;
 
-import br.edu.ufpel.inf.utils.CodingBlock;
-import br.edu.ufpel.inf.utils.Frame;
-import br.edu.ufpel.inf.utils.MotionEstimationVector;
 
-public class FullSearch implements ISearchAlgorithm {
+public class FullSearch extends SearchAlgorithm implements ISearchAlgorithm {
 	
-	private IEvaluationCriteria evaluationCriteria;
-	
-	private Frame actualFrame;
-	private Frame referenceFrame;
-	
-	private CodingBlock codingBlock;
-	
-	private int searchWidth;
-	private int searchHeight;
-	
-	public FullSearch(int width, int height) {
-		searchWidth = width;
-		searchHeight = height;
+	public FullSearch(IEvaluationCriteria criteria, int blockWidth, int blockHeight, int searchWidth, int searchHeight) {
+		super(criteria, blockWidth, blockHeight, searchWidth, searchHeight);
 	}
 	
 	public MotionEstimationVector run() {
@@ -70,33 +56,6 @@ public class FullSearch implements ISearchAlgorithm {
 		}
 		
 		return vector;
-	}
-	
-	public void setEvaluationCriteria(IEvaluationCriteria criteria) {
-		evaluationCriteria = criteria;
-	}
-	
-	public void setActualFrame(Frame frame) {
-		actualFrame = frame;
-		evaluationCriteria.setActualFrame(frame);
-	}
-	
-	public void setReferenceFrame(Frame frame) {
-		referenceFrame = frame;
-		evaluationCriteria.setReferenceFrame(frame);
-	}
-	
-	public void setCodingBlock(CodingBlock block) {
-		codingBlock = block;
-		evaluationCriteria.setCodingBlock(block);
-	}
-	
-	public void setSearchWidth(int width) {
-		searchWidth = width;
-	}
-	
-	public void setSearchHeight(int height) {
-		searchHeight = height;
 	}
 	
 }
