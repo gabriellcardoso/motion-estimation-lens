@@ -9,7 +9,7 @@ public class FullSearch extends SearchAlgorithm implements ISearchAlgorithm {
 	
 	public MotionEstimationVector run() {
 		
-		MotionEstimationVector vector = new MotionEstimationVector();
+		MotionEstimationVector vector = new MotionEstimationVector(codingBlock);
 		
 		int frameWidth = actualFrame.getWidth();
 		int frameHeight = actualFrame.getHeight();
@@ -26,8 +26,8 @@ public class FullSearch extends SearchAlgorithm implements ISearchAlgorithm {
 		int finalX = codingBlock.getPosition().getX() + rangeX / 2;
 		int finalY = codingBlock.getPosition().getY() + rangeY / 2;
 		
-		int criteria = Integer.MAX_VALUE;
-		int temporaryCriteria;
+		int result = Integer.MAX_VALUE;
+		int temporaryResult;
 		int x, y;
 		
 		if (initialX < 0) {
@@ -48,9 +48,11 @@ public class FullSearch extends SearchAlgorithm implements ISearchAlgorithm {
 		
 		for (y = initialY; y < finalY; y++) {
 			for (x = initialX; x < finalX; x++) {
-				temporaryCriteria = evaluationCriteria.calculate(x, y);
-				if (temporaryCriteria < criteria) {
-					criteria = temporaryCriteria;
+				temporaryResult = evaluationCriteria.calculate(x, y);
+				if (temporaryResult < result) {
+					result = temporaryResult;
+					vector.setPosition(x, y);
+					vector.setCriteriaResult(result);
 				}
 			}
 		}

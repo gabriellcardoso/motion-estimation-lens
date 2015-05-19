@@ -1,5 +1,7 @@
 package br.edu.ufpel.inf.motionestimation;
 
+import java.util.ArrayList;
+
 import br.edu.ufpel.inf.utils.CodingBlock;
 import br.edu.ufpel.inf.utils.Frame;
 
@@ -10,11 +12,11 @@ public class MotionEstimation {
 	private Frame actualFrame;
 	private Frame referenceFrame;
 	
-	private MotionEstimationResult results;
+	private ArrayList<MotionEstimationVector> results;
 	
 	public MotionEstimation(ISearchAlgorithm algorithm) {
 		searchAlgorithm = algorithm;
-		results = new MotionEstimationResult();
+		results = new ArrayList<MotionEstimationVector>();
 	}
 	
 	public void setActualFrame(Frame frame) {
@@ -39,8 +41,7 @@ public class MotionEstimation {
 		searchAlgorithm.setCodingBlock(width, height);
 	}
 	
-public MotionEstimationResult run() {
-		
+public ArrayList<MotionEstimationVector> run() {
 		int frameHeight = actualFrame.getHeight();
 		int frameWidth = actualFrame.getWidth();
 		
@@ -51,11 +52,13 @@ public MotionEstimationResult run() {
 		
 		int i, j;
 		
+		results.clear();
+		
 		for (i = 0; i < frameHeight - blockHeight; i += blockHeight) {
 			codingBlock.getPosition().setY(i);
 			for (j = 0; j < frameWidth - blockWidth; j += blockWidth) {
 				codingBlock.getPosition().setX(j);
-				searchAlgorithm.run();
+				results.add(searchAlgorithm.run());
 			}
 		}
 		
