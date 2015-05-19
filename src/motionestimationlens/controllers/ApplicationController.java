@@ -1,3 +1,4 @@
+package motionestimationlens.controllers;
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -6,15 +7,16 @@ import java.awt.event.ActionListener;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
-import br.edu.ufpel.inf.gui.MainPanel;
-import br.edu.ufpel.inf.gui.SetupPanel;
-import br.edu.ufpel.inf.motionestimation.IEvaluationCriteria;
-import br.edu.ufpel.inf.motionestimation.SumOfAbsoluteDifferences;
-import br.edu.ufpel.inf.utils.CodingBlock;
-import br.edu.ufpel.inf.utils.Frame;
-import br.edu.ufpel.inf.utils.YUVReader;
+import motionestimationlens.models.CodingBlock;
+import motionestimationlens.models.Frame;
+import motionestimationlens.models.IEvaluationCriteria;
+import motionestimationlens.models.SumOfAbsoluteDifferences;
+import motionestimationlens.utils.YUVReader;
+import motionestimationlens.views.MainPanel;
+import motionestimationlens.views.SetupPanel;
 
-public class MotionEstimationLens extends JFrame {
+
+public class ApplicationController extends JFrame {
 	
 	private static final int INITIAL_BLOCK_X = 0;
 	private static final int INITIAL_BLOCK_Y = 0;
@@ -48,7 +50,7 @@ public class MotionEstimationLens extends JFrame {
 	private MainPanel mainPanel;
 	private SetupPanel setupPanel;
 	
-	public MotionEstimationLens() {
+	public ApplicationController() {
 		super("Motion Estimation Lens");
 		
 		container = getContentPane();
@@ -57,7 +59,7 @@ public class MotionEstimationLens extends JFrame {
 		setLayout(layout);
 	}
 	
-	public MotionEstimationLens(String fileName, int frameWidth, int frameHeight, int samplingYCbCr) {
+	public ApplicationController(String fileName, int frameWidth, int frameHeight, int samplingYCbCr) {
 		super("Motion Estimation Lens");
 		
 		this.fileName = fileName;

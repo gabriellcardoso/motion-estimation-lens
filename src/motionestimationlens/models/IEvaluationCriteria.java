@@ -1,7 +1,6 @@
-package br.edu.ufpel.inf.motionestimation;
+package motionestimationlens.models;
 
-import br.edu.ufpel.inf.utils.CodingBlock;
-import br.edu.ufpel.inf.utils.Frame;
+
 
 public interface IEvaluationCriteria {
 	

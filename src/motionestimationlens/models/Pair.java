@@ -1,4 +1,4 @@
-package br.edu.ufpel.inf.utils;
+package motionestimationlens.models;
 
 public class Pair {
 	

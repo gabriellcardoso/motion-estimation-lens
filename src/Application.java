@@ -1,6 +1,8 @@
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
+import motionestimationlens.controllers.ApplicationController;
+
 
 
 public class Application {
@@ -12,7 +14,7 @@ public class Application {
 
     private static void createAndShowGUI() throws Exception
     {
-        MotionEstimationLens application = new MotionEstimationLens(fileName, width, height, sampling);
+        ApplicationController application = new ApplicationController(fileName, width, height, sampling);
         application.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         application.setSize(1280, 720);
         application.setResizable(false);

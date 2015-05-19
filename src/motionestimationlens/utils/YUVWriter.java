@@ -1,7 +1,9 @@
-package br.edu.ufpel.inf.utils;
+package motionestimationlens.utils;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+
+import motionestimationlens.models.Frame;
 
 public class YUVWriter {
 

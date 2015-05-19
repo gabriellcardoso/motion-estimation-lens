@@ -1,4 +1,4 @@
-package br.edu.ufpel.inf.gui;
+package motionestimationlens.views;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -14,7 +14,9 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-import br.edu.ufpel.inf.utils.ME;
+import motionestimationlens.utils.BorderFactory;
+import motionestimationlens.utils.ME;
+
 
 public class SetupPanel extends JPanel {
 	

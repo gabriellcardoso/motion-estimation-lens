@@ -1,4 +1,4 @@
-package br.edu.ufpel.inf.utils;
+package motionestimationlens.utils;
 
 public class ME {
 	

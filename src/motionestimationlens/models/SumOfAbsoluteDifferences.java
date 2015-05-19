@@ -1,4 +1,5 @@
-package br.edu.ufpel.inf.motionestimation;
+package motionestimationlens.models;
+
 
 public class SumOfAbsoluteDifferences extends EvaluationCriteria implements IEvaluationCriteria {
 	

@@ -1,15 +1,28 @@
-package br.edu.ufpel.inf.motionestimation;
+package motionestimationlens.models;
 
 
-public class FullSearch extends SearchAlgorithm implements ISearchAlgorithm {
+public abstract class EvaluationCriteria {
 	
-	public FullSearch(IEvaluationCriteria criteria, int blockWidth, int blockHeight, int searchWidth, int searchHeight) {
-		super(criteria, blockWidth, blockHeight, searchWidth, searchHeight);
+	protected Frame actualFrame;
+	protected Frame referenceFrame;
+	
+	protected CodingBlock codingBlock;
+	
+	public void setActualFrame(Frame frame) {
+		actualFrame = frame;
 	}
 	
-	public MotionEstimationVector run() {
+	public void setReferenceFrame(Frame frame) {
+		referenceFrame = frame;
+	}
+	
+	public void setCodingBlock(CodingBlock block) {
+		codingBlock = block;
+	}
+	
+	public double[][] createHeatMap(int width, int height) {
 		
-		MotionEstimationVector vector = new MotionEstimationVector(codingBlock);
+		double[][] heatMap;
 		
 		int frameWidth = actualFrame.getWidth();
 		int frameHeight = actualFrame.getHeight();
@@ -17,8 +30,8 @@ public class FullSearch extends SearchAlgorithm implements ISearchAlgorithm {
 		int blockWidth = codingBlock.getWidth();
 		int blockHeight = codingBlock.getHeight();
 		
-		int rangeX = searchWidth - blockWidth;
-		int rangeY = searchHeight - blockHeight;
+		int rangeX = width - blockWidth;
+		int rangeY = height - blockHeight;
 		
 		int initialX = codingBlock.getPosition().getX() - rangeX / 2;
 		int initialY = codingBlock.getPosition().getY() - rangeY / 2;
@@ -26,8 +39,6 @@ public class FullSearch extends SearchAlgorithm implements ISearchAlgorithm {
 		int finalX = codingBlock.getPosition().getX() + rangeX / 2;
 		int finalY = codingBlock.getPosition().getY() + rangeY / 2;
 		
-		int result = Integer.MAX_VALUE;
-		int temporaryResult;
 		int x, y;
 		
 		if (initialX < 0) {
@@ -46,18 +57,16 @@ public class FullSearch extends SearchAlgorithm implements ISearchAlgorithm {
 			finalY = frameHeight - blockHeight - 1;
 		}
 		
+		heatMap = new double[finalY - initialY][finalX - initialX];
+		
 		for (y = initialY; y < finalY; y++) {
 			for (x = initialX; x < finalX; x++) {
-				temporaryResult = evaluationCriteria.calculate(x, y);
-				if (temporaryResult < result) {
-					result = temporaryResult;
-					vector.setPosition(x, y);
-					vector.setCriteriaResult(result);
-				}
+				heatMap[y - initialY][x - initialX] = calculate(x, y);
 			}
 		}
 		
-		return vector;
+		return heatMap;
 	}
 	
+	public abstract int calculate(int x, int y);
 }

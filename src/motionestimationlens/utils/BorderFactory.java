@@ -1,4 +1,4 @@
-package br.edu.ufpel.inf.gui;
+package motionestimationlens.utils;
 
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;

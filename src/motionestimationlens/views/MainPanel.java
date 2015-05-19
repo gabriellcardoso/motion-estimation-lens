@@ -1,4 +1,4 @@
-package br.edu.ufpel.inf.gui;
+package motionestimationlens.views;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,6 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+
+import motionestimationlens.utils.BorderFactory;
 
 import org.mblecker.heatmap.Gradient;
 import org.mblecker.heatmap.HeatMap;
