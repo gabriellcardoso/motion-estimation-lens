@@ -3,7 +3,7 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.smartcardio.Card;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
 import br.edu.ufpel.inf.gui.MainPanel;
@@ -43,6 +43,8 @@ public class MotionEstimationLens extends JFrame {
 	private Container container;
 	private CardLayout layout;
 	
+	private JFileChooser videoChooser;
+	
 	private MainPanel mainPanel;
 	private SetupPanel setupPanel;
 	
@@ -70,16 +72,24 @@ public class MotionEstimationLens extends JFrame {
 		
 		setLayout(layout);
 		
+		videoChooser = new JFileChooser();
 		setupPanel = new SetupPanel();
 		mainPanel = new MainPanel();
 		
+		setupPanel.setOpenVideoButtonListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int val = videoChooser.showDialog(setupPanel.getComponent(2), "Open YUV file");
+				if (val == JFileChooser.APPROVE_OPTION) {
+					System.out.println("Open file");
+				}
+			}
+		});
 		setupPanel.setStartButtonListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				layout.next(container);
 			}
-			
 		});
 		
 		mainPanel.updateHeatMap(evaluationCriteria.createHeatMap(HEATMAP_SIZE, HEATMAP_SIZE));
@@ -98,6 +108,7 @@ public class MotionEstimationLens extends JFrame {
 			}
 		});
 		
+
 		container.add(setupPanel, SETUP_PANEL);
 		container.add(mainPanel, MAIN_PANEL);
 	}

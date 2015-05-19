@@ -14,7 +14,8 @@ public class Application {
     {
         MotionEstimationLens application = new MotionEstimationLens(fileName, width, height, sampling);
         application.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        application.setSize(500,500);
+        application.setSize(1280, 720);
+        application.setResizable(false);
         application.setVisible(true);
     }
 
