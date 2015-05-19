@@ -1,7 +1,7 @@
 package br.edu.ufpel.inf.utils;
 
 
-public class CodingBlock {
+public class CodingBlock implements Cloneable {
 	
 	private Position position;
 	private int width;
@@ -36,5 +36,17 @@ public class CodingBlock {
 	public void setHeight(int height) {
 		this.height = height;
 	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		CodingBlock newBlock = new CodingBlock(width, height);
+		int x = getPosition().getX();
+		int y = getPosition().getY();
+		
+		newBlock.getPosition().setPosition(x, y);
+		return newBlock;
+	}
+	
+	
 
 }
