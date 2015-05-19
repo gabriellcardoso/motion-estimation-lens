@@ -83,10 +83,12 @@ public class MainPanel extends JPanel {
 		
 		constraints.gridx = 0;
 		constraints.gridy = 0;
+		btnPreviousFrame.setEnabled(false);
 		controlPanel.add(btnPreviousFrame, constraints);
 		
 		constraints.gridx = 1;
     	constraints.gridy = 0;
+    	btnPreviousBlock.setEnabled(false);
     	controlPanel.add(btnPreviousBlock, constraints);
     	
     	constraints.gridx = 8;
@@ -95,6 +97,7 @@ public class MainPanel extends JPanel {
 		
 		constraints.gridx = 9;
 		constraints.gridy = 0;
+		btnNextFrame.setEnabled(false);
 		controlPanel.add(btnNextFrame, constraints);
 	}
 	
@@ -194,14 +197,17 @@ public class MainPanel extends JPanel {
     	
     	constraints.gridx = 0;
     	constraints.gridy = 0;
+    	btnSetReferenceFrame.setEnabled(false);
     	footerPanel.add(btnSetReferenceFrame, constraints);
 
     	constraints.gridx = 1;
     	constraints.gridy = 0;
+    	btnSetActualFrame.setEnabled(false);
     	footerPanel.add(btnSetActualFrame, constraints);
     	
     	constraints.gridx = 2;
     	constraints.gridy = 0;
+    	btnSetCodingBlock.setEnabled(false);
     	footerPanel.add(btnSetCodingBlock, constraints);
     	
     	constraints.gridx = 3;
