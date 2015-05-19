@@ -16,33 +16,39 @@ import javax.swing.border.EmptyBorder;
 import org.mblecker.heatmap.Gradient;
 import org.mblecker.heatmap.HeatMap;
 
+import com.sun.corba.se.spi.orbutil.fsm.Action;
+
 public class MainPanel extends JPanel {
 	
 	private static final boolean USE_GRAPHICS_Y_AXIS = true;
 	private static final Color[] GRADIENT_TYPE = Gradient.GRADIENT_BLUE_TO_RED;
 	
-	JPanel controlPanel;
+	private JPanel controlPanel;
 	
-	JButton previousFrameButton;
-	JButton nextFrameButton;
-	JButton previousBlockButton;
-	JButton nextBlockButton;
+	private JButton btnPreviousFrame;
+	private JButton btnNextFrame;
+	private JButton btnPreviousBlock;
+	private JButton btnNextBlock;
 	
-	HeatMap heatMapPanel;
+	private HeatMap heatMapPanel;
 	
-	JPanel resultsPanel;
+	private JPanel resultsPanel;
 	
-	JLabel framesLabel;
-	JLabel blocksLabel;
-	JLabel numberOfBlocksLabel;
-	JLabel bestVectorLabel;
-	JLabel bestSadLabel;
-	JLabel vectorLabel;
-	JLabel sadLabel;
+	private JLabel lblActualFrame;
+	private JLabel lblReferenceFrame;
+	private JLabel lblCodingBlock;
+	private JLabel lblNumberOfBlocks;
+	private JLabel lblBestVector;
+	private JLabel lblBestSad;
+	private JLabel lblVector;
+	private JLabel lblSad;
 	
-	JPanel footerPanel;
+	private JPanel footerPanel;
 	
-	JButton backButton;
+	private JButton btnSetActualFrame;
+	private JButton btnSetReferenceFrame;
+	private JButton btnSetCodingBlock;
+	private JButton btnBackToSetup;
 	
 	public MainPanel() {
 		super();
@@ -64,10 +70,10 @@ public class MainPanel extends JPanel {
 		controlPanel = new JPanel(); 
 		controlPanel.setLayout(new GridBagLayout());
 		
-		previousFrameButton = new JButton("Quadro anterior");
-		previousBlockButton = new JButton("Bloco anterior");
-		nextBlockButton = new JButton("Próximo bloco");
-		nextFrameButton = new JButton("Próximo quadro");
+		btnPreviousFrame = new JButton("Quadro anterior");
+		btnPreviousBlock = new JButton("Bloco anterior");
+		btnNextBlock = new JButton("Próximo bloco");
+		btnNextFrame = new JButton("Próximo quadro");
 		
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
@@ -75,19 +81,19 @@ public class MainPanel extends JPanel {
 		
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-		controlPanel.add(previousFrameButton, constraints);
+		controlPanel.add(btnPreviousFrame, constraints);
 		
 		constraints.gridx = 1;
     	constraints.gridy = 0;
-    	controlPanel.add(previousBlockButton, constraints);
+    	controlPanel.add(btnPreviousBlock, constraints);
     	
     	constraints.gridx = 8;
     	constraints.gridy = 0;
-    	controlPanel.add(nextBlockButton, constraints);
+    	controlPanel.add(btnNextBlock, constraints);
 		
 		constraints.gridx = 9;
 		constraints.gridy = 0;
-		controlPanel.add(nextFrameButton, constraints);
+		controlPanel.add(btnNextFrame, constraints);
 	}
 	
     private void createHeatMapPanel() {
@@ -123,13 +129,14 @@ public class MainPanel extends JPanel {
     	resultsPanel.setLayout(new GridBagLayout());
     	resultsPanel.setBorder(border);
     	
-    	framesLabel = new JLabel("Quadro: 0/0");
-    	blocksLabel = new JLabel("Bloco: 0/0");
-    	numberOfBlocksLabel = new JLabel("Número de blocos candidatos: 0");
-    	bestVectorLabel = new JLabel("Melhor bloco candidato: x, y");
-    	bestSadLabel = new JLabel("SAD do melhor bloco candidato: 0");
-    	vectorLabel = new JLabel("Bloco escolhido pelo algoritmo: x, y");
-    	sadLabel = new JLabel("SAD do bloco escolhido pelo algoritmo: 0");
+    	lblReferenceFrame = new JLabel("Quadro de referência: 0/0");
+    	lblActualFrame = new JLabel("Quadro atual: 0/0");
+    	lblCodingBlock = new JLabel("Bloco: 0/0");
+    	lblNumberOfBlocks = new JLabel("Número de blocos candidatos: 0");
+    	lblBestVector = new JLabel("Melhor bloco candidato: x, y");
+    	lblBestSad = new JLabel("SAD do melhor bloco candidato: 0");
+    	lblVector = new JLabel("Bloco escolhido pelo algoritmo: x, y");
+    	lblSad = new JLabel("SAD do bloco escolhido pelo algoritmo: 0");
     	
     	GridBagConstraints constraints = new GridBagConstraints();
     	constraints.anchor = GridBagConstraints.NORTH;
@@ -138,47 +145,66 @@ public class MainPanel extends JPanel {
     	
     	constraints.gridx = 0;
     	constraints.gridy = 0;
-    	resultsPanel.add(framesLabel, constraints);
+    	resultsPanel.add(lblReferenceFrame, constraints);
     	
     	constraints.gridx = 0;
     	constraints.gridy = 1;
-    	resultsPanel.add(blocksLabel, constraints);
+    	resultsPanel.add(lblActualFrame, constraints);
     	
     	constraints.gridx = 0;
     	constraints.gridy = 2;
-    	resultsPanel.add(numberOfBlocksLabel, constraints);
+    	resultsPanel.add(lblCodingBlock, constraints);
     	
     	constraints.gridx = 0;
     	constraints.gridy = 3;
-    	resultsPanel.add(bestVectorLabel, constraints);
+    	resultsPanel.add(lblNumberOfBlocks, constraints);
     	
     	constraints.gridx = 0;
     	constraints.gridy = 4;
-    	resultsPanel.add(bestSadLabel, constraints);
+    	resultsPanel.add(lblBestVector, constraints);
     	
     	constraints.gridx = 0;
     	constraints.gridy = 5;
-    	resultsPanel.add(vectorLabel, constraints);
+    	resultsPanel.add(lblBestSad, constraints);
     	
     	constraints.gridx = 0;
     	constraints.gridy = 6;
-    	resultsPanel.add(sadLabel, constraints);
+    	resultsPanel.add(lblVector, constraints);
+    	
+    	constraints.gridx = 0;
+    	constraints.gridy = 7;
+    	resultsPanel.add(lblSad, constraints);
     }
     
     private void createFooterPanel() {
     	footerPanel = new JPanel();
     	footerPanel.setLayout(new GridBagLayout());
     	
-    	backButton = new JButton("Voltar para configurações");
+    	btnSetReferenceFrame = new JButton("Especificar quadro de referência");
+    	btnSetActualFrame = new JButton("Especificar quadro atual");
+    	btnSetCodingBlock = new JButton("Especificar bloco a ser codificado");
+    	btnBackToSetup = new JButton("Voltar para configurações");
     	
     	GridBagConstraints constraints = new GridBagConstraints();
     	constraints.anchor = GridBagConstraints.PAGE_END;
     	constraints.fill = GridBagConstraints.BOTH;
     	constraints.insets = new Insets(5, 5, 5, 5);
-    	constraints.gridx = 0;
-    	constraints.gridy = 9;
     	
-    	footerPanel.add(backButton, constraints);
+    	constraints.gridx = 0;
+    	constraints.gridy = 0;
+    	footerPanel.add(btnSetReferenceFrame, constraints);
+
+    	constraints.gridx = 1;
+    	constraints.gridy = 0;
+    	footerPanel.add(btnSetActualFrame, constraints);
+    	
+    	constraints.gridx = 2;
+    	constraints.gridy = 0;
+    	footerPanel.add(btnSetCodingBlock, constraints);
+    	
+    	constraints.gridx = 3;
+    	constraints.gridy = 0;
+    	footerPanel.add(btnBackToSetup, constraints);
     }
 	
 	private void addControlPanel() {
@@ -228,40 +254,52 @@ public class MainPanel extends JPanel {
         this.add(footerPanel, constraints);
 	}
 	
-	public void setPreviousFrameButtonListener(ActionListener listener) {
-    	previousFrameButton.addActionListener(listener);
+	public void setBtnPreviousFrameListener(ActionListener listener) {
+    	btnPreviousFrame.addActionListener(listener);
     }
     
-    public void setPreviousFrameButtonState(boolean state) {
-    	previousFrameButton.setEnabled(state);
+    public void setBtnPreviousFrameState(boolean state) {
+    	btnPreviousFrame.setEnabled(state);
     }
     
-    public void setPreviousBlockButtonListener(ActionListener listener) {
-    	previousBlockButton.addActionListener(listener);
+    public void setBtnPreviousBlockListener(ActionListener listener) {
+    	btnPreviousBlock.addActionListener(listener);
     }
     
-    public void setPreviousBlockButtonState(boolean state) {
-    	previousBlockButton.setEnabled(state);
+    public void setBtnPreviousBlockState(boolean state) {
+    	btnPreviousBlock.setEnabled(state);
     }
 	
-    public void setNextBlockButtonListener(ActionListener listener) {
-    	nextBlockButton.addActionListener(listener);
+    public void setBtnNextBlockListener(ActionListener listener) {
+    	btnNextBlock.addActionListener(listener);
     }
     
-    public void setNextBlockButtonState(boolean state) {
-    	nextBlockButton.setEnabled(state);
+    public void setBtnNextBlockState(boolean state) {
+    	btnNextBlock.setEnabled(state);
     }
     
-    public void setNextFrameButtonListener(ActionListener listener) {
-    	nextFrameButton.addActionListener(listener);
+    public void setBtnNextFrameListener(ActionListener listener) {
+    	btnNextFrame.addActionListener(listener);
     }
     
-    public void setNextFrameButtonState(boolean state) {
-    	nextFrameButton.setEnabled(state);
+    public void setBtnNextFrameState(boolean state) {
+    	btnNextFrame.setEnabled(state);
     }
     
-    public void setBackButtonListener(ActionListener listener) {
-    	backButton.addActionListener(listener);
+    public void setBtnSetActualFrame(ActionListener listener) {
+    	btnSetActualFrame.addActionListener(listener);
+    }
+    
+    public void setBtnSetReferenceFrame(ActionListener listener) {
+    	btnSetReferenceFrame.addActionListener(listener);
+    }
+    
+    public void setBtnSetCodingBlock(ActionListener listener) {
+    	btnSetCodingBlock.addActionListener(listener);
+    }
+    
+    public void setBtnBackToSetupListener(ActionListener listener) {
+    	btnBackToSetup.addActionListener(listener);
     }
     
     public void updateHeatMap(double[][] data) {

@@ -49,7 +49,7 @@ public class MotionEstimationLens extends JFrame {
 	private SetupPanel setupPanel;
 	
 	public MotionEstimationLens() {
-		super("Motio Estimation Lens");
+		super("Motion Estimation Lens");
 		
 		container = getContentPane();
 		layout = new CardLayout();
@@ -72,45 +72,8 @@ public class MotionEstimationLens extends JFrame {
 		
 		setLayout(layout);
 		
-		videoChooser = new JFileChooser();
-		setupPanel = new SetupPanel();
-		mainPanel = new MainPanel();
-		
-		setupPanel.setOpenVideoButtonListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				int val = videoChooser.showDialog(setupPanel.getComponent(2), "Open YUV file");
-				if (val == JFileChooser.APPROVE_OPTION) {
-					System.out.println("Open file");
-				}
-			}
-		});
-		setupPanel.setStartButtonListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				layout.next(container);
-			}
-		});
-		
-		mainPanel.updateHeatMap(evaluationCriteria.createHeatMap(HEATMAP_SIZE, HEATMAP_SIZE));
-		mainPanel.setNextBlockButtonListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				boolean nextBlockButtonState = goToNextCodingBlock();
-				mainPanel.setNextBlockButtonState(nextBlockButtonState);
-				mainPanel.updateHeatMap(evaluationCriteria.createHeatMap(HEATMAP_SIZE, HEATMAP_SIZE));
-			}
-		});
-		mainPanel.setBackButtonListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				layout.previous(container);
-			}
-		});
-		
-
-		container.add(setupPanel, SETUP_PANEL);
-		container.add(mainPanel, MAIN_PANEL);
+		startSetupPanel();
+		startMainPanel();
 	}
 	
 	private void setUpModels() {
@@ -132,6 +95,54 @@ public class MotionEstimationLens extends JFrame {
 		codingBlock.getPosition().setY(INITIAL_BLOCK_Y);
 		
 		evaluationCriteria.setCodingBlock(codingBlock);
+	}
+	
+	private void startSetupPanel() {
+		setupPanel = new SetupPanel();
+		videoChooser = new JFileChooser();
+		
+		setupPanel.setOpenVideoButtonListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int val = videoChooser.showDialog(setupPanel.getComponent(2), "Open YUV file");
+				if (val == JFileChooser.APPROVE_OPTION) {
+					System.out.println("Open file");
+				}
+			}
+		});
+		
+		setupPanel.setStartButtonListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				layout.next(container);
+			}
+		});
+		
+		container.add(setupPanel, SETUP_PANEL);
+	}
+	
+	private void startMainPanel() {
+		mainPanel = new MainPanel();
+		
+		mainPanel.updateHeatMap(evaluationCriteria.createHeatMap(HEATMAP_SIZE, HEATMAP_SIZE));
+		
+		mainPanel.setBtnNextBlockListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				boolean nextBlockButtonState = goToNextCodingBlock();
+				mainPanel.setBtnNextBlockState(nextBlockButtonState);
+				mainPanel.updateHeatMap(evaluationCriteria.createHeatMap(HEATMAP_SIZE, HEATMAP_SIZE));
+			}
+		});
+		
+		mainPanel.setBtnBackToSetupListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				layout.previous(container);
+			}
+		});
+
+		container.add(mainPanel, MAIN_PANEL);
 	}
 	
 	 private boolean goToNextCodingBlock() {
