@@ -8,10 +8,13 @@ public class MotionEstimationVector {
 	private int criteriaResult;
 	
 	public MotionEstimationVector(CodingBlock block) {
+		initializeAttributes();
+		createCodingBlock(block);
+	}
+	
+	private void initializeAttributes() {
 		position = new Position();
 		criteriaResult = Integer.MAX_VALUE;
-		
-		createCodingBlock(block);
 	}
 	
 	private void createCodingBlock(CodingBlock block) {
@@ -42,9 +45,5 @@ public class MotionEstimationVector {
 	public void setCriteriaResult(int result) {
 		criteriaResult = result;
 	}
-	
-	
-	
-	
 	
 }

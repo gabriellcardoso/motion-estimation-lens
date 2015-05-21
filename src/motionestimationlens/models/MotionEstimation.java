@@ -2,9 +2,6 @@ package motionestimationlens.models;
 
 import java.util.ArrayList;
 
-
-
-
 public class MotionEstimation {
 
 	private ISearchAlgorithm searchAlgorithm;
@@ -41,7 +38,7 @@ public class MotionEstimation {
 		searchAlgorithm.setCodingBlock(width, height);
 	}
 	
-public ArrayList<MotionEstimationVector> run() {
+	public ArrayList<MotionEstimationVector> run() {
 		int frameHeight = actualFrame.getHeight();
 		int frameWidth = actualFrame.getWidth();
 		
