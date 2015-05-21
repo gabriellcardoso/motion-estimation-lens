@@ -24,21 +24,21 @@ public class SetupPanel extends JPanel {
 	
 	private JPanel videoConfigPanel;
 	
-	private JButton openVideoButton;
-	private JComboBox<String> resolutionComboBox;
-	private JComboBox<String> samplingComboBox;
-	private JTextField framesInput;
+	private JButton btnOpenVideo;
+	private JComboBox<String> comboBoxResolution;
+	private JComboBox<String> comboBoxSampling;
+	private JTextField inputFrames;
 	
 	private JPanel motionEstimationConfigPanel;
 	
-	private JComboBox<String> algorithmComboBox;
-	private JComboBox<String> searchAreaComboBox;
-	private JComboBox<String> blockSizeComboBox;
-	private JCheckBox sameReferenceFrameCheckBox;
+	private JComboBox<String> comboBoxAlgorithm;
+	private JComboBox<String> comboBoxSearchArea;
+	private JComboBox<String> comboBoxBlockSize;
+	private JCheckBox checkBoxKeepReferenceFrame;
 	
 	private JPanel footerPanel;
 	
-	private JButton startButton;
+	private JButton btnStart;
 	
 	public SetupPanel() {
 		super();
@@ -68,10 +68,10 @@ public class SetupPanel extends JPanel {
 		JLabel samplingLabel = new JLabel("Amostragem:");
 		JLabel framesLabel = new JLabel("Total de quadros:");
 		
-		openVideoButton = new JButton("Abrir arquivo YUV");
-		resolutionComboBox = new JComboBox<String>(ME.RESOLUTION_ITEMS);
-		samplingComboBox = new JComboBox<String>(ME.SAMPLING_ITEMS);
-		framesInput = new JTextField("1");
+		btnOpenVideo = new JButton("Abrir arquivo YUV");
+		comboBoxResolution = new JComboBox<String>(ME.RESOLUTION_ITEMS);
+		comboBoxSampling = new JComboBox<String>(ME.SAMPLING_ITEMS);
+		inputFrames = new JTextField("1");
 		
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;  
@@ -81,7 +81,7 @@ public class SetupPanel extends JPanel {
         constraints.gridx = 0;
         constraints.gridy = 0;
         constraints.gridwidth = 2;
-        videoConfigPanel.add(openVideoButton, constraints);
+        videoConfigPanel.add(btnOpenVideo, constraints);
 
 		constraints.gridx = 0;
 		constraints.gridy = 1;
@@ -90,7 +90,7 @@ public class SetupPanel extends JPanel {
 		
 		constraints.gridx = 0;
 		constraints.gridy = 2;
-		videoConfigPanel.add(resolutionComboBox, constraints);
+		videoConfigPanel.add(comboBoxResolution, constraints);
 
 		constraints.gridx = 1;
 		constraints.gridy = 1;
@@ -98,7 +98,7 @@ public class SetupPanel extends JPanel {
 		
 		constraints.gridx = 1;
 		constraints.gridy = 2;
-		videoConfigPanel.add(samplingComboBox, constraints);
+		videoConfigPanel.add(comboBoxSampling, constraints);
 		
 		constraints.gridx = 0;
 		constraints.gridy = 3;
@@ -106,7 +106,7 @@ public class SetupPanel extends JPanel {
 		
 		constraints.gridx = 0;
 		constraints.gridy = 4;
-		videoConfigPanel.add(framesInput, constraints);
+		videoConfigPanel.add(inputFrames, constraints);
 	}
 	
 	private void createMotionEstimationConfigPanel() {
@@ -123,10 +123,10 @@ public class SetupPanel extends JPanel {
 		JLabel searchAreaLabel = new JLabel("Área de busca:");
 		JLabel blockLabel = new JLabel("Tamanho do bloco:");
 		
-		algorithmComboBox = new JComboBox<String>(ME.ALGORITHM_ITEMS);
-		searchAreaComboBox = new JComboBox<String>(ME.SEARCH_AREA_ITEMS);
-		blockSizeComboBox = new JComboBox<String>(ME.BLOCK_SIZE_ITEMS);
-		sameReferenceFrameCheckBox = new JCheckBox("Fixar quadro de referência");
+		comboBoxAlgorithm = new JComboBox<String>(ME.ALGORITHM_ITEMS);
+		comboBoxSearchArea = new JComboBox<String>(ME.SEARCH_AREA_ITEMS);
+		comboBoxBlockSize = new JComboBox<String>(ME.BLOCK_SIZE_ITEMS);
+		checkBoxKeepReferenceFrame = new JCheckBox("Fixar quadro de referência");
 		
 		GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.BOTH;
@@ -139,7 +139,7 @@ public class SetupPanel extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy =  1;
 		constraints.gridwidth = 2;
-		motionEstimationConfigPanel.add(algorithmComboBox, constraints);
+		motionEstimationConfigPanel.add(comboBoxAlgorithm, constraints);
 		
 		constraints.gridx = 0;
 		constraints.gridy =  2;
@@ -148,7 +148,7 @@ public class SetupPanel extends JPanel {
 		
         constraints.gridx = 0;
 		constraints.gridy =  3;
-		motionEstimationConfigPanel.add(searchAreaComboBox, constraints);
+		motionEstimationConfigPanel.add(comboBoxSearchArea, constraints);
         
 		constraints.gridx = 1;
 		constraints.gridy =  2;
@@ -156,12 +156,12 @@ public class SetupPanel extends JPanel {
         
         constraints.gridx = 1;
 		constraints.gridy = 3;
-		motionEstimationConfigPanel.add(blockSizeComboBox, constraints);
+		motionEstimationConfigPanel.add(comboBoxBlockSize, constraints);
 		
 		constraints.gridx = 0;
 		constraints.gridy = 4;
 		constraints.gridwidth = 2;
-		motionEstimationConfigPanel.add(sameReferenceFrameCheckBox, constraints);
+		motionEstimationConfigPanel.add(checkBoxKeepReferenceFrame, constraints);
 	}
 	
 	private void createFooterPanel() {
@@ -171,7 +171,7 @@ public class SetupPanel extends JPanel {
 		footerPanel.setLayout(new GridBagLayout());
 		footerPanel.setBorder(border);
 		
-		startButton = new JButton("Começar a análise");
+		btnStart = new JButton("Começar a análise");
 		
 		GridBagConstraints constraints = new GridBagConstraints();
 		
@@ -180,7 +180,7 @@ public class SetupPanel extends JPanel {
         constraints.gridx = 0;
         constraints.gridy = 0;
         
-		footerPanel.add(startButton, constraints);
+		footerPanel.add(btnStart, constraints);
 	}
 	
 	private void addVideoConfigPanel() {
@@ -216,12 +216,73 @@ public class SetupPanel extends JPanel {
 		this.add(footerPanel, constraints);
 	}
 	
-	public void setOpenVideoButtonListener (ActionListener listener) {
-		openVideoButton.addActionListener(listener);
+	public int getTotalFrames() {
+		String totalFrames = inputFrames.getText();
+		return Integer.parseInt(totalFrames);
 	}
 	
-	public void setStartButtonListener(ActionListener listener) {
-		startButton.addActionListener(listener);
+	public int getFrameWidth() {
+		String selected = (String) comboBoxResolution.getSelectedItem();
+		return ME.getWidth(selected);
+	}
+	
+	public int getFrameHeight() {
+		String selected = (String) comboBoxResolution.getSelectedItem();
+		return ME.getHeight(selected);
+	}
+	
+	public int getSampling() {
+		String selected = (String) comboBoxSampling.getSelectedItem();
+		
+		switch (selected) {
+			case ME.S_444: return 8;
+			case ME.S_422: return 4;
+			case ME.S_420: return 2;
+			case ME.S_411: return 2;
+			case ME.S_400: return 1; 
+		}
+		
+		return 0;
+	}
+	
+	public String getSearchAlgorithm() {
+		return (String) comboBoxAlgorithm.getSelectedItem();
+	}
+	
+	public int getSearchAreaWidth() {
+		String selected = (String) comboBoxSearchArea.getSelectedItem();
+		return ME.getWidth(selected);
+	}
+	
+	public int getSearchAreaHeight() {
+		String selected = (String) comboBoxSearchArea.getSelectedItem();
+		return ME.getHeight(selected);
+	}
+	
+	public int getBlockWidth() {
+		String selected = (String) comboBoxBlockSize.getSelectedItem();
+		return ME.getWidth(selected);
+	}
+	
+	public int getBlockHeight() {
+		String selected = (String) comboBoxBlockSize.getSelectedItem();
+		return ME.getHeight(selected);
+	}
+	
+	public boolean getKeepReferenceFrameState() {
+		return checkBoxKeepReferenceFrame.isSelected();
+	}
+	
+	public void setBtnOpenVideoListener (ActionListener listener) {
+		btnOpenVideo.addActionListener(listener);
+	}
+	
+	public void setBtnStartListener(ActionListener listener) {
+		btnStart.addActionListener(listener);
+	}
+	
+	public void setBtnStartEnabled(boolean state) {
+		btnStart.setEnabled(state);
 	}
 	
 }

@@ -93,6 +93,7 @@ public class MainPanel extends JPanel {
     	
     	constraints.gridx = 8;
     	constraints.gridy = 0;
+    	btnNextBlock.setEnabled(false);
     	controlPanel.add(btnNextBlock, constraints);
 		
 		constraints.gridx = 9;

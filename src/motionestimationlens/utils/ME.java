@@ -13,7 +13,6 @@ public class ME {
 	public static final String S_422 = "4:2:2";
 	public static final String S_420 = "4:2:0";
 	public static final String S_411 = "4:1:1";
-	public static final String S_410 = "4:1:0";
 	public static final String S_400 = "4:0:0";
 	
 	public static final String FS = "Full Search";
@@ -32,18 +31,25 @@ public class ME {
 	public static final String BS_32 = "32x32";
 	public static final String BS_64 = "64x64";
 	
+	public static final int FIRST_FRAME = 0;
+	public static final int SECOND_FRAME = 1;
+	public static final int FIRST_BLOCK = 0;
+	
 	public static final String[] RESOLUTION_ITEMS = { UHD, QHD, FULL_HD, HD, CIF, QCIF };
-	public static final String[] SAMPLING_ITEMS = { S_444, S_422, S_420, S_411, S_410, S_400 };
+	public static final String[] SAMPLING_ITEMS = { S_444, S_422, S_420, S_411, S_400 };
 	public static final String[] ALGORITHM_ITEMS = { FS, DS, TSS, EPZS };
 	public static final String[] SEARCH_AREA_ITEMS = { SA_16, SA_32, SA_64, SA_128, SA_256 };
 	public static final String[] BLOCK_SIZE_ITEMS = { BS_8, BS_16, BS_32, BS_64 };
 	
-	public int getWidth(String resolution) {
+	public static final String MAIN_PANEL = "Main Panel";
+	public static final String SETUP_PANEL = "Setup Panel";
+	
+	public static int getWidth(String resolution) {
 		String width = resolution.split("x")[0];
 		return Integer.parseInt(width);
 	}
 	
-	public int getHeight(String resolution) {
+	public static int getHeight(String resolution) {
 		String height = resolution.split("x")[1];
 		return Integer.parseInt(height);
 	}

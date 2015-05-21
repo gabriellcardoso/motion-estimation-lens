@@ -3,71 +3,63 @@ import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
-import motionestimationlens.models.CodingBlock;
 import motionestimationlens.models.Frame;
+import motionestimationlens.models.FullSearch;
 import motionestimationlens.models.IEvaluationCriteria;
+import motionestimationlens.models.ISearchAlgorithm;
+import motionestimationlens.models.MotionEstimation;
 import motionestimationlens.models.SumOfAbsoluteDifferences;
+import motionestimationlens.utils.ME;
 import motionestimationlens.utils.YUVReader;
 import motionestimationlens.views.MainPanel;
 import motionestimationlens.views.SetupPanel;
 
+import org.mblecker.heatmap.HeatMap;
+
 
 public class ApplicationController extends JFrame {
 	
-	private static final int INITIAL_BLOCK_X = 0;
-	private static final int INITIAL_BLOCK_Y = 0;
-	private static final int BLOCK_SIZE = 16;
-	private static final int HEATMAP_SIZE = 128;
-	
-	private static final String MAIN_PANEL = "Main Panel";
-	private static final String SETUP_PANEL = "Setup Panel";
-	
-	// Video file related attributes
-	private String fileName;
+	// Application configs
+	private File inputFile;
 	private int frameWidth;
 	private int frameHeight;
 	private int samplingYCbCr;
+	private int totalFrames;
+	private String selectedAlgorithm;
+	private int searchAreaWidth;
+	private int searchAreaHeight;
+	private int blockWidth;
+	private int blockHeight;
+	private boolean keepReferenceFrame;
 	
-	// Motion estimation related attributes
+	private int actualFrameIndex;
+	private int referenceFrameIndex;
+	private int codingBlockIndex;
+	
+	// Data generation related
 	private YUVReader videoReader;
-	
 	private Frame actualFrame;
 	private Frame referenceFrame;
-	
+	private MotionEstimation fullSearchME;
+	private ISearchAlgorithm fullSearch;
+	private MotionEstimation searchAlgorithmME;
+	private ISearchAlgorithm searchAlgorithm;
 	private IEvaluationCriteria evaluationCriteria;
-	private CodingBlock codingBlock;
-	
-	// GUI attributes
+
+	// User interface related
 	private Container container;
 	private CardLayout layout;
-	
-	private JFileChooser videoChooser;
-	
 	private MainPanel mainPanel;
 	private SetupPanel setupPanel;
+	private JFileChooser videoChooser;
 	
 	public ApplicationController() {
 		super("Motion Estimation Lens");
-		
-		container = getContentPane();
-		layout = new CardLayout();
-		
-		setLayout(layout);
-	}
-	
-	public ApplicationController(String fileName, int frameWidth, int frameHeight, int samplingYCbCr) {
-		super("Motion Estimation Lens");
-		
-		this.fileName = fileName;
-		this.frameWidth = frameWidth;
-		this.frameHeight = frameHeight;
-		this.samplingYCbCr = samplingYCbCr;
-		
-		setUpModels();
 		
 		container = this.getContentPane();
 		layout = new CardLayout();
@@ -78,98 +70,117 @@ public class ApplicationController extends JFrame {
 		startMainPanel();
 	}
 	
-	private void setUpModels() {
-		videoReader = new YUVReader(fileName, frameWidth, frameHeight, samplingYCbCr);
-		
-		actualFrame = new Frame(frameWidth, frameHeight);
-		referenceFrame = new Frame(frameWidth, frameHeight);
-		
-		evaluationCriteria = new SumOfAbsoluteDifferences();
-		codingBlock = new CodingBlock(BLOCK_SIZE, BLOCK_SIZE);
-		
-		videoReader.setFrameWithImage(actualFrame, 1);
-		videoReader.setFrameWithImage(referenceFrame, 0);
-		
-		evaluationCriteria.setActualFrame(actualFrame);
-		evaluationCriteria.setReferenceFrame(referenceFrame);
-
-		codingBlock.getPosition().setX(INITIAL_BLOCK_X);
-		codingBlock.getPosition().setY(INITIAL_BLOCK_Y);
-		
-		evaluationCriteria.setCodingBlock(codingBlock);
-	}
-	
 	private void startSetupPanel() {
 		setupPanel = new SetupPanel();
 		videoChooser = new JFileChooser();
 		
-		setupPanel.setOpenVideoButtonListener(new ActionListener() {
+		setupPanel.setBtnStartEnabled(false);
+		
+		setupPanel.setBtnOpenVideoListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				int val = videoChooser.showDialog(setupPanel.getComponent(2), "Open YUV file");
-				if (val == JFileChooser.APPROVE_OPTION) {
-					System.out.println("Open file");
+				int result = videoChooser.showDialog(setupPanel.getComponent(2), "Open YUV file");
+				if (result == JFileChooser.APPROVE_OPTION) {
+					inputFile = videoChooser.getSelectedFile();
+					setupPanel.setBtnStartEnabled(true);
 				}
 			}
 		});
 		
-		setupPanel.setStartButtonListener(new ActionListener() {
+		setupPanel.setBtnStartListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				layout.next(container);
+				getConfigs();
+				printConfigs();
+				setUpModels();
+				goToMainPanel();
 			}
 		});
 		
-		container.add(setupPanel, SETUP_PANEL);
+		container.add(setupPanel, ME.SETUP_PANEL);
 	}
 	
 	private void startMainPanel() {
 		mainPanel = new MainPanel();
 		
-		mainPanel.updateHeatMap(evaluationCriteria.createHeatMap(HEATMAP_SIZE, HEATMAP_SIZE));
-		
-		mainPanel.setBtnNextBlockListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				boolean nextBlockButtonState = goToNextCodingBlock();
-				mainPanel.setBtnNextBlockState(nextBlockButtonState);
-				mainPanel.updateHeatMap(evaluationCriteria.createHeatMap(HEATMAP_SIZE, HEATMAP_SIZE));
-			}
-		});
+		mainPanel.updateHeatMap(HeatMap.generateRampTestData());
 		
 		mainPanel.setBtnBackToSetupListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				layout.previous(container);
+				goToSetupPanel();
 			}
 		});
 
-		container.add(mainPanel, MAIN_PANEL);
+		container.add(mainPanel, ME.MAIN_PANEL);
 	}
 	
-	 private boolean goToNextCodingBlock() {
-    	int blockWidth = codingBlock.getWidth();
-    	int blockHeight = codingBlock.getHeight();
-    	
-    	int blockCoordinateX = codingBlock.getPosition().getX();
-    	int blockCoordinateY = codingBlock.getPosition().getY();
-    	
-    	int nextCoordinateX = blockCoordinateX + blockWidth;
-    	int nextCoordinateY = blockCoordinateY + blockHeight;
-    	
-    	if (nextCoordinateX + blockWidth > frameWidth) {
-    		nextCoordinateX = 0;
-    		nextCoordinateY += blockHeight;
-    	}
-    	
-    	if (nextCoordinateY + blockHeight > frameHeight) {
-    		return false;
-    	}
-
-    	codingBlock.getPosition().setX(nextCoordinateX);
-    	codingBlock.getPosition().setY(nextCoordinateY);
-    	
-    	return true;
-    }
-	 
+	private void getConfigs() {
+		frameWidth = setupPanel.getFrameWidth();
+		frameHeight = setupPanel.getFrameHeight();
+		samplingYCbCr = setupPanel.getSampling();
+		totalFrames = setupPanel.getTotalFrames();
+		selectedAlgorithm = setupPanel.getSearchAlgorithm();
+		searchAreaWidth = setupPanel.getSearchAreaWidth(); 
+		searchAreaHeight = setupPanel.getSearchAreaHeight();
+		blockWidth = setupPanel.getBlockWidth();
+		blockHeight = setupPanel.getBlockHeight();
+		keepReferenceFrame = setupPanel.getKeepReferenceFrameState();
+	}
+	
+	private void printConfigs() {
+		System.out.println("Input file: " + inputFile.getPath());
+		System.out.println("Frame width: " + frameWidth);
+		System.out.println("Frame height: " + frameHeight);
+		System.out.println("Video sampling: " + samplingYCbCr);
+		System.out.println("Total frames: " + totalFrames);
+		System.out.println("Selected algorithm: " + selectedAlgorithm);
+		System.out.println("Search area width: " + searchAreaWidth);
+		System.out.println("Search area height: " + searchAreaHeight);
+		System.out.println("Block width: " + blockWidth);
+		System.out.println("Block height: " + blockHeight);
+		System.out.println("Keep reference frame: " + keepReferenceFrame);
+	}
+	
+	private void setUpModels() {
+		actualFrameIndex = ME.SECOND_FRAME;
+		referenceFrameIndex = ME.FIRST_FRAME;
+		codingBlockIndex = ME.FIRST_BLOCK;
+		
+		videoReader = new YUVReader(inputFile, frameWidth, frameHeight, samplingYCbCr);
+		
+		actualFrame = new Frame(frameWidth, frameHeight);
+		referenceFrame = new Frame(frameWidth, frameHeight);
+		
+		videoReader.setFrameWithImage(actualFrame, actualFrameIndex);
+		videoReader.setFrameWithImage(referenceFrame, referenceFrameIndex);
+		
+		evaluationCriteria = new SumOfAbsoluteDifferences();
+		
+		fullSearch = new FullSearch(evaluationCriteria, blockWidth, blockHeight, searchAreaWidth, searchAreaHeight);
+		fullSearchME = new MotionEstimation(fullSearch);
+		fullSearchME.setActualFrame(actualFrame);
+		fullSearchME.setReferenceFrame(referenceFrame);
+		
+		switch (selectedAlgorithm) {
+			case ME.FS:
+			case ME.DS:
+			case ME.TSS:
+			case ME.EPZS:
+			default:
+				searchAlgorithm = new FullSearch(evaluationCriteria, blockWidth, blockHeight, searchAreaWidth, searchAreaHeight);
+		}
+		
+		searchAlgorithmME = new MotionEstimation(searchAlgorithm);
+		searchAlgorithmME.setActualFrame(actualFrame);
+		searchAlgorithmME.setReferenceFrame(referenceFrame);
+	}
+	
+	private void goToMainPanel() {
+		layout.next(container);
+	}
+	
+	private void goToSetupPanel() {
+		layout.previous(container);
+	}
 }

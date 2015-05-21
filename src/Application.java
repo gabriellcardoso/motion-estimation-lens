@@ -7,14 +7,9 @@ import motionestimationlens.controllers.ApplicationController;
 
 public class Application {
 	
-	private static String fileName;
-	private static int width;
-	private static int height;
-	private static int sampling;
-
     private static void createAndShowGUI() throws Exception
     {
-        ApplicationController application = new ApplicationController(fileName, width, height, sampling);
+        ApplicationController application = new ApplicationController();
         application.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         application.setSize(1280, 720);
         application.setResizable(false);
@@ -23,11 +18,6 @@ public class Application {
 
     public static void main(String[] args)
     {
-    	fileName = args[0];
-		width = Integer.parseInt(args[1]);
-		height = Integer.parseInt(args[2]);
-		sampling = Integer.parseInt(args[3]);
- 
         SwingUtilities.invokeLater(new Runnable()
         {
             public void run()
