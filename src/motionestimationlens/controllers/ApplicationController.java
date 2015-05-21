@@ -80,6 +80,7 @@ public class ApplicationController extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				int result = videoChooser.showDialog(setupPanel.getComponent(2), "Open YUV file");
+				
 				if (result == JFileChooser.APPROVE_OPTION) {
 					inputFile = videoChooser.getSelectedFile();
 					setupPanel.setBtnStartEnabled(true);
@@ -159,6 +160,7 @@ public class ApplicationController extends JFrame {
 		
 		fullSearch = new FullSearch(evaluationCriteria, blockWidth, blockHeight, searchAreaWidth, searchAreaHeight);
 		fullSearchME = new MotionEstimation(fullSearch);
+		
 		fullSearchME.setActualFrame(actualFrame);
 		fullSearchME.setReferenceFrame(referenceFrame);
 		
@@ -172,15 +174,16 @@ public class ApplicationController extends JFrame {
 		}
 		
 		searchAlgorithmME = new MotionEstimation(searchAlgorithm);
+		
 		searchAlgorithmME.setActualFrame(actualFrame);
 		searchAlgorithmME.setReferenceFrame(referenceFrame);
 	}
 	
 	private void goToMainPanel() {
-		layout.next(container);
+		layout.show(container, ME.MAIN_PANEL);
 	}
 	
 	private void goToSetupPanel() {
-		layout.previous(container);
+		layout.show(container, ME.SETUP_PANEL);
 	}
 }

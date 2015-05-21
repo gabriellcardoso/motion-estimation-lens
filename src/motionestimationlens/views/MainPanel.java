@@ -13,12 +13,11 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+import motionestimationlens.models.MotionEstimationVector;
 import motionestimationlens.utils.BorderFactory;
 
 import org.mblecker.heatmap.Gradient;
 import org.mblecker.heatmap.HeatMap;
-
-import com.sun.corba.se.spi.orbutil.fsm.Action;
 
 public class MainPanel extends JPanel {
 	
@@ -42,6 +41,7 @@ public class MainPanel extends JPanel {
 	private JLabel lblNumberOfBlocks;
 	private JLabel lblBestVector;
 	private JLabel lblBestSad;
+	private JLabel lblNumberOfBlocksVisited;
 	private JLabel lblVector;
 	private JLabel lblSad;
 	
@@ -74,8 +74,8 @@ public class MainPanel extends JPanel {
 		
 		btnPreviousFrame = new JButton("Quadro anterior");
 		btnPreviousBlock = new JButton("Bloco anterior");
-		btnNextBlock = new JButton("PrÃ³ximo bloco");
-		btnNextFrame = new JButton("PrÃ³ximo quadro");
+		btnNextBlock = new JButton("Próximo bloco");
+		btnNextFrame = new JButton("Próximo quadro");
 		
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
@@ -108,7 +108,7 @@ public class MainPanel extends JPanel {
         
         heatMapPanel.setDrawLegend(false);
 
-        heatMapPanel.setTitle("Mapa de calor da Ã¡rea de busca");
+        heatMapPanel.setTitle("Mapa de calor da área de busca");
         heatMapPanel.setDrawTitle(true);
 
         heatMapPanel.setXAxisTitle("X Axis");
@@ -126,7 +126,7 @@ public class MainPanel extends JPanel {
     
     private void createResultsPanel() {
     	Border border = BorderFactory.createTitledBorder(
-    						"Resultados da EstimaÃ§Ã£o Movimento",
+    						"Resultados da Estimaação Movimento",
     						new EmptyBorder(10, 10, 10, 10)
     					);
     	
@@ -135,12 +135,13 @@ public class MainPanel extends JPanel {
     	resultsPanel.setLayout(new GridBagLayout());
     	resultsPanel.setBorder(border);
     	
-    	lblReferenceFrame = new JLabel("Quadro de referÃªncia: 0/0");
+    	lblReferenceFrame = new JLabel("Quadro de referência: 0/0");
     	lblActualFrame = new JLabel("Quadro atual: 0/0");
     	lblCodingBlock = new JLabel("Bloco: 0/0");
-    	lblNumberOfBlocks = new JLabel("NÃºmero de blocos candidatos: 0");
+    	lblNumberOfBlocks = new JLabel("Número de blocos candidatos: 0");
     	lblBestVector = new JLabel("Melhor bloco candidato: x, y");
     	lblBestSad = new JLabel("SAD do melhor bloco candidato: 0");
+    	lblNumberOfBlocksVisited = new JLabel("Número de blocos candidatos visitados: 0");
     	lblVector = new JLabel("Bloco escolhido pelo algoritmo: x, y");
     	lblSad = new JLabel("SAD do bloco escolhido pelo algoritmo: 0");
     	
@@ -175,10 +176,14 @@ public class MainPanel extends JPanel {
     	
     	constraints.gridx = 0;
     	constraints.gridy = 6;
-    	resultsPanel.add(lblVector, constraints);
+    	resultsPanel.add(lblNumberOfBlocksVisited, constraints);
     	
     	constraints.gridx = 0;
     	constraints.gridy = 7;
+    	resultsPanel.add(lblVector, constraints);
+    	
+    	constraints.gridx = 0;
+    	constraints.gridy = 8;
     	resultsPanel.add(lblSad, constraints);
     }
     
@@ -186,10 +191,10 @@ public class MainPanel extends JPanel {
     	footerPanel = new JPanel();
     	footerPanel.setLayout(new GridBagLayout());
     	
-    	btnSetReferenceFrame = new JButton("Especificar quadro de referÃªncia");
+    	btnSetReferenceFrame = new JButton("Especificar quadro de referência");
     	btnSetActualFrame = new JButton("Especificar quadro atual");
     	btnSetCodingBlock = new JButton("Especificar bloco a ser codificado");
-    	btnBackToSetup = new JButton("Voltar para configuraÃ§Ãµes");
+    	btnBackToSetup = new JButton("Voltar para configurações");
     	
     	GridBagConstraints constraints = new GridBagConstraints();
     	constraints.anchor = GridBagConstraints.PAGE_END;
@@ -311,6 +316,34 @@ public class MainPanel extends JPanel {
     	btnBackToSetup.addActionListener(listener);
     }
     
+    public void updateActualFrame(int actualFrameIndex) {
+    	
+    }
+    
+    public void updateReferenceFrame(int referenceFrameIndex) {
+    	
+    }
+    
+    public void updateCodingBlock(int codingBlockIndex) {
+    	
+    }
+    
+    public void updateNumberOfBlocks(int numberOfBlocks) {
+    	
+    }
+    
+    public void updateBestVector(MotionEstimationVector bestVector) {
+    	
+    }
+    
+    public void updateNumberOfBlocksVisited(int numberOfBlocksVisited) {
+    	
+    }
+
+    public void updateResultVector(MotionEstimationVector resultVector) {
+    	
+    }
+
     public void updateHeatMap(double[][] data) {
     	heatMapPanel.updateData(data, USE_GRAPHICS_Y_AXIS);
     }
