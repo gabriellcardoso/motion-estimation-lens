@@ -1,5 +1,6 @@
 package motionestimationlens.utils;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -17,11 +18,11 @@ public class YUVReader {
     private int videoHeight;
     private int sampling;
     
-    public YUVReader(String fileName, int videoWidth, int videoHeight, int sampling) {
+    public YUVReader(File file, int videoWidth, int videoHeight, int sampling) {
     	this.videoWidth = videoWidth;
     	this.videoHeight = videoHeight;
     	this.sampling = sampling;
-    	openInputStream(fileName);
+    	openInputStream(file);
     }
     
     public void setFrameWithImage(Frame frame, int index) {
@@ -68,9 +69,9 @@ public class YUVReader {
     	return videoWidth * videoHeight * scale;
     }
     
-    private void openInputStream(String fileName) {
+    private void openInputStream(File file) {
     	try {
-    		inputStream = new FileInputStream(fileName);
+    		inputStream = new FileInputStream(file);
     		fileChannel = inputStream.getChannel();
     	}
     	catch (FileNotFoundException error) {
