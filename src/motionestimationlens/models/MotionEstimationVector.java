@@ -6,6 +6,7 @@ public class MotionEstimationVector {
 	private CodingBlock codingBlock;
 	private Position position;
 	private int criteriaResult;
+	private int blocksVisited;
 	
 	public MotionEstimationVector(CodingBlock block) {
 		initializeAttributes();
@@ -38,12 +39,20 @@ public class MotionEstimationVector {
 		return criteriaResult;
 	}
 	
+	public int getBlocksVisited() {
+		return blocksVisited;
+	}
+	
 	public void setPosition(int x, int y) {
 		position.setPosition(x, y);
 	}
 	
 	public void setCriteriaResult(int result) {
 		criteriaResult = result;
+	}
+	
+	public void setBlocksVisited(int total) {
+		blocksVisited = total;
 	}
 	
 }

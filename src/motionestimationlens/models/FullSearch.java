@@ -4,10 +4,6 @@ package motionestimationlens.models;
 
 public class FullSearch extends SearchAlgorithm implements ISearchAlgorithm {
 	
-	public FullSearch(IEvaluationCriteria criteria, int blockWidth, int blockHeight, int searchWidth, int searchHeight) {
-		super(criteria, blockWidth, blockHeight, searchWidth, searchHeight);
-	}
-	
 	public MotionEstimationVector run() {
 		
 		MotionEstimationVector vector = new MotionEstimationVector(codingBlock);
@@ -28,7 +24,7 @@ public class FullSearch extends SearchAlgorithm implements ISearchAlgorithm {
 		int finalY = codingBlock.getPosition().getY() + rangeY / 2;
 		
 		int result = Integer.MAX_VALUE;
-		int temporaryResult;
+		int temporaryResult, blocksVisited;
 		int x, y;
 		
 		if (initialX < 0) {
@@ -47,8 +43,11 @@ public class FullSearch extends SearchAlgorithm implements ISearchAlgorithm {
 			finalY = frameHeight - blockHeight - 1;
 		}
 		
+		blocksVisited = 0;
+		
 		for (y = initialY; y < finalY; y++) {
 			for (x = initialX; x < finalX; x++) {
+				blocksVisited++;
 				temporaryResult = evaluationCriteria.calculate(x, y);
 				if (temporaryResult < result) {
 					result = temporaryResult;
@@ -57,6 +56,8 @@ public class FullSearch extends SearchAlgorithm implements ISearchAlgorithm {
 				}
 			}
 		}
+		
+		vector.setBlocksVisited(blocksVisited);
 		
 		return vector;
 	}

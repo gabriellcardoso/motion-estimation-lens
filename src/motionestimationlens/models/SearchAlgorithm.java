@@ -14,32 +14,28 @@ public abstract class SearchAlgorithm {
 	
 	protected CodingBlock codingBlock;
 	
-	public SearchAlgorithm(IEvaluationCriteria criteria, int blockWidth, int blockHeight, int searchWidth, int searchHeight) {
-		setEvaluationCriteria(criteria);
-		setSearchArea(searchWidth, searchHeight);
-		createCodingBlock(blockWidth, blockHeight);
-	}
-	
-	private void createCodingBlock(int width, int height) {
-		codingBlock = new CodingBlock(width, height);
-	}
-	
 	public CodingBlock getCodingBlock() {
 		return codingBlock;
 	}
 	
 	public void setActualFrame(Frame frame) {
 		actualFrame = frame;
+		
 		evaluationCriteria.setActualFrame(actualFrame);
 	}
 	
 	public void setReferenceFrame(Frame frame) {
 		referenceFrame = frame;
+		
 		evaluationCriteria.setReferenceFrame(referenceFrame);
 	}
 	
 	public void setEvaluationCriteria(IEvaluationCriteria criteria) {
 		evaluationCriteria = criteria;
+		
+		evaluationCriteria.setActualFrame(actualFrame);
+		evaluationCriteria.setReferenceFrame(referenceFrame);
+		evaluationCriteria.setCodingBlock(codingBlock);
 	}
 
 	public void setSearchArea(int width, int height) {
@@ -47,9 +43,9 @@ public abstract class SearchAlgorithm {
 		searchHeight = height;
 	}
 	
-	public void setCodingBlock(int width, int height) {
-		codingBlock.setWidth(width);
-		codingBlock.setHeight(height);
+	public void setCodingBlock(CodingBlock block) {
+		codingBlock = block;
+		evaluationCriteria.setCodingBlock(codingBlock);
 	}
 	
 }

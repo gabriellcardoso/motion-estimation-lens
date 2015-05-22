@@ -84,7 +84,6 @@ public class MainPanel extends JPanel {
 		
 		constraints.gridx = 0;
 		constraints.gridy = 0;
-		btnPreviousFrame.setEnabled(false);
 		controlPanel.add(btnPreviousFrame, constraints);
 		
 		constraints.gridx = 1;
@@ -99,7 +98,6 @@ public class MainPanel extends JPanel {
 		
 		constraints.gridx = 9;
 		constraints.gridy = 0;
-		btnNextFrame.setEnabled(false);
 		controlPanel.add(btnNextFrame, constraints);
 	}
 	
@@ -139,12 +137,12 @@ public class MainPanel extends JPanel {
     	lblReferenceFrame = new JLabel("Quadro de refer�ncia: 0/0");
     	lblActualFrame = new JLabel("Quadro atual: 0/0");
     	lblCodingBlock = new JLabel("Bloco: 0/0");
-    	lblNumberOfBlocks = new JLabel("N�mero de blocos candidatos: 0");
     	lblBestVector = new JLabel("Melhor bloco candidato: x, y");
     	lblBestSad = new JLabel("SAD do melhor bloco candidato: 0");
-    	lblNumberOfBlocksVisited = new JLabel("N�mero de blocos candidatos visitados: 0");
     	lblVector = new JLabel("Bloco escolhido pelo algoritmo: x, y");
     	lblSad = new JLabel("SAD do bloco escolhido pelo algoritmo: 0");
+    	lblNumberOfBlocks = new JLabel("N�mero de blocos candidatos: 0");
+    	lblNumberOfBlocksVisited = new JLabel("N�mero de blocos candidatos visitados: 0");
     	
     	GridBagConstraints constraints = new GridBagConstraints();
     	constraints.anchor = GridBagConstraints.NORTH;
@@ -165,27 +163,27 @@ public class MainPanel extends JPanel {
     	
     	constraints.gridx = 0;
     	constraints.gridy = 3;
-    	resultsPanel.add(lblNumberOfBlocks, constraints);
-    	
-    	constraints.gridx = 0;
-    	constraints.gridy = 4;
     	resultsPanel.add(lblBestVector, constraints);
     	
     	constraints.gridx = 0;
-    	constraints.gridy = 5;
+    	constraints.gridy = 4;
     	resultsPanel.add(lblBestSad, constraints);
     	
     	constraints.gridx = 0;
-    	constraints.gridy = 6;
-    	resultsPanel.add(lblNumberOfBlocksVisited, constraints);
-    	
-    	constraints.gridx = 0;
-    	constraints.gridy = 7;
+    	constraints.gridy = 5;
     	resultsPanel.add(lblVector, constraints);
     	
     	constraints.gridx = 0;
-    	constraints.gridy = 8;
+    	constraints.gridy = 6;
     	resultsPanel.add(lblSad, constraints);
+    	
+    	constraints.gridx = 0;
+    	constraints.gridy = 7;
+    	resultsPanel.add(lblNumberOfBlocks, constraints);
+    	
+    	constraints.gridx = 0;
+    	constraints.gridy = 8;
+    	resultsPanel.add(lblNumberOfBlocksVisited, constraints);
     }
     
     private void createFooterPanel() {
@@ -329,10 +327,6 @@ public class MainPanel extends JPanel {
     	lblCodingBlock.setText("Bloco: " + codingBlockIndex + "/" + blocksTotal);
     }
     
-    public void setNumberOfBlocks(int numberOfBlocks) {
-    	lblNumberOfBlocks.setText("Número de blocos candidatos: " + numberOfBlocks);
-    }
-    
     public void setBestVector(MotionEstimationVector bestVector) {
     	int bestBlockX = bestVector.getPosition().getX();
     	int bestBlockY = bestVector.getPosition().getY();
@@ -342,10 +336,6 @@ public class MainPanel extends JPanel {
     	lblBestSad.setText("SAD do melhor bloco candidato: " + bestSad);
     }
     
-    public void setNumberOfBlocksVisited(int numberOfBlocksVisited) {
-    	lblNumberOfBlocksVisited.setText("Número de blocos candidatos visitados: " + numberOfBlocksVisited);
-    }
-
     public void setResultVector(MotionEstimationVector resultVector) {
     	int resultBlockX = resultVector.getPosition().getX();
     	int resultBlockY = resultVector.getPosition().getY();
@@ -359,4 +349,12 @@ public class MainPanel extends JPanel {
     	heatMapPanel.updateData(data, USE_GRAPHICS_Y_AXIS);
     }
     
+    public void setNumberOfBlocks(int numberOfBlocks) {
+    	lblNumberOfBlocks.setText("Número de blocos candidatos: " + numberOfBlocks);
+    }
+    
+    public void setNumberOfBlocksVisited(int numberOfBlocksVisited) {
+    	lblNumberOfBlocksVisited.setText("Número de blocos candidatos visitados: " + numberOfBlocksVisited);
+    }
+
 }
