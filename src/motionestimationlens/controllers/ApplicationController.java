@@ -104,7 +104,7 @@ public class ApplicationController extends JFrame {
 	private void startMainPanel() {
 		mainPanel = new MainPanel();
 		
-		mainPanel.updateHeatMap(HeatMap.generateRampTestData());
+		mainPanel.setHeatMap(HeatMap.generateRampTestData());
 		
 		mainPanel.setBtnBackToSetupListener(new ActionListener() {
 			@Override
@@ -186,4 +186,5 @@ public class ApplicationController extends JFrame {
 	private void goToSetupPanel() {
 		layout.show(container, ME.SETUP_PANEL);
 	}
+
 }
