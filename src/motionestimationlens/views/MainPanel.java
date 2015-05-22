@@ -288,7 +288,7 @@ public class MainPanel extends JPanel {
     public void setBtnNextBlockListener(ActionListener listener) {
     	btnNextBlock.addActionListener(listener);
     }
-    
+
     public void setBtnNextBlockEnabled(boolean state) {
     	btnNextBlock.setEnabled(state);
     }
@@ -318,31 +318,41 @@ public class MainPanel extends JPanel {
     }
     
     public void setActualFrameIndex(int actualFrameIndex, int framesTotal) {
-
+    	lblActualFrame.setText("Quadro atual: " + actualFrameIndex + "/" + framesTotal);
     }
     
     public void setReferenceFrameIndex(int referenceFrameIndex, int framesTotal) {
-    	
+    	lblReferenceFrame.setText("Quadro de referência: " + referenceFrameIndex + "/" + framesTotal);
     }
     
     public void setCodingBlockIndex(int codingBlockIndex, int blocksTotal) {
-    	
+    	lblCodingBlock.setText("Bloco: " + codingBlockIndex + "/" + blocksTotal);
     }
     
     public void setNumberOfBlocks(int numberOfBlocks) {
-    	
+    	lblNumberOfBlocks.setText("Número de blocos candidatos: " + numberOfBlocks);
     }
     
     public void setBestVector(MotionEstimationVector bestVector) {
+    	int bestBlockX = bestVector.getPosition().getX();
+    	int bestBlockY = bestVector.getPosition().getY();
+    	int bestSad = bestVector.getCriteriaResult();
     	
+    	lblBestVector.setText("Melhor bloco candidato: " + bestBlockX + "," + bestBlockY);
+    	lblBestSad.setText("SAD do melhor bloco candidato: " + bestSad);
     }
     
     public void setNumberOfBlocksVisited(int numberOfBlocksVisited) {
-    	
+    	lblNumberOfBlocksVisited.setText("Número de blocos candidatos visitados: " + numberOfBlocksVisited);
     }
 
     public void setResultVector(MotionEstimationVector resultVector) {
+    	int resultBlockX = resultVector.getPosition().getX();
+    	int resultBlockY = resultVector.getPosition().getY();
+    	int resultSad = resultVector.getCriteriaResult();
     	
+    	lblVector.setText("Melhor bloco candidato: " + resultBlockX + "," + resultBlockY);
+    	lblSad.setText("SAD do melhor bloco candidato: " + resultSad);
     }
 
     public void setHeatMap(double[][] data) {
