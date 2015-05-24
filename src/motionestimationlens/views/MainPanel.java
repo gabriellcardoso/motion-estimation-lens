@@ -88,12 +88,10 @@ public class MainPanel extends JPanel {
 		
 		constraints.gridx = 1;
     	constraints.gridy = 0;
-    	btnPreviousBlock.setEnabled(false);
     	controlPanel.add(btnPreviousBlock, constraints);
     	
     	constraints.gridx = 8;
     	constraints.gridy = 0;
-    	btnNextBlock.setEnabled(false);
     	controlPanel.add(btnNextBlock, constraints);
 		
 		constraints.gridx = 9;
@@ -136,7 +134,7 @@ public class MainPanel extends JPanel {
     	
     	lblReferenceFrame = new JLabel("Quadro de refer�ncia: 0/0");
     	lblActualFrame = new JLabel("Quadro atual: 0/0");
-    	lblCodingBlock = new JLabel("Bloco: 0/0");
+    	lblCodingBlock = new JLabel("Bloco: x, y");
     	lblBestVector = new JLabel("Melhor bloco candidato: x, y");
     	lblBestSad = new JLabel("SAD do melhor bloco candidato: 0");
     	lblVector = new JLabel("Bloco escolhido pelo algoritmo: x, y");
@@ -323,8 +321,8 @@ public class MainPanel extends JPanel {
     	lblReferenceFrame.setText("Quadro de referência: " + referenceFrameIndex + "/" + framesTotal);
     }
     
-    public void setCodingBlockIndex(int codingBlockIndex, int blocksTotal) {
-    	lblCodingBlock.setText("Bloco: " + codingBlockIndex + "/" + blocksTotal);
+    public void setCodingBlockPosition(int x, int y) {
+    	lblCodingBlock.setText("Bloco: " + x + "," + y);
     }
     
     public void setBestVector(MotionEstimationVector bestVector) {

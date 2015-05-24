@@ -109,6 +109,9 @@ public class ApplicationController extends JFrame {
 	private void startMainPanel() {
 		mainPanel = new MainPanel();
 		
+		mainPanel.setBtnPreviousFrameEnabled(false);
+		mainPanel.setBtnPreviousBlockEnabled(false);
+		
 		mainPanel.setHeatMap(HeatMap.generateRampTestData());
 		
 		mainPanel.setBtnPreviousFrameListener(new ActionListener() {
@@ -116,6 +119,25 @@ public class ApplicationController extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				goToPreviousFrame();
 				showResults();
+				setControlButtonsState();
+			}
+		});
+		
+		mainPanel.setBtnPreviousBlockListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				goToPreviousBlock();
+				showResults();
+				setControlButtonsState();
+			}
+		});
+		
+		mainPanel.setBtnNextBlockListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				goToNextBlock();
+				showResults();
+				setControlButtonsState();
 			}
 		});
 		
@@ -124,6 +146,7 @@ public class ApplicationController extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				goToNextFrame();
 				showResults();
+				setControlButtonsState();
 			}
 		});
 		
@@ -135,6 +158,11 @@ public class ApplicationController extends JFrame {
 		});
 
 		container.add(mainPanel, ME.MAIN_PANEL);
+	}
+	
+	private void setCodingBlockIndex(int index) {
+		codingBlockIndex = index;
+		goToBlock(index);
 	}
 	
 	private void getConfigs() {
@@ -203,19 +231,27 @@ public class ApplicationController extends JFrame {
 	private void showResults() {
 		MotionEstimationData fullSearchResult = fullSearchME.run();
 		MotionEstimationData searchAlgorithmResult = searchAlgorithmME.run();
+		
+		CodingBlock codingBlock = searchAlgorithmResult.getResultVector().getCodingBlock();
+		
 		MotionEstimationVector fullSearchVector = fullSearchResult.getResultVector();
 		MotionEstimationVector searchAlgorithmVector = searchAlgorithmResult.getResultVector();
+		
 		double[][] heatMap = searchAlgorithmResult.getHeatMap();
+		
 		int candidateBlocksTotal = searchAlgorithmResult.getCandidateBlocksTotal();
 		int blocksVisited = searchAlgorithmResult.getResultVector().getBlocksVisited();
 		
 		mainPanel.setActualFrameIndex(actualFrameIndex, framesTotal);
 		mainPanel.setReferenceFrameIndex(referenceFrameIndex, framesTotal);
-		mainPanel.setCodingBlockIndex(codingBlockIndex, 0);
-		mainPanel.setNumberOfBlocks(candidateBlocksTotal);
+		mainPanel.setCodingBlockPosition(codingBlock.getPosition().getX(), codingBlock.getPosition().getY());
+		
 		mainPanel.setBestVector(fullSearchVector);
-		mainPanel.setNumberOfBlocksVisited(blocksVisited);
 		mainPanel.setResultVector(searchAlgorithmVector);
+		
+		mainPanel.setNumberOfBlocks(candidateBlocksTotal);
+		mainPanel.setNumberOfBlocksVisited(blocksVisited);
+		
 		mainPanel.setHeatMap(heatMap);
 	}
 	
@@ -237,6 +273,8 @@ public class ApplicationController extends JFrame {
 				referenceFrameIndex--;
 				videoReader.setFrameWithImage(referenceFrame, referenceFrameIndex);
 			}
+			
+			setCodingBlockIndex(0);
 		}
 	}
 	
@@ -250,6 +288,72 @@ public class ApplicationController extends JFrame {
 				referenceFrameIndex++;
 				videoReader.setFrameWithImage(referenceFrame, referenceFrameIndex);
 			}
+			
+			setCodingBlockIndex(0);
+		}
+	}
+	
+	private void goToPreviousBlock() {
+		if (codingBlockIndex > 0) {
+			setCodingBlockIndex(codingBlockIndex - 1);
+		}
+	}
+	
+	private void goToNextBlock() {
+		int totalCodingBlocks = (frameWidth / blockWidth) * (frameHeight / blockHeight);
+
+		if (codingBlockIndex < totalCodingBlocks) {
+			setCodingBlockIndex(codingBlockIndex + 1);
+		}
+	}
+	
+	private void goToBlock(int index) {
+		int blockShifting = blockWidth * index;
+		int blockRow = blockShifting / frameWidth;
+		int blockPositionX = blockShifting;
+		int blockPositionY = blockRow * blockHeight;
+		
+		if (blockRow > 0) {
+			blockPositionX = blockShifting % frameWidth;
+		}
+		
+		this.fullSearchME.setCodingBlockPosition(blockPositionX, blockPositionY);
+		this.searchAlgorithmME.setCodingBlockPosition(blockPositionX, blockPositionY);
+	}
+	
+	private void setControlButtonsState() {
+		int totalCodingBlocks = (frameWidth / blockWidth) * (frameHeight / blockHeight);
+		
+		// Set previous frame button state
+		if (actualFrameIndex == 1) {
+			mainPanel.setBtnPreviousFrameEnabled(false);
+		}
+		else {
+			mainPanel.setBtnPreviousFrameEnabled(true);
+		}
+		
+		// Set next frame button state
+		if (actualFrameIndex == framesTotal - 1) {
+			mainPanel.setBtnNextFrameEnabled(false);
+		}
+		else {
+			mainPanel.setBtnNextFrameEnabled(true);
+		}
+		
+		// Set previous block button state
+		if (codingBlockIndex == 0) {
+			mainPanel.setBtnPreviousBlockEnabled(false);
+		}
+		else {
+			mainPanel.setBtnPreviousBlockEnabled(true);
+		}
+		
+		// Set next block button state
+		if (codingBlockIndex == totalCodingBlocks - 1) {
+			mainPanel.setBtnNextBlockEnabled(false);
+		}
+		else {
+			mainPanel.setBtnNextBlockEnabled(true);
 		}
 	}
 	
