@@ -87,8 +87,8 @@ public class HeatMap extends JPanel
     private Color bg = Color.white;
     private Color fg = Color.black;
 
-    private BufferedImage bufferedImage;
-    private Graphics2D bufferedGraphics;
+    protected BufferedImage bufferedImage;
+    protected Graphics2D bufferedGraphics;
     
     /**
      * @param data The data to display, must be a complete array (non-ragged)
@@ -520,7 +520,7 @@ public class HeatMap extends JPanel
      *
      * This function should be called whenever the data or the gradient changes.
      */
-    private void drawData()
+    protected void drawData()
     {
         bufferedImage = new BufferedImage(data.length,data[0].length, BufferedImage.TYPE_INT_ARGB);
         bufferedGraphics = bufferedImage.createGraphics();

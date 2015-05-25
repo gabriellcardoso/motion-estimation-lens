@@ -32,7 +32,7 @@ public class MainPanel extends JPanel {
 	private JButton btnPreviousBlock;
 	private JButton btnNextBlock;
 	
-	private HeatMap heatMapPanel;
+	private EditableHeatMap heatMapPanel;
 	
 	private JPanel resultsPanel;
 	
@@ -100,7 +100,7 @@ public class MainPanel extends JPanel {
 	}
 	
     private void createHeatMapPanel() {
-        heatMapPanel = new HeatMap(null, USE_GRAPHICS_Y_AXIS, GRADIENT_TYPE);
+        heatMapPanel = new EditableHeatMap(null, USE_GRAPHICS_Y_AXIS, GRADIENT_TYPE);
         heatMapPanel.setPreferredSize(new Dimension(350, 350));
         
         heatMapPanel.setDrawLegend(false);
@@ -318,7 +318,7 @@ public class MainPanel extends JPanel {
     }
     
     public void setReferenceFrameIndex(int referenceFrameIndex, int framesTotal) {
-    	lblReferenceFrame.setText("Quadro de referÃªncia: " + referenceFrameIndex + "/" + framesTotal);
+    	lblReferenceFrame.setText("Quadro de referência: " + referenceFrameIndex + "/" + framesTotal);
     }
     
     public void setCodingBlockPosition(int x, int y) {
@@ -332,6 +332,8 @@ public class MainPanel extends JPanel {
     	
     	lblBestVector.setText("Melhor bloco candidato: " + bestBlockX + "," + bestBlockY);
     	lblBestSad.setText("SAD do melhor bloco candidato: " + bestSad);
+    	
+    	heatMapPanel.setPixel(Color.GREEN, bestBlockX, bestBlockY);
     }
     
     public void setResultVector(MotionEstimationVector resultVector) {
@@ -341,6 +343,8 @@ public class MainPanel extends JPanel {
     	
     	lblVector.setText("Melhor bloco candidato: " + resultBlockX + "," + resultBlockY);
     	lblSad.setText("SAD do melhor bloco candidato: " + resultSad);
+    	
+    	heatMapPanel.setPixel(Color.YELLOW, resultBlockX, resultBlockY);
     }
 
     public void setHeatMap(double[][] data) {
@@ -348,11 +352,11 @@ public class MainPanel extends JPanel {
     }
     
     public void setNumberOfBlocks(int numberOfBlocks) {
-    	lblNumberOfBlocks.setText("NÃºmero de blocos candidatos: " + numberOfBlocks);
+    	lblNumberOfBlocks.setText("Número de blocos candidatos: " + numberOfBlocks);
     }
     
     public void setNumberOfBlocksVisited(int numberOfBlocksVisited) {
-    	lblNumberOfBlocksVisited.setText("NÃºmero de blocos candidatos visitados: " + numberOfBlocksVisited);
+    	lblNumberOfBlocksVisited.setText("Número de blocos candidatos visitados: " + numberOfBlocksVisited);
     }
 
 }
