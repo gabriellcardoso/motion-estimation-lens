@@ -36,8 +36,8 @@ public abstract class EvaluationCriteria {
 		int initialX = codingBlock.getPosition().getX() - rangeX / 2;
 		int initialY = codingBlock.getPosition().getY() - rangeY / 2;
 		
-		int finalX = codingBlock.getPosition().getX() + rangeX / 2;
-		int finalY = codingBlock.getPosition().getY() + rangeY / 2;
+		int finalX = codingBlock.getPosition().getX() + rangeX / 2 + 1;
+		int finalY = codingBlock.getPosition().getY() + rangeY / 2 + 1;
 		
 		int x, y;
 		

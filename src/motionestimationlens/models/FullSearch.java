@@ -20,8 +20,8 @@ public class FullSearch extends SearchAlgorithm implements ISearchAlgorithm {
 		int initialX = codingBlock.getPosition().getX() - rangeX / 2;
 		int initialY = codingBlock.getPosition().getY() - rangeY / 2;
 		
-		int finalX = codingBlock.getPosition().getX() + rangeX / 2;
-		int finalY = codingBlock.getPosition().getY() + rangeY / 2;
+		int finalX = codingBlock.getPosition().getX() + rangeX / 2 + 1;
+		int finalY = codingBlock.getPosition().getY() + rangeY / 2 + 1;
 		
 		int result = Integer.MAX_VALUE;
 		int temporaryResult, blocksVisited;

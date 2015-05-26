@@ -44,7 +44,10 @@ public class MotionEstimationVector {
 	}
 	
 	public void setPosition(int x, int y) {
-		position.setPosition(x, y);
+		int normalizedX = x - codingBlock.getPosition().getX() + 1;
+		int normalizedY = y - codingBlock.getPosition().getY() + 1;
+		
+		position.setPosition(normalizedX, normalizedY);
 	}
 	
 	public void setCriteriaResult(int result) {

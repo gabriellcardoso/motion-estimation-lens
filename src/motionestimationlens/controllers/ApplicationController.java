@@ -242,6 +242,8 @@ public class ApplicationController extends JFrame {
 		int candidateBlocksTotal = searchAlgorithmResult.getCandidateBlocksTotal();
 		int blocksVisited = searchAlgorithmResult.getResultVector().getBlocksVisited();
 		
+		mainPanel.setHeatMap(heatMap);
+		
 		mainPanel.setActualFrameIndex(actualFrameIndex, framesTotal);
 		mainPanel.setReferenceFrameIndex(referenceFrameIndex, framesTotal);
 		mainPanel.setCodingBlockPosition(codingBlock.getPosition().getX(), codingBlock.getPosition().getY());
@@ -251,8 +253,6 @@ public class ApplicationController extends JFrame {
 		
 		mainPanel.setNumberOfBlocks(candidateBlocksTotal);
 		mainPanel.setNumberOfBlocksVisited(blocksVisited);
-		
-		mainPanel.setHeatMap(heatMap);
 	}
 	
 	private void goToMainPanel() {

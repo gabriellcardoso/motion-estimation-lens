@@ -23,7 +23,6 @@ import org.mblecker.heatmap.HeatMap;
 public class MainPanel extends JPanel {
 	
 	private static final boolean USE_GRAPHICS_Y_AXIS = true;
-	private static final Color[] GRADIENT_TYPE = Gradient.GRADIENT_BLUE_TO_RED;
 	
 	private JPanel controlPanel;
 	
@@ -32,7 +31,7 @@ public class MainPanel extends JPanel {
 	private JButton btnPreviousBlock;
 	private JButton btnNextBlock;
 	
-	private EditableHeatMap heatMapPanel;
+	private MotionEstimationHeatMap heatMapPanel;
 	
 	private JPanel resultsPanel;
 	
@@ -100,7 +99,7 @@ public class MainPanel extends JPanel {
 	}
 	
     private void createHeatMapPanel() {
-        heatMapPanel = new EditableHeatMap(null, USE_GRAPHICS_Y_AXIS, GRADIENT_TYPE);
+        heatMapPanel = new MotionEstimationHeatMap(null, USE_GRAPHICS_Y_AXIS);
         heatMapPanel.setPreferredSize(new Dimension(350, 350));
         
         heatMapPanel.setDrawLegend(false);
@@ -313,12 +312,17 @@ public class MainPanel extends JPanel {
     	btnBackToSetup.addActionListener(listener);
     }
     
+    public void setHeatMap(double[][] data) {
+    	heatMapPanel.updateData(data, USE_GRAPHICS_Y_AXIS);
+    }
+    
+    
     public void setActualFrameIndex(int actualFrameIndex, int framesTotal) {
     	lblActualFrame.setText("Quadro atual: " + actualFrameIndex + "/" + framesTotal);
     }
     
     public void setReferenceFrameIndex(int referenceFrameIndex, int framesTotal) {
-    	lblReferenceFrame.setText("Quadro de referência: " + referenceFrameIndex + "/" + framesTotal);
+    	lblReferenceFrame.setText("Quadro de referï¿½ncia: " + referenceFrameIndex + "/" + framesTotal);
     }
     
     public void setCodingBlockPosition(int x, int y) {
@@ -330,10 +334,10 @@ public class MainPanel extends JPanel {
     	int bestBlockY = bestVector.getPosition().getY();
     	int bestSad = bestVector.getCriteriaResult();
     	
+    	heatMapPanel.setBestBlock(bestVector);
+    	
     	lblBestVector.setText("Melhor bloco candidato: " + bestBlockX + "," + bestBlockY);
     	lblBestSad.setText("SAD do melhor bloco candidato: " + bestSad);
-    	
-    	heatMapPanel.setPixel(Color.GREEN, bestBlockX, bestBlockY);
     }
     
     public void setResultVector(MotionEstimationVector resultVector) {
@@ -341,22 +345,18 @@ public class MainPanel extends JPanel {
     	int resultBlockY = resultVector.getPosition().getY();
     	int resultSad = resultVector.getCriteriaResult();
     	
+    	heatMapPanel.setResultBlock(resultVector);
+    	
     	lblVector.setText("Melhor bloco candidato: " + resultBlockX + "," + resultBlockY);
     	lblSad.setText("SAD do melhor bloco candidato: " + resultSad);
-    	
-    	heatMapPanel.setPixel(Color.YELLOW, resultBlockX, resultBlockY);
     }
 
-    public void setHeatMap(double[][] data) {
-    	heatMapPanel.updateData(data, USE_GRAPHICS_Y_AXIS);
-    }
-    
     public void setNumberOfBlocks(int numberOfBlocks) {
-    	lblNumberOfBlocks.setText("Número de blocos candidatos: " + numberOfBlocks);
+    	lblNumberOfBlocks.setText("Nï¿½mero de blocos candidatos: " + numberOfBlocks);
     }
     
     public void setNumberOfBlocksVisited(int numberOfBlocksVisited) {
-    	lblNumberOfBlocksVisited.setText("Número de blocos candidatos visitados: " + numberOfBlocksVisited);
+    	lblNumberOfBlocksVisited.setText("Nï¿½mero de blocos candidatos visitados: " + numberOfBlocksVisited);
     }
 
 }
