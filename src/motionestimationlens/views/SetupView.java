@@ -18,7 +18,7 @@ import motionestimationlens.utils.BorderFactory;
 import motionestimationlens.utils.ME;
 
 
-public class SetupPanel extends JPanel {
+public class SetupView extends JPanel {
 	
 	private final static Border EMPTY_BORDER = new EmptyBorder(0, 0, 0, 0);
 	
@@ -40,7 +40,7 @@ public class SetupPanel extends JPanel {
 	
 	private JButton btnStart;
 	
-	public SetupPanel() {
+	public SetupView() {
 		super();
 		
 		setLayout(new GridBagLayout());

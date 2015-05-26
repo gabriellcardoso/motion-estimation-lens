@@ -20,7 +20,7 @@ import motionestimationlens.utils.BorderFactory;
 import org.mblecker.heatmap.Gradient;
 import org.mblecker.heatmap.HeatMap;
 
-public class MainPanel extends JPanel {
+public class MainView extends JPanel {
 	
 	private static final boolean USE_GRAPHICS_Y_AXIS = true;
 	
@@ -52,7 +52,7 @@ public class MainPanel extends JPanel {
 	private JButton btnSetCodingBlock;
 	private JButton btnBackToSetup;
 	
-	public MainPanel() {
+	public MainView() {
 		super();
 		
 		setLayout(new GridBagLayout());

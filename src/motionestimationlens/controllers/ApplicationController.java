@@ -19,8 +19,8 @@ import motionestimationlens.models.MotionEstimationVector;
 import motionestimationlens.models.SumOfAbsoluteDifferences;
 import motionestimationlens.utils.ME;
 import motionestimationlens.utils.YUVReader;
-import motionestimationlens.views.MainPanel;
-import motionestimationlens.views.SetupPanel;
+import motionestimationlens.views.MainView;
+import motionestimationlens.views.SetupView;
 
 import org.mblecker.heatmap.HeatMap;
 
@@ -58,8 +58,8 @@ public class ApplicationController extends JFrame {
 	// User interface related
 	private Container container;
 	private CardLayout layout;
-	private MainPanel mainPanel;
-	private SetupPanel setupPanel;
+	private MainView mainView;
+	private SetupView setupView;
 	private JFileChooser videoChooser;
 	
 	public ApplicationController() {
@@ -75,46 +75,46 @@ public class ApplicationController extends JFrame {
 	}
 	
 	private void startSetupPanel() {
-		setupPanel = new SetupPanel();
+		setupView = new SetupView();
 		videoChooser = new JFileChooser();
 		
-		setupPanel.setBtnStartEnabled(false);
+		setupView.setBtnStartEnabled(false);
 		
-		setupPanel.setBtnOpenVideoListener(new ActionListener() {
+		setupView.setBtnOpenVideoListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				int result = videoChooser.showDialog(setupPanel.getComponent(2), "Open YUV file");
+				int result = videoChooser.showDialog(setupView.getComponent(2), "Open YUV file");
 				
 				if (result == JFileChooser.APPROVE_OPTION) {
 					inputFile = videoChooser.getSelectedFile();
-					setupPanel.setBtnStartEnabled(true);
+					setupView.setBtnStartEnabled(true);
 				}
 			}
 		});
 		
-		setupPanel.setBtnStartListener(new ActionListener() {
+		setupView.setBtnStartListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				getConfigs();
 				printConfigs();
 				setUpModels();
 				showResults();
-				goToMainPanel();
+				goToMainView();
 			}
 		});
 		
-		container.add(setupPanel, ME.SETUP_PANEL);
+		container.add(setupView, ME.SETUP_PANEL);
 	}
 	
 	private void startMainPanel() {
-		mainPanel = new MainPanel();
+		mainView = new MainView();
 		
-		mainPanel.setBtnPreviousFrameEnabled(false);
-		mainPanel.setBtnPreviousBlockEnabled(false);
+		mainView.setBtnPreviousFrameEnabled(false);
+		mainView.setBtnPreviousBlockEnabled(false);
 		
-		mainPanel.setHeatMap(HeatMap.generateRampTestData());
+		mainView.setHeatMap(HeatMap.generateRampTestData());
 		
-		mainPanel.setBtnPreviousFrameListener(new ActionListener() {
+		mainView.setBtnPreviousFrameListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				goToPreviousFrame();
@@ -123,7 +123,7 @@ public class ApplicationController extends JFrame {
 			}
 		});
 		
-		mainPanel.setBtnPreviousBlockListener(new ActionListener() {
+		mainView.setBtnPreviousBlockListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				goToPreviousBlock();
@@ -132,7 +132,7 @@ public class ApplicationController extends JFrame {
 			}
 		});
 		
-		mainPanel.setBtnNextBlockListener(new ActionListener() {
+		mainView.setBtnNextBlockListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				goToNextBlock();
@@ -141,7 +141,7 @@ public class ApplicationController extends JFrame {
 			}
 		});
 		
-		mainPanel.setBtnNextFrameListener(new ActionListener() {
+		mainView.setBtnNextFrameListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				goToNextFrame();
@@ -150,14 +150,14 @@ public class ApplicationController extends JFrame {
 			}
 		});
 		
-		mainPanel.setBtnBackToSetupListener(new ActionListener() {
+		mainView.setBtnBackToSetupListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				goToSetupPanel();
+				goToSetupView();
 			}
 		});
 
-		container.add(mainPanel, ME.MAIN_PANEL);
+		container.add(mainView, ME.MAIN_PANEL);
 	}
 	
 	private void setCodingBlockIndex(int index) {
@@ -166,16 +166,16 @@ public class ApplicationController extends JFrame {
 	}
 	
 	private void getConfigs() {
-		frameWidth = setupPanel.getFrameWidth();
-		frameHeight = setupPanel.getFrameHeight();
-		samplingYCbCr = setupPanel.getSampling();
-		framesTotal = setupPanel.getTotalFrames();
-		selectedAlgorithm = setupPanel.getSearchAlgorithm();
-		searchAreaWidth = setupPanel.getSearchAreaWidth(); 
-		searchAreaHeight = setupPanel.getSearchAreaHeight();
-		blockWidth = setupPanel.getBlockWidth();
-		blockHeight = setupPanel.getBlockHeight();
-		keepReferenceFrame = setupPanel.getKeepReferenceFrameState();
+		frameWidth = setupView.getFrameWidth();
+		frameHeight = setupView.getFrameHeight();
+		samplingYCbCr = setupView.getSampling();
+		framesTotal = setupView.getTotalFrames();
+		selectedAlgorithm = setupView.getSearchAlgorithm();
+		searchAreaWidth = setupView.getSearchAreaWidth(); 
+		searchAreaHeight = setupView.getSearchAreaHeight();
+		blockWidth = setupView.getBlockWidth();
+		blockHeight = setupView.getBlockHeight();
+		keepReferenceFrame = setupView.getKeepReferenceFrameState();
 	}
 	
 	private void printConfigs() {
@@ -242,24 +242,24 @@ public class ApplicationController extends JFrame {
 		int candidateBlocksTotal = searchAlgorithmResult.getCandidateBlocksTotal();
 		int blocksVisited = searchAlgorithmResult.getResultVector().getBlocksVisited();
 		
-		mainPanel.setHeatMap(heatMap);
+		mainView.setHeatMap(heatMap);
 		
-		mainPanel.setActualFrameIndex(actualFrameIndex, framesTotal);
-		mainPanel.setReferenceFrameIndex(referenceFrameIndex, framesTotal);
-		mainPanel.setCodingBlockPosition(codingBlock.getPosition().getX(), codingBlock.getPosition().getY());
+		mainView.setActualFrameIndex(actualFrameIndex, framesTotal);
+		mainView.setReferenceFrameIndex(referenceFrameIndex, framesTotal);
+		mainView.setCodingBlockPosition(codingBlock.getPosition().getX(), codingBlock.getPosition().getY());
 		
-		mainPanel.setBestVector(fullSearchVector);
-		mainPanel.setResultVector(searchAlgorithmVector);
+		mainView.setBestVector(fullSearchVector);
+		mainView.setResultVector(searchAlgorithmVector);
 		
-		mainPanel.setNumberOfBlocks(candidateBlocksTotal);
-		mainPanel.setNumberOfBlocksVisited(blocksVisited);
+		mainView.setNumberOfBlocks(candidateBlocksTotal);
+		mainView.setNumberOfBlocksVisited(blocksVisited);
 	}
 	
-	private void goToMainPanel() {
+	private void goToMainView() {
 		layout.show(container, ME.MAIN_PANEL);
 	}
 	
-	private void goToSetupPanel() {
+	private void goToSetupView() {
 		layout.show(container, ME.SETUP_PANEL);
 	}
 	
@@ -326,34 +326,34 @@ public class ApplicationController extends JFrame {
 		
 		// Set previous frame button state
 		if (actualFrameIndex == 1) {
-			mainPanel.setBtnPreviousFrameEnabled(false);
+			mainView.setBtnPreviousFrameEnabled(false);
 		}
 		else {
-			mainPanel.setBtnPreviousFrameEnabled(true);
+			mainView.setBtnPreviousFrameEnabled(true);
 		}
 		
 		// Set next frame button state
 		if (actualFrameIndex == framesTotal - 1) {
-			mainPanel.setBtnNextFrameEnabled(false);
+			mainView.setBtnNextFrameEnabled(false);
 		}
 		else {
-			mainPanel.setBtnNextFrameEnabled(true);
+			mainView.setBtnNextFrameEnabled(true);
 		}
 		
 		// Set previous block button state
 		if (codingBlockIndex == 0) {
-			mainPanel.setBtnPreviousBlockEnabled(false);
+			mainView.setBtnPreviousBlockEnabled(false);
 		}
 		else {
-			mainPanel.setBtnPreviousBlockEnabled(true);
+			mainView.setBtnPreviousBlockEnabled(true);
 		}
 		
 		// Set next block button state
 		if (codingBlockIndex == totalCodingBlocks - 1) {
-			mainPanel.setBtnNextBlockEnabled(false);
+			mainView.setBtnNextBlockEnabled(false);
 		}
 		else {
-			mainPanel.setBtnNextBlockEnabled(true);
+			mainView.setBtnNextBlockEnabled(true);
 		}
 	}
 	
