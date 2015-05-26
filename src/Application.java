@@ -12,7 +12,7 @@ public class Application {
         ApplicationController application = new ApplicationController();
         application.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         application.setSize(1280, 720);
-        application.setResizable(false);
+        application.setResizable(true);
         application.setVisible(true);
     }
 
