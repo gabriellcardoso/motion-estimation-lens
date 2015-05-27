@@ -8,58 +8,47 @@ public class FullSearch extends SearchAlgorithm implements ISearchAlgorithm {
 		
 		MotionEstimationVector vector = new MotionEstimationVector(codingBlock);
 		
-		int frameWidth = actualFrame.getWidth();
-		int frameHeight = actualFrame.getHeight();
+		int initialX = codingBlock.getPosition().getX() - searchWidth / 2;
+		int initialY = codingBlock.getPosition().getY() - searchHeight / 2;
 		
-		int blockWidth = codingBlock.getWidth();
-		int blockHeight = codingBlock.getHeight();
+		int criteriaResult = Integer.MAX_VALUE;
+		int resultX = 0;
+		int resultY = 0;
 		
-		int rangeX = searchHeight - blockHeight;
-		int rangeY = searchWidth - blockWidth;
+		int temporaryResult = 0;
+		int normalizedX;
+		int normalizedY;
 		
-		int initialX = codingBlock.getPosition().getX() - rangeX / 2;
-		int initialY = codingBlock.getPosition().getY() - rangeY / 2;
-		
-		int finalX = codingBlock.getPosition().getX() + rangeX / 2 + 1;
-		int finalY = codingBlock.getPosition().getY() + rangeY / 2 + 1;
-		
-		int result = Integer.MAX_VALUE;
-		int temporaryResult, blocksVisited;
 		int x, y;
 		
-		if (initialX < 0) {
-			initialX = 0;
-		}
+		int blocksVisited = 0;
 		
-		if (initialY < 0) {
-			initialY = 0;
-		}
-		
-		if (finalX >= frameHeight - blockHeight) {
-			finalX = frameHeight - blockHeight - 1;
-		}
-		
-		if (finalY >= frameWidth - blockWidth) {
-			finalY = frameWidth - blockWidth - 1;
-		}
-		
-		
-		blocksVisited = 0;
-		
-		vector.setPosition(initialX, initialY, initialX, initialY);
-		
-		for (x = initialX; x < finalX; x++) {
-			for (y = initialY; y < finalY; y++) {
+		for (y = 0; y < searchHeight; y++) {
+			for (x = 0; x < searchWidth; x++) {
+
+				temporaryResult = evaluationCriteria.calculate(initialX + x, initialY + y);
+				normalizedX = initialX + x - codingBlock.getPosition().getX();
+				normalizedY = initialY + y - codingBlock.getPosition().getY();
 				blocksVisited++;
-				temporaryResult = evaluationCriteria.calculate(x, y);
-				if (temporaryResult < result) {
-					result = temporaryResult;
-					vector.setPosition(x, y, initialX, initialY);
-					vector.setCriteriaResult(result);
+				
+				if (temporaryResult < criteriaResult 
+					|| temporaryResult == criteriaResult
+					&& Math.pow(normalizedX * normalizedX + normalizedY * normalizedY, 2) 
+						<= Math.pow(resultX * resultX + resultY * resultY, 2))
+				{
+					criteriaResult = temporaryResult;
+					resultX = x;
+					resultY = y;
 				}
+				
 			}
 		}
 		
+		System.out.println(temporaryResult);
+		System.out.println();
+		
+		vector.setPosition(resultX, resultY, initialX, initialY);
+		vector.setCriteriaResult(criteriaResult);
 		vector.setBlocksVisited(blocksVisited);
 		
 		return vector;

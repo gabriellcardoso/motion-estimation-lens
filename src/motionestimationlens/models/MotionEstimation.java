@@ -72,38 +72,7 @@ public class MotionEstimation {
 	}
 	
 	private int getCandidateBlocksTotal() {
-		int frameWidth = actualFrame.getWidth();
-		int frameHeight = actualFrame.getHeight();
-		
-		int blockWidth = codingBlock.getWidth();
-		int blockHeight = codingBlock.getHeight();
-		
-		int rangeX = searchAreaWidth - blockWidth;
-		int rangeY = searchAreaHeight - blockHeight;
-		
-		int initialX = codingBlock.getPosition().getX() - rangeX / 2;
-		int initialY = codingBlock.getPosition().getY() - rangeY / 2;
-		
-		int finalX = codingBlock.getPosition().getX() + rangeX / 2;
-		int finalY = codingBlock.getPosition().getY() + rangeY / 2;
-		
-		if (initialX < 0) {
-			initialX = 0;
-		}
-		
-		if (initialY < 0) {
-			initialY = 0;
-		}
-		
-		if (finalX >= frameWidth - blockWidth) {
-			finalX = frameWidth - blockWidth - 1;
-		}
-		
-		if (finalY >= frameHeight - blockHeight) {
-			finalY = frameHeight - blockHeight - 1;
-		}
-		
-		return  (initialX - finalX) * (initialY - finalY);
+		return  searchAreaWidth * searchAreaHeight;
 	}
 	
 	public MotionEstimationData run() {

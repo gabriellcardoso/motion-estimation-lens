@@ -21,13 +21,36 @@ public class SumOfAbsoluteDifferences extends EvaluationCriteria implements IEva
 		int blockHeight = codingBlock.getHeight();
 		
 		int criteria = 0;
-		int i, j;
+		int x, y;
 		
-		for (i = 0; i < blockHeight; i++) {
-			for (j = 0; j < blockWidth; j++) {
+		int actualImagePixel, referenceImagePixel;
+		
+		for (y = 0; y < blockHeight; y++) {
+			for (x = 0; x < blockWidth; x++) {
+				
+				if (blockPositionY + y < actualFrame.getHeight()
+					&& blockPositionX + x < actualFrame.getWidth())
+				{
+					actualImagePixel = actualImage[blockPositionY + y][blockPositionX + x];
+				}
+				else {
+					actualImagePixel = 0;
+				}
+				
+				if (positionY + y >= 0 
+					&& positionX + x >= 0
+					&& positionY + y < actualFrame.getHeight() 
+					&& positionX + x < actualFrame.getWidth())
+				{
+					referenceImagePixel = referenceImage[positionY + y][positionX + x];
+				}
+				else {
+					referenceImagePixel = 0;
+				}
+				
 				criteria += Math.abs(
-					actualImage[blockPositionY + i][blockPositionX + j]
-					- referenceImage[positionY + i][positionX + j]
+					actualImagePixel
+					- referenceImagePixel
 				);
 			}
 		}

@@ -24,44 +24,16 @@ public abstract class EvaluationCriteria {
 		
 		double[][] heatMap;
 		
-		int frameWidth = actualFrame.getWidth();
-		int frameHeight = actualFrame.getHeight();
-		
-		int blockWidth = codingBlock.getWidth();
-		int blockHeight = codingBlock.getHeight();
-		
-		int rangeX = width - blockWidth;
-		int rangeY = height - blockHeight;
-		
-		int initialX = codingBlock.getPosition().getX() - rangeX / 2;
-		int initialY = codingBlock.getPosition().getY() - rangeY / 2;
-		
-		int finalX = codingBlock.getPosition().getX() + rangeX / 2 + 1;
-		int finalY = codingBlock.getPosition().getY() + rangeY / 2 + 1;
+		int initialX = codingBlock.getPosition().getX() - width / 2;
+		int initialY = codingBlock.getPosition().getY() - height / 2;
 		
 		int x, y;
 		
-		if (initialX < 0) {
-			initialX = 0;
-		}
+		heatMap = new double[width][height];
 		
-		if (initialY < 0) {
-			initialY = 0;
-		}
-		
-		if (finalX >= frameHeight - blockHeight) {
-			finalX = frameHeight - blockHeight - 1;
-		}
-		
-		if (finalY >= frameWidth - blockWidth) {
-			finalY = frameWidth - blockWidth - 1;
-		}
-		
-		heatMap = new double[finalX - initialX][finalY - initialY];
-		
-		for (x = initialX; x < finalX; x++) {
-			for (y = initialY; y < finalY; y++) {
-				heatMap[x - initialX][y - initialY] = calculate(x, y);
+		for (y = 0; y < height; y++) {
+			for (x = 0; x < width; x++) {
+				heatMap[x][y] = calculate(initialX + x, initialY + y);
 			}
 		}
 		

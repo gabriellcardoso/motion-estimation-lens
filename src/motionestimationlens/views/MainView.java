@@ -336,7 +336,7 @@ public class MainView extends JPanel {
     	
     	heatMapPanel.setBestBlock(bestVector);
     	
-    	lblBestVector.setText("Melhor bloco candidato: " + bestBlockX + "," + bestBlockY);
+    	lblBestVector.setText("Vetor do melhor bloco candidato: " + bestBlockX + "," + bestBlockY);
     	lblBestSad.setText("SAD do melhor bloco candidato: " + bestSad);
     }
     
@@ -347,8 +347,8 @@ public class MainView extends JPanel {
     	
     	heatMapPanel.setResultBlock(resultVector);
     	
-    	lblVector.setText("Melhor bloco candidato: " + resultBlockX + "," + resultBlockY);
-    	lblSad.setText("SAD do melhor bloco candidato: " + resultSad);
+    	lblVector.setText("Vetor do bloco candidato escolhido: " + resultBlockX + "," + resultBlockY);
+    	lblSad.setText("SAD do bloco candidato escolhido: " + resultSad);
     }
 
     public void setNumberOfBlocks(int numberOfBlocks) {

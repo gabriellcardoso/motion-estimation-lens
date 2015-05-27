@@ -300,7 +300,7 @@ public class ApplicationController extends JFrame {
 	}
 	
 	private void goToNextBlock() {
-		int totalCodingBlocks = (frameWidth / blockWidth) * (frameHeight / blockHeight);
+		int totalCodingBlocks = (frameWidth / blockWidth + 1) * (frameHeight / blockHeight + 1);
 
 		if (codingBlockIndex < totalCodingBlocks) {
 			setCodingBlockIndex(codingBlockIndex + 1);
@@ -314,7 +314,7 @@ public class ApplicationController extends JFrame {
 		int blockPositionY = blockRow * blockHeight;
 		
 		if (blockRow > 0) {
-			blockPositionX = blockShifting % frameWidth;
+			blockPositionX = ((blockShifting % frameWidth) / blockWidth) * blockWidth;
 		}
 		
 		this.fullSearchME.setCodingBlockPosition(blockPositionX, blockPositionY);
@@ -322,7 +322,7 @@ public class ApplicationController extends JFrame {
 	}
 	
 	private void setControlButtonsState() {
-		int totalCodingBlocks = (frameWidth / blockWidth) * (frameHeight / blockHeight);
+		int totalCodingBlocks = (frameWidth / blockWidth + 1) * (frameHeight / blockHeight + 1);
 		
 		// Set previous frame button state
 		if (actualFrameIndex == 1) {
