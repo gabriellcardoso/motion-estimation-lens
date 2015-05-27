@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 
 import motionestimationlens.models.Frame;
 
-public class MotionEstimationFrame extends JPanel {
+public class FramePanel extends JPanel {
 	 	
 		private String title;
 		private Frame frame;
@@ -23,7 +23,7 @@ public class MotionEstimationFrame extends JPanel {
 	    protected BufferedImage bufferedImage;
 	    protected Graphics2D bufferedGraphics;
 	    
-	    public MotionEstimationFrame(Frame frame)
+	    public FramePanel(Frame frame)
 	    {
 	        super();
 
@@ -78,6 +78,14 @@ public class MotionEstimationFrame extends JPanel {
 	        this.frame = frame;
 
 	        updateFrame();
+	    }
+	    
+	    public void setCodingBlock(int width, int height, int x, int y) {
+	    	
+	    }
+	    
+	    public void setSearchArea(int width, int height, int x, int y) {
+	    	
 	    }
 	    
 	    public void updateFrame() {

@@ -29,10 +29,10 @@ public class MainView extends JPanel {
 	private JButton btnPreviousBlock;
 	private JButton btnNextBlock;
 	
-	private MotionEstimationFrame actualFramePanel;
-	private MotionEstimationFrame referenceFramePanel;
+	private FramePanel actualFramePanel;
+	private FramePanel referenceFramePanel;
 	
-	private MotionEstimationHeatMap heatMapPanel;
+	private HeatMapPanel heatMapPanel;
 	
 	private JPanel resultsPanel;
 	
@@ -104,7 +104,7 @@ public class MainView extends JPanel {
 	}
 	
 	private void createActualFramePanel() {
-		actualFramePanel = new MotionEstimationFrame(null);
+		actualFramePanel = new FramePanel(null);
 		actualFramePanel.setPreferredSize(new Dimension(350, 350));
 		
 		actualFramePanel.setTitle("Quadro atual");
@@ -112,7 +112,7 @@ public class MainView extends JPanel {
 	}
 	
 	private void createReferenceFramePanel() {
-		referenceFramePanel = new MotionEstimationFrame(null);
+		referenceFramePanel = new FramePanel(null);
 		referenceFramePanel.setPreferredSize(new Dimension(350, 350));
 		
 		referenceFramePanel.setTitle("Quadro de referência");
@@ -120,7 +120,7 @@ public class MainView extends JPanel {
 	}
 	
     private void createHeatMapPanel() {
-        heatMapPanel = new MotionEstimationHeatMap(null);
+        heatMapPanel = new HeatMapPanel(null);
         heatMapPanel.setPreferredSize(new Dimension(350, 350));
         
         heatMapPanel.setDrawLegend(false);

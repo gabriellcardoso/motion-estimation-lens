@@ -8,12 +8,12 @@ import motionestimationlens.models.MotionEstimationVector;
 import org.mblecker.heatmap.Gradient;
 import org.mblecker.heatmap.HeatMap;
 
-public class MotionEstimationHeatMap extends HeatMap {
+public class HeatMapPanel extends HeatMap {
 	
 	private static final Color[] GRADIENT_COLORS = Gradient.createGradient(Color.RED, Color.BLUE, 255);
 	private static final boolean USE_GRAPHICS_Y_AXIS = true;
 
-	public MotionEstimationHeatMap(double[][] data) {
+	public HeatMapPanel(double[][] data) {
 		super(data, USE_GRAPHICS_Y_AXIS, GRADIENT_COLORS);
 	}
 	
