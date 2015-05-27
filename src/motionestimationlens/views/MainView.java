@@ -22,14 +22,15 @@ import org.mblecker.heatmap.HeatMap;
 
 public class MainView extends JPanel {
 	
-	private static final boolean USE_GRAPHICS_Y_AXIS = true;
-	
 	private JPanel controlPanel;
 	
 	private JButton btnPreviousFrame;
 	private JButton btnNextFrame;
 	private JButton btnPreviousBlock;
 	private JButton btnNextBlock;
+	
+	private MotionEstimationFrame actualFramePanel;
+	private MotionEstimationFrame referenceFramePanel;
 	
 	private MotionEstimationHeatMap heatMapPanel;
 	
@@ -58,11 +59,15 @@ public class MainView extends JPanel {
 		setLayout(new GridBagLayout());
 		
 		createControlPanel();
+		createReferenceFramePanel();
+		createActualFramePanel();
 		createHeatMapPanel();
 		createResultsPanel();
 		createFooterPanel();
 
 		addControlPanel();
+		addReferenceFramePanel();
+		addActualFramePanel();
 		addHeatMapPanel();
 		addResultsPanel();
 		addFooterPanel();
@@ -98,8 +103,24 @@ public class MainView extends JPanel {
 		controlPanel.add(btnNextFrame, constraints);
 	}
 	
+	private void createActualFramePanel() {
+		actualFramePanel = new MotionEstimationFrame(null);
+		actualFramePanel.setPreferredSize(new Dimension(350, 350));
+		
+		actualFramePanel.setTitle("Quadro atual");
+		actualFramePanel.setDrawTitle(true);
+	}
+	
+	private void createReferenceFramePanel() {
+		referenceFramePanel = new MotionEstimationFrame(null);
+		referenceFramePanel.setPreferredSize(new Dimension(350, 350));
+		
+		referenceFramePanel.setTitle("Quadro de referência");
+		referenceFramePanel.setDrawTitle(true);
+	}
+	
     private void createHeatMapPanel() {
-        heatMapPanel = new MotionEstimationHeatMap(null, USE_GRAPHICS_Y_AXIS);
+        heatMapPanel = new MotionEstimationHeatMap(null);
         heatMapPanel.setPreferredSize(new Dimension(350, 350));
         
         heatMapPanel.setDrawLegend(false);
@@ -230,6 +251,29 @@ public class MainView extends JPanel {
 		this.add(controlPanel, constraints);
 	}
 	
+	
+	private void addReferenceFramePanel() {
+		GridBagConstraints constraints = new GridBagConstraints();
+		
+		constraints.fill = GridBagConstraints.BOTH;
+    	constraints.insets = new Insets(5, 5, 5, 5);
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        
+        this.add(referenceFramePanel, constraints);
+	}
+	
+	private void addActualFramePanel() {
+		GridBagConstraints constraints = new GridBagConstraints();
+		
+		constraints.fill = GridBagConstraints.BOTH;
+    	constraints.insets = new Insets(5, 5, 5, 5);
+        constraints.gridx = 1;
+        constraints.gridy = 1;
+        
+        this.add(actualFramePanel, constraints);
+	}
+	
 	private void addHeatMapPanel() {
 		GridBagConstraints constraints = new GridBagConstraints();
 		
@@ -312,10 +356,25 @@ public class MainView extends JPanel {
     	btnBackToSetup.addActionListener(listener);
     }
     
-    public void setHeatMap(double[][] data) {
-    	heatMapPanel.updateData(data, USE_GRAPHICS_Y_AXIS);
+    public void setActualFrame(Frame frame) {
+    	actualFramePanel.setFrame(frame);
     }
     
+    public void updateActualFrame() {
+    	actualFramePanel.updateFrame();
+    }
+    
+    public void setReferenceFrame(Frame frame) {
+    	referenceFramePanel.setFrame(frame);
+    }
+    
+    public void updateReferenceFrame() {
+    	referenceFramePanel.updateFrame();
+    }
+    
+    public void setHeatMap(double[][] data) {
+    	heatMapPanel.updateData(data);
+    }
     
     public void setActualFrameIndex(int actualFrameIndex, int framesTotal) {
     	lblActualFrame.setText("Quadro atual: " + actualFrameIndex + "/" + framesTotal);

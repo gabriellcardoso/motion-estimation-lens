@@ -11,9 +11,14 @@ import org.mblecker.heatmap.HeatMap;
 public class MotionEstimationHeatMap extends HeatMap {
 	
 	private static final Color[] GRADIENT_COLORS = Gradient.createGradient(Color.RED, Color.BLUE, 255);
+	private static final boolean USE_GRAPHICS_Y_AXIS = true;
 
-	public MotionEstimationHeatMap(double[][] data, boolean useGraphicsYAxis) {
-		super(data, useGraphicsYAxis, GRADIENT_COLORS);
+	public MotionEstimationHeatMap(double[][] data) {
+		super(data, USE_GRAPHICS_Y_AXIS, GRADIENT_COLORS);
+	}
+	
+	public void updateData(double[][] data) {
+		updateData(data, USE_GRAPHICS_Y_AXIS);
 	}
 	
 	public void setBestBlock(MotionEstimationVector vector) {

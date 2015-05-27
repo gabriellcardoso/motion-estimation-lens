@@ -56,7 +56,7 @@ public class SetupView extends JPanel {
 	
 	private void createVideoConfigPanel() {
 		Border border = BorderFactory.createTitledBorder(
-							"Configurações de vídeo",
+							"Configuraï¿½ï¿½es de vï¿½deo",
 							new EmptyBorder(25, 25, 25, 25)
 						);
 		
@@ -64,7 +64,7 @@ public class SetupView extends JPanel {
 		videoConfigPanel.setLayout(new GridBagLayout());
 		videoConfigPanel.setBorder(border);
 		
-		JLabel resolutionLabel = new JLabel("Resolução:");
+		JLabel resolutionLabel = new JLabel("Resoluï¿½ï¿½o:");
 		JLabel samplingLabel = new JLabel("Amostragem:");
 		JLabel framesLabel = new JLabel("Total de quadros:");
 		
@@ -111,7 +111,7 @@ public class SetupView extends JPanel {
 	
 	private void createMotionEstimationConfigPanel() {
 		Border border = BorderFactory.createTitledBorder(
-							"Configurações da estimação de movimento",
+							"Configuraï¿½ï¿½es da estimaï¿½ï¿½o de movimento",
 							new EmptyBorder(25, 25, 25, 25)
 						);
 		
@@ -120,13 +120,13 @@ public class SetupView extends JPanel {
 		motionEstimationConfigPanel.setBorder(border);
 
 		JLabel algorithmLabel = new JLabel("Algoritmo de busca:");
-		JLabel searchAreaLabel = new JLabel("Área de busca:");
+		JLabel searchAreaLabel = new JLabel("ï¿½rea de busca:");
 		JLabel blockLabel = new JLabel("Tamanho do bloco:");
 		
 		comboBoxAlgorithm = new JComboBox<String>(ME.ALGORITHM_ITEMS);
 		comboBoxSearchArea = new JComboBox<String>(ME.SEARCH_AREA_ITEMS);
 		comboBoxBlockSize = new JComboBox<String>(ME.BLOCK_SIZE_ITEMS);
-		checkBoxKeepReferenceFrame = new JCheckBox("Fixar quadro de referência");
+		checkBoxKeepReferenceFrame = new JCheckBox("Fixar quadro de referï¿½ncia");
 		
 		GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.BOTH;
@@ -171,7 +171,7 @@ public class SetupView extends JPanel {
 		footerPanel.setLayout(new GridBagLayout());
 		footerPanel.setBorder(border);
 		
-		btnStart = new JButton("Começar análise");
+		btnStart = new JButton("Comeï¿½ar anï¿½lise");
 		
 		GridBagConstraints constraints = new GridBagConstraints();
 		
@@ -235,11 +235,11 @@ public class SetupView extends JPanel {
 		String selected = (String) comboBoxSampling.getSelectedItem();
 		
 		switch (selected) {
-			case ME.S_444: return 8;
-			case ME.S_422: return 4;
-			case ME.S_420: return 2;
-			case ME.S_411: return 2;
-			case ME.S_400: return 1; 
+			case ME.S_444: return 4;
+			case ME.S_422: return 2;
+			case ME.S_420: return 1;
+			case ME.S_411: return 1;
+			case ME.S_400: return 0; 
 		}
 		
 		return 0;
