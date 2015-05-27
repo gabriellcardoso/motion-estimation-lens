@@ -14,8 +14,8 @@ public class FullSearch extends SearchAlgorithm implements ISearchAlgorithm {
 		int blockWidth = codingBlock.getWidth();
 		int blockHeight = codingBlock.getHeight();
 		
-		int rangeX = searchWidth - blockWidth;
-		int rangeY = searchHeight - blockHeight;
+		int rangeX = searchHeight - blockHeight;
+		int rangeY = searchWidth - blockWidth;
 		
 		int initialX = codingBlock.getPosition().getX() - rangeX / 2;
 		int initialY = codingBlock.getPosition().getY() - rangeY / 2;
@@ -35,23 +35,26 @@ public class FullSearch extends SearchAlgorithm implements ISearchAlgorithm {
 			initialY = 0;
 		}
 		
-		if (finalX >= frameWidth - blockWidth) {
-			finalX = frameWidth - blockWidth - 1;
+		if (finalX >= frameHeight - blockHeight) {
+			finalX = frameHeight - blockHeight - 1;
 		}
 		
-		if (finalY >= frameHeight - blockHeight) {
-			finalY = frameHeight - blockHeight - 1;
+		if (finalY >= frameWidth - blockWidth) {
+			finalY = frameWidth - blockWidth - 1;
 		}
+		
 		
 		blocksVisited = 0;
 		
-		for (y = initialY; y < finalY; y++) {
-			for (x = initialX; x < finalX; x++) {
+		vector.setPosition(initialX, initialY, initialX, initialY);
+		
+		for (x = initialX; x < finalX; x++) {
+			for (y = initialY; y < finalY; y++) {
 				blocksVisited++;
 				temporaryResult = evaluationCriteria.calculate(x, y);
 				if (temporaryResult < result) {
 					result = temporaryResult;
-					vector.setPosition(x, y);
+					vector.setPosition(x, y, initialX, initialY);
 					vector.setCriteriaResult(result);
 				}
 			}

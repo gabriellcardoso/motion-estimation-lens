@@ -5,6 +5,7 @@ public class MotionEstimationVector {
 
 	private CodingBlock codingBlock;
 	private Position position;
+	private Position heatMapPosition;
 	private int criteriaResult;
 	private int blocksVisited;
 	
@@ -15,6 +16,7 @@ public class MotionEstimationVector {
 	
 	private void initializeAttributes() {
 		position = new Position();
+		heatMapPosition = new Position();
 		criteriaResult = Integer.MAX_VALUE;
 	}
 	
@@ -35,6 +37,10 @@ public class MotionEstimationVector {
 		return position;
 	}
 	
+	public Position getHeatMapPosition() {
+		return heatMapPosition;
+	}
+	
 	public int getCriteriaResult() {
 		return criteriaResult;
 	}
@@ -43,10 +49,13 @@ public class MotionEstimationVector {
 		return blocksVisited;
 	}
 	
-	public void setPosition(int x, int y) {
-		int normalizedX = x - codingBlock.getPosition().getX() + 1;
-		int normalizedY = y - codingBlock.getPosition().getY() + 1;
+	public void setPosition(int x, int y, int initialSearchX, int initialSearchY) {
+		int normalizedX = x - codingBlock.getPosition().getX();
+		int normalizedY = y - codingBlock.getPosition().getY();
+		int heatMapX = x - initialSearchX;
+		int heatMapY = y - initialSearchY;
 		
+		heatMapPosition.setPosition(heatMapX, heatMapY);
 		position.setPosition(normalizedX, normalizedY);
 	}
 	

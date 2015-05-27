@@ -49,19 +49,19 @@ public abstract class EvaluationCriteria {
 			initialY = 0;
 		}
 		
-		if (finalX >= frameWidth - blockWidth) {
-			finalX = frameWidth - blockWidth - 1;
+		if (finalX >= frameHeight - blockHeight) {
+			finalX = frameHeight - blockHeight - 1;
 		}
 		
-		if (finalY >= frameHeight - blockHeight) {
-			finalY = frameHeight - blockHeight - 1;
+		if (finalY >= frameWidth - blockWidth) {
+			finalY = frameWidth - blockWidth - 1;
 		}
 		
-		heatMap = new double[finalY - initialY][finalX - initialX];
+		heatMap = new double[finalX - initialX][finalY - initialY];
 		
-		for (y = initialY; y < finalY; y++) {
-			for (x = initialX; x < finalX; x++) {
-				heatMap[y - initialY][x - initialX] = calculate(x, y);
+		for (x = initialX; x < finalX; x++) {
+			for (y = initialY; y < finalY; y++) {
+				heatMap[x - initialX][y - initialY] = calculate(x, y);
 			}
 		}
 		
