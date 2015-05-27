@@ -18,6 +18,8 @@ public class FullSearch extends SearchAlgorithm implements ISearchAlgorithm {
 		int temporaryResult = 0;
 		int normalizedX;
 		int normalizedY;
+		int normalizedResultX;
+		int normalizedResultY;
 		
 		int x, y;
 		
@@ -29,12 +31,14 @@ public class FullSearch extends SearchAlgorithm implements ISearchAlgorithm {
 				temporaryResult = evaluationCriteria.calculate(initialX + x, initialY + y);
 				normalizedX = initialX + x - codingBlock.getPosition().getX();
 				normalizedY = initialY + y - codingBlock.getPosition().getY();
+				normalizedResultX = initialX + resultX - codingBlock.getPosition().getX();
+				normalizedResultY = initialY + resultY - codingBlock.getPosition().getY();
 				blocksVisited++;
 				
 				if (temporaryResult < criteriaResult 
 					|| temporaryResult == criteriaResult
 					&& Math.pow(normalizedX * normalizedX + normalizedY * normalizedY, 2) 
-						<= Math.pow(resultX * resultX + resultY * resultY, 2))
+						<= Math.pow(normalizedResultX * normalizedResultX + normalizedResultY * normalizedResultY, 2))
 				{
 					criteriaResult = temporaryResult;
 					resultX = x;
@@ -43,9 +47,6 @@ public class FullSearch extends SearchAlgorithm implements ISearchAlgorithm {
 				
 			}
 		}
-		
-		System.out.println(temporaryResult);
-		System.out.println();
 		
 		vector.setPosition(resultX, resultY, initialX, initialY);
 		vector.setCriteriaResult(criteriaResult);
