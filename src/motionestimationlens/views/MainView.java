@@ -78,8 +78,8 @@ public class MainView extends JPanel {
 		
 		btnPreviousFrame = new JButton("Quadro anterior");
 		btnPreviousBlock = new JButton("Bloco anterior");
-		btnNextBlock = new JButton("Pr�ximo bloco");
-		btnNextFrame = new JButton("Pr�ximo quadro");
+		btnNextBlock = new JButton("Próximo bloco");
+		btnNextFrame = new JButton("Próximo quadro");
 		
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
@@ -124,7 +124,7 @@ public class MainView extends JPanel {
         
         heatMapPanel.setDrawLegend(false);
 
-        heatMapPanel.setTitle("Mapa de calor da �rea de busca");
+        heatMapPanel.setTitle("Mapa de calor da área de busca");
         heatMapPanel.setDrawTitle(true);
 
         heatMapPanel.setXAxisTitle("X Axis");
@@ -142,7 +142,7 @@ public class MainView extends JPanel {
     
     private void createResultsPanel() {
     	Border border = BorderFactory.createTitledBorder(
-    						"Resultados da Estimaa��o Movimento",
+    						"Resultados da Estimação Movimento",
     						new EmptyBorder(10, 10, 10, 10)
     					);
     	
@@ -151,15 +151,15 @@ public class MainView extends JPanel {
     	resultsPanel.setLayout(new GridBagLayout());
     	resultsPanel.setBorder(border);
     	
-    	lblReferenceFrame = new JLabel("Quadro de refer�ncia: 0/0");
+    	lblReferenceFrame = new JLabel("Quadro de referência: 0/0");
     	lblActualFrame = new JLabel("Quadro atual: 0/0");
     	lblCodingBlock = new JLabel("Bloco: x, y");
     	lblBestVector = new JLabel("Melhor bloco candidato: x, y");
     	lblBestSad = new JLabel("SAD do melhor bloco candidato: 0");
     	lblVector = new JLabel("Bloco escolhido pelo algoritmo: x, y");
     	lblSad = new JLabel("SAD do bloco escolhido pelo algoritmo: 0");
-    	lblNumberOfBlocks = new JLabel("N�mero de blocos candidatos: 0");
-    	lblNumberOfBlocksVisited = new JLabel("N�mero de blocos candidatos visitados: 0");
+    	lblNumberOfBlocks = new JLabel("Número de blocos candidatos: 0");
+    	lblNumberOfBlocksVisited = new JLabel("Número de blocos candidatos visitados: 0");
     	
     	GridBagConstraints constraints = new GridBagConstraints();
     	constraints.anchor = GridBagConstraints.NORTH;
@@ -207,10 +207,10 @@ public class MainView extends JPanel {
     	footerPanel = new JPanel();
     	footerPanel.setLayout(new GridBagLayout());
     	
-    	btnSetReferenceFrame = new JButton("Especificar quadro de refer�ncia");
+    	btnSetReferenceFrame = new JButton("Especificar quadro de referência");
     	btnSetActualFrame = new JButton("Especificar quadro atual");
     	btnSetCodingBlock = new JButton("Especificar bloco a ser codificado");
-    	btnBackToSetup = new JButton("Voltar para configura��es");
+    	btnBackToSetup = new JButton("Voltar para configurações");
     	
     	GridBagConstraints constraints = new GridBagConstraints();
     	constraints.anchor = GridBagConstraints.PAGE_END;
@@ -219,17 +219,14 @@ public class MainView extends JPanel {
     	
     	constraints.gridx = 0;
     	constraints.gridy = 0;
-    	btnSetReferenceFrame.setEnabled(false);
     	footerPanel.add(btnSetReferenceFrame, constraints);
 
     	constraints.gridx = 1;
     	constraints.gridy = 0;
-    	btnSetActualFrame.setEnabled(false);
     	footerPanel.add(btnSetActualFrame, constraints);
     	
     	constraints.gridx = 2;
     	constraints.gridy = 0;
-    	btnSetCodingBlock.setEnabled(false);
     	footerPanel.add(btnSetCodingBlock, constraints);
     	
     	constraints.gridx = 3;
@@ -324,7 +321,7 @@ public class MainView extends JPanel {
     }
     
     public void setReferenceFrameIndex(int referenceFrameIndex, int framesTotal) {
-    	lblReferenceFrame.setText("Quadro de refer�ncia: " + referenceFrameIndex + "/" + framesTotal);
+    	lblReferenceFrame.setText("Quadro de referência: " + referenceFrameIndex + "/" + framesTotal);
     }
     
     public void setCodingBlock(CodingBlock codingBlock) {
@@ -362,11 +359,11 @@ public class MainView extends JPanel {
     }
 
     public void setNumberOfBlocks(int numberOfBlocks) {
-    	lblNumberOfBlocks.setText("N�mero de blocos candidatos: " + numberOfBlocks);
+    	lblNumberOfBlocks.setText("Número de blocos candidatos: " + numberOfBlocks);
     }
     
     public void setNumberOfBlocksVisited(int numberOfBlocksVisited) {
-    	lblNumberOfBlocksVisited.setText("N�mero de blocos candidatos visitados: " + numberOfBlocksVisited);
+    	lblNumberOfBlocksVisited.setText("Número de blocos candidatos visitados: " + numberOfBlocksVisited);
     }
 	
 	public void setBtnPreviousFrameListener(ActionListener listener) {

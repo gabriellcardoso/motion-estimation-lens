@@ -56,7 +56,7 @@ public class SetupView extends JPanel {
 	
 	private void createVideoConfigPanel() {
 		Border border = BorderFactory.createTitledBorder(
-							"Configura��es de v�deo",
+							"Configurações de vídeo",
 							new EmptyBorder(25, 25, 25, 25)
 						);
 		
@@ -64,7 +64,7 @@ public class SetupView extends JPanel {
 		videoConfigPanel.setLayout(new GridBagLayout());
 		videoConfigPanel.setBorder(border);
 		
-		JLabel resolutionLabel = new JLabel("Resolu��o:");
+		JLabel resolutionLabel = new JLabel("Resolução:");
 		JLabel samplingLabel = new JLabel("Amostragem:");
 		JLabel framesLabel = new JLabel("Total de quadros:");
 		
@@ -111,7 +111,7 @@ public class SetupView extends JPanel {
 	
 	private void createMotionEstimationConfigPanel() {
 		Border border = BorderFactory.createTitledBorder(
-							"Configura��es da estima��o de movimento",
+							"Configurações da estimação de movimento",
 							new EmptyBorder(25, 25, 25, 25)
 						);
 		
@@ -120,13 +120,13 @@ public class SetupView extends JPanel {
 		motionEstimationConfigPanel.setBorder(border);
 
 		JLabel algorithmLabel = new JLabel("Algoritmo de busca:");
-		JLabel searchAreaLabel = new JLabel("�rea de busca:");
+		JLabel searchAreaLabel = new JLabel("Área de busca:");
 		JLabel blockLabel = new JLabel("Tamanho do bloco:");
 		
 		comboBoxAlgorithm = new JComboBox<String>(ME.ALGORITHM_ITEMS);
 		comboBoxSearchArea = new JComboBox<String>(ME.SEARCH_AREA_ITEMS);
 		comboBoxBlockSize = new JComboBox<String>(ME.BLOCK_SIZE_ITEMS);
-		checkBoxKeepReferenceFrame = new JCheckBox("Fixar quadro de refer�ncia");
+		checkBoxKeepReferenceFrame = new JCheckBox("Fixar quadro de referência");
 		
 		GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.BOTH;
@@ -171,7 +171,7 @@ public class SetupView extends JPanel {
 		footerPanel.setLayout(new GridBagLayout());
 		footerPanel.setBorder(border);
 		
-		btnStart = new JButton("Come�ar an�lise");
+		btnStart = new JButton("Começar análise");
 		
 		GridBagConstraints constraints = new GridBagConstraints();
 		
