@@ -13,12 +13,11 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+import motionestimationlens.models.CodingBlock;
 import motionestimationlens.models.Frame;
 import motionestimationlens.models.MotionEstimationVector;
+import motionestimationlens.models.Position;
 import motionestimationlens.utils.BorderFactory;
-
-import org.mblecker.heatmap.Gradient;
-import org.mblecker.heatmap.HeatMap;
 
 public class MainView extends JPanel {
 	
@@ -308,6 +307,68 @@ public class MainView extends JPanel {
         this.add(footerPanel, constraints);
 	}
 	
+   public void setActualFrame(Frame frame) {
+    	actualFramePanel.setFrame(frame);
+    }
+    
+    public void setReferenceFrame(Frame frame) {
+    	referenceFramePanel.setFrame(frame);
+    }
+    
+    public void setHeatMap(double[][] data) {
+    	heatMapPanel.updateData(data);
+    }
+    
+    public void setActualFrameIndex(int actualFrameIndex, int framesTotal) {
+    	lblActualFrame.setText("Quadro atual: " + actualFrameIndex + "/" + framesTotal);
+    }
+    
+    public void setReferenceFrameIndex(int referenceFrameIndex, int framesTotal) {
+    	lblReferenceFrame.setText("Quadro de refer�ncia: " + referenceFrameIndex + "/" + framesTotal);
+    }
+    
+    public void setCodingBlock(CodingBlock codingBlock) {
+    	Position blockPosition = codingBlock.getPosition();
+    	
+    	actualFramePanel.setCodingBlock(codingBlock);
+    	
+    	lblCodingBlock.setText("Bloco: " + blockPosition.getX() + "," + blockPosition.getY());
+    }
+    
+    public void setSearchArea(CodingBlock codingBlock, int width, int height) {
+    	referenceFramePanel.setSearchArea(codingBlock, width, height);
+    }
+    
+    public void setBestVector(MotionEstimationVector bestVector) {
+    	int bestBlockX = bestVector.getPosition().getX();
+    	int bestBlockY = bestVector.getPosition().getY();
+    	int bestSad = bestVector.getCriteriaResult();
+    	
+    	heatMapPanel.setBestBlock(bestVector);
+    	
+    	lblBestVector.setText("Vetor do melhor bloco candidato: " + bestBlockX + "," + bestBlockY);
+    	lblBestSad.setText("SAD do melhor bloco candidato: " + bestSad);
+    }
+    
+    public void setResultVector(MotionEstimationVector resultVector) {
+    	int resultBlockX = resultVector.getPosition().getX();
+    	int resultBlockY = resultVector.getPosition().getY();
+    	int resultSad = resultVector.getCriteriaResult();
+    	
+    	heatMapPanel.setResultBlock(resultVector);
+    	
+    	lblVector.setText("Vetor do bloco candidato escolhido: " + resultBlockX + "," + resultBlockY);
+    	lblSad.setText("SAD do bloco candidato escolhido: " + resultSad);
+    }
+
+    public void setNumberOfBlocks(int numberOfBlocks) {
+    	lblNumberOfBlocks.setText("N�mero de blocos candidatos: " + numberOfBlocks);
+    }
+    
+    public void setNumberOfBlocksVisited(int numberOfBlocksVisited) {
+    	lblNumberOfBlocksVisited.setText("N�mero de blocos candidatos visitados: " + numberOfBlocksVisited);
+    }
+	
 	public void setBtnPreviousFrameListener(ActionListener listener) {
     	btnPreviousFrame.addActionListener(listener);
     }
@@ -356,66 +417,4 @@ public class MainView extends JPanel {
     	btnBackToSetup.addActionListener(listener);
     }
     
-    public void setActualFrame(Frame frame) {
-    	actualFramePanel.setFrame(frame);
-    }
-    
-    public void updateActualFrame() {
-    	actualFramePanel.updateFrame();
-    }
-    
-    public void setReferenceFrame(Frame frame) {
-    	referenceFramePanel.setFrame(frame);
-    }
-    
-    public void updateReferenceFrame() {
-    	referenceFramePanel.updateFrame();
-    }
-    
-    public void setHeatMap(double[][] data) {
-    	heatMapPanel.updateData(data);
-    }
-    
-    public void setActualFrameIndex(int actualFrameIndex, int framesTotal) {
-    	lblActualFrame.setText("Quadro atual: " + actualFrameIndex + "/" + framesTotal);
-    }
-    
-    public void setReferenceFrameIndex(int referenceFrameIndex, int framesTotal) {
-    	lblReferenceFrame.setText("Quadro de refer�ncia: " + referenceFrameIndex + "/" + framesTotal);
-    }
-    
-    public void setCodingBlockPosition(int x, int y) {
-    	lblCodingBlock.setText("Bloco: " + x + "," + y);
-    }
-    
-    public void setBestVector(MotionEstimationVector bestVector) {
-    	int bestBlockX = bestVector.getPosition().getX();
-    	int bestBlockY = bestVector.getPosition().getY();
-    	int bestSad = bestVector.getCriteriaResult();
-    	
-    	heatMapPanel.setBestBlock(bestVector);
-    	
-    	lblBestVector.setText("Vetor do melhor bloco candidato: " + bestBlockX + "," + bestBlockY);
-    	lblBestSad.setText("SAD do melhor bloco candidato: " + bestSad);
-    }
-    
-    public void setResultVector(MotionEstimationVector resultVector) {
-    	int resultBlockX = resultVector.getPosition().getX();
-    	int resultBlockY = resultVector.getPosition().getY();
-    	int resultSad = resultVector.getCriteriaResult();
-    	
-    	heatMapPanel.setResultBlock(resultVector);
-    	
-    	lblVector.setText("Vetor do bloco candidato escolhido: " + resultBlockX + "," + resultBlockY);
-    	lblSad.setText("SAD do bloco candidato escolhido: " + resultSad);
-    }
-
-    public void setNumberOfBlocks(int numberOfBlocks) {
-    	lblNumberOfBlocks.setText("N�mero de blocos candidatos: " + numberOfBlocks);
-    }
-    
-    public void setNumberOfBlocksVisited(int numberOfBlocksVisited) {
-    	lblNumberOfBlocksVisited.setText("N�mero de blocos candidatos visitados: " + numberOfBlocksVisited);
-    }
-
 }

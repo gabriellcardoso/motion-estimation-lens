@@ -249,7 +249,9 @@ public class ApplicationController extends JFrame {
 		
 		mainView.setActualFrameIndex(actualFrameIndex, framesTotal);
 		mainView.setReferenceFrameIndex(referenceFrameIndex, framesTotal);
-		mainView.setCodingBlockPosition(codingBlock.getPosition().getX(), codingBlock.getPosition().getY());
+		
+		mainView.setSearchArea(codingBlock, searchAreaWidth, searchAreaHeight);
+		mainView.setCodingBlock(codingBlock);
 		
 		mainView.setBestVector(fullSearchVector);
 		mainView.setResultVector(searchAlgorithmVector);
@@ -271,12 +273,10 @@ public class ApplicationController extends JFrame {
 
 			actualFrameIndex--;
 			videoReader.setFrameWithImage(actualFrame, actualFrameIndex);
-			mainView.updateActualFrame();
 			
 			if (!keepReferenceFrame) {
 				referenceFrameIndex--;
 				videoReader.setFrameWithImage(referenceFrame, referenceFrameIndex);
-				mainView.updateReferenceFrame();
 			}
 			
 			setCodingBlockIndex(0);
@@ -288,12 +288,10 @@ public class ApplicationController extends JFrame {
 			
 			actualFrameIndex++;
 			videoReader.setFrameWithImage(actualFrame, actualFrameIndex);
-			mainView.updateActualFrame();
 			
 			if (!keepReferenceFrame) {
 				referenceFrameIndex++;
 				videoReader.setFrameWithImage(referenceFrame, referenceFrameIndex);
-				mainView.updateReferenceFrame();
 			}
 			
 			setCodingBlockIndex(0);

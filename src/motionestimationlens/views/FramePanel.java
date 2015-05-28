@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
+import motionestimationlens.models.CodingBlock;
 import motionestimationlens.models.Frame;
 
 public class FramePanel extends JPanel {
@@ -80,21 +81,92 @@ public class FramePanel extends JPanel {
 	        updateFrame();
 	    }
 	    
-	    public void setCodingBlock(int width, int height, int x, int y) {
-	    	
-	    }
-	    
-	    public void setSearchArea(int width, int height, int x, int y) {
-	    	
-	    }
-	    
 	    public void updateFrame() {
 	    	drawFrame();
 
 	        repaint();
 	    }
 	    
-	    protected void drawFrame()
+	    public void setCodingBlock(CodingBlock codingBlock) {
+	    	int x = codingBlock.getPosition().getX();
+	    	int y = codingBlock.getPosition().getY();
+	    	int width = codingBlock.getWidth();
+	    	int height = codingBlock.getHeight();
+	    	
+	    	if (x < 0) {
+	    		x = 0;
+	    	}
+	    	
+	    	if (y < 0) {
+	    		y = 0;
+	    	}
+	    	
+	    	if (x + width >= frame.getWidth()) {
+	    		width = frame.getWidth() - x - 1;
+	    	}
+	    	
+	    	if (y + height >= frame.getHeight()) {
+	    		height = frame.getHeight() - y - 1;
+	    	}
+	    	
+	    	highlightBlock(x, y, width, height, 0, 100, 0);
+	    }
+	    
+	    public void setSearchArea(CodingBlock codingBlock, int searchWidth, int searchHeight) {
+	    	int rangeX = searchWidth / 2;
+	    	int rangeY = searchHeight / 2;
+	    	
+	    	int x = codingBlock.getPosition().getX() - rangeX;
+	    	int y = codingBlock.getPosition().getY() - rangeY;
+	    	
+	    	int width = codingBlock.getPosition().getX() + codingBlock.getWidth() + rangeX - x;
+	    	int height = codingBlock.getPosition().getY() + codingBlock.getHeight() + rangeY - y;
+	    	
+	    	if (x < 0) {
+	    		x = 0;
+	    	}
+	    	
+	    	if (y < 0) {
+	    		y = 0;
+	    	}
+	    	
+	    	if (x + width >= frame.getWidth()) {
+	    		width = frame.getWidth() - x - 1;
+	    	}
+	    	
+	    	if (y + height >= frame.getHeight()) {
+	    		height = frame.getHeight() - y - 1;
+	    	}
+	    	
+	    	highlightBlock(x, y, width, height, 100, 0, 0);
+	    }
+	    
+	    private void highlightBlock(int initialX, int initialY, int width, int height, int extraRed, int extraGreen, int extraBlue) {
+	    	byte[][] image = frame.getImage();
+	        int finalX = initialX + width;
+	        int finalY = initialY + height;
+	    	int red, green, blue;
+	        
+	        
+	        drawFrame();
+	        
+	        for (int y = initialY; y < finalY; y++)
+	        {
+	            for (int x = initialX; x < finalX; x++)
+	            {
+	            	red = Math.abs(image[y][x]) + extraRed;
+	            	green = Math.abs(image[y][x]) + extraGreen;
+	            	blue = Math.abs(image[y][x]) + extraBlue;
+	            	
+	                bufferedGraphics.setColor(new Color(red, green, blue));
+	                bufferedGraphics.fillRect(x, y, 1, 1);
+	            }
+	        }
+	        
+	        repaint();
+	    }
+	    
+	    private void drawFrame()
 	    {
 	        bufferedImage = new BufferedImage(frame.getWidth(), frame.getHeight(), BufferedImage.TYPE_INT_ARGB);
 	        bufferedGraphics = bufferedImage.createGraphics();
