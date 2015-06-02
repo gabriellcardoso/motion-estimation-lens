@@ -38,8 +38,6 @@ public class HeatMapPanel extends HeatMap {
 	}
 	
 	private void setBlock(Color color, int x, int y) {
-		drawData();
-		
 		bufferedGraphics = bufferedImage.createGraphics();
 	    bufferedGraphics.setColor(color);
 	    bufferedGraphics.fillRect(x, y, 1, 1);

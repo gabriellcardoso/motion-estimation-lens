@@ -50,8 +50,8 @@ public class MotionEstimationVector {
 	}
 	
 	public void setPosition(int x, int y, int initialSearchX, int initialSearchY) {
-		int normalizedX = initialSearchX + x  - codingBlock.getPosition().getX();
-		int normalizedY = initialSearchY + y  - codingBlock.getPosition().getY();
+		int normalizedX = initialSearchX + x - codingBlock.getPosition().getX();
+		int normalizedY = initialSearchY + y - codingBlock.getPosition().getY();
 		int heatMapX = x;
 		int heatMapY = y;
 		

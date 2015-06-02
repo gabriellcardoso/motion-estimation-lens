@@ -9,6 +9,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
 import motionestimationlens.models.CodingBlock;
+import motionestimationlens.models.DiamondSearch;
 import motionestimationlens.models.Frame;
 import motionestimationlens.models.FullSearch;
 import motionestimationlens.models.IEvaluationCriteria;
@@ -217,9 +218,16 @@ public class ApplicationController extends JFrame {
 		
 		switch (selectedAlgorithm) {
 			case ME.FS:
+				searchAlgorithm = new FullSearch();
+				break;
+				
 			case ME.DS:
+				searchAlgorithm = new DiamondSearch();
+				break;
+				
 			case ME.TSS:
-			case ME.EPZS:
+				break;
+				
 			default:
 				searchAlgorithm = new FullSearch();
 		}

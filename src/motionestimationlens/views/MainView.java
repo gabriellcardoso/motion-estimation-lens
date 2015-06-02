@@ -255,6 +255,8 @@ public class MainView extends JPanel {
     	constraints.insets = new Insets(5, 5, 5, 5);
         constraints.gridx = 0;
         constraints.gridy = 1;
+        constraints.weightx = 0.7;
+        constraints.weighty = 0.7;
         
         this.add(referenceFramePanel, constraints);
 	}
@@ -266,6 +268,8 @@ public class MainView extends JPanel {
     	constraints.insets = new Insets(5, 5, 5, 5);
         constraints.gridx = 1;
         constraints.gridy = 1;
+        constraints.weightx = 0.3;
+        constraints.weighty = 0.3;
         
         this.add(actualFramePanel, constraints);
 	}
