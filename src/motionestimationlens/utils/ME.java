@@ -34,7 +34,7 @@ public class ME {
 	
 	public static final String[] RESOLUTION_ITEMS = { UHD, QHD, FULL_HD, HD };
 	public static final String[] SAMPLING_ITEMS = { S_444, S_422, S_420, S_411, S_400 };
-	public static final String[] ALGORITHM_ITEMS = { FS, DS, TSS };
+	public static final String[] ALGORITHM_ITEMS = { DS, TSS };
 	public static final String[] SEARCH_AREA_ITEMS = { SA_16, SA_32, SA_64, SA_128, SA_256 };
 	public static final String[] BLOCK_SIZE_ITEMS = { BS_8, BS_16, BS_32, BS_64 };
 	

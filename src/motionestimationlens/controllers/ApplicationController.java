@@ -18,6 +18,7 @@ import motionestimationlens.models.MotionEstimation;
 import motionestimationlens.models.MotionEstimationData;
 import motionestimationlens.models.MotionEstimationVector;
 import motionestimationlens.models.SumOfAbsoluteDifferences;
+import motionestimationlens.models.ThreeStepSearch;
 import motionestimationlens.utils.ME;
 import motionestimationlens.utils.YUVReader;
 import motionestimationlens.views.MainView;
@@ -226,6 +227,7 @@ public class ApplicationController extends JFrame {
 				break;
 				
 			case ME.TSS:
+				searchAlgorithm = new ThreeStepSearch();
 				break;
 				
 			default:
