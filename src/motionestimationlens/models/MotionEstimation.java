@@ -72,7 +72,7 @@ public class MotionEstimation {
 	}
 	
 	private int getCandidateBlocksTotal() {
-		return  searchAreaWidth * searchAreaHeight;
+		return  (searchAreaWidth - codingBlock.getWidth()) * (searchAreaHeight - codingBlock.getHeight());
 	}
 	
 	public MotionEstimationData run() {
