@@ -20,6 +20,8 @@ public class DiamondSearch extends SearchAlgorithm implements ISearchAlgorithm {
 		int resultX = codingBlock.getPosition().getX();
 		int resultY = codingBlock.getPosition().getY();
 		
+		boolean insideBounds = false;
+		
 		int temporaryResult = 0;
 		int blocksVisited = 0;
 		
@@ -31,17 +33,11 @@ public class DiamondSearch extends SearchAlgorithm implements ISearchAlgorithm {
 			x = resultX;
 			y = resultY;
 			
-			// Apply the evaluation criteria for the central block
-			temporaryResult = evaluationCriteria.calculate(x, y);
-			if (temporaryResult < criteriaResult) {
-				criteriaResult = temporaryResult;
-				resultX = x; 
-				resultY = y;
-			}
-			
 			// Apply the evaluation criteria for the north block
 			temporaryResult = evaluationCriteria.calculate(x, y - 2);
-			if (temporaryResult < criteriaResult) {
+			insideBounds = (x >= initialX) && (x < finalX) && (y - 2 >= initialY) && (y - 2 < finalY);
+			
+			if (temporaryResult < criteriaResult && insideBounds) {
 				criteriaResult = temporaryResult;
 				resultX = x; 
 				resultY = y - 2;
@@ -49,7 +45,9 @@ public class DiamondSearch extends SearchAlgorithm implements ISearchAlgorithm {
 			
 			// Apply the evaluation criteria for the northeast block
 			temporaryResult = evaluationCriteria.calculate(x + 1, y - 1);
-			if (temporaryResult < criteriaResult) {
+			insideBounds = (x + 1 >= initialX) && (x + 1 < finalX) && (y - 1 >= initialY) && (y - 1 < finalY);
+			
+			if (temporaryResult < criteriaResult && insideBounds) {
 				criteriaResult = temporaryResult;
 				resultX = x + 1; 
 				resultY = y - 1;
@@ -57,7 +55,9 @@ public class DiamondSearch extends SearchAlgorithm implements ISearchAlgorithm {
 			
 			// Apply the evaluation criteria for the east block
 			temporaryResult = evaluationCriteria.calculate(x + 2, y);
-			if (temporaryResult < criteriaResult) {
+			insideBounds = (x + 2 >= initialX) && (x + 2 < finalX) && (y >= initialY) && (y < finalY);
+			
+			if (temporaryResult < criteriaResult && insideBounds) {
 				criteriaResult = temporaryResult;
 				resultX = x + 2; 
 				resultY = y;
@@ -65,7 +65,9 @@ public class DiamondSearch extends SearchAlgorithm implements ISearchAlgorithm {
 			
 			// Apply the evaluation criteria for the southeast block
 			temporaryResult = evaluationCriteria.calculate(x + 1, y + 1);
-			if (temporaryResult < criteriaResult) {
+			insideBounds = (x + 1 >= initialX) && (x + 1 < finalX) && (y + 1 >= initialY) && (y + 1 < finalY);
+			
+			if (temporaryResult < criteriaResult && insideBounds) {
 				criteriaResult = temporaryResult;
 				resultX = x + 1; 
 				resultY = y + 1;
@@ -73,7 +75,9 @@ public class DiamondSearch extends SearchAlgorithm implements ISearchAlgorithm {
 			
 			// Apply the evaluation criteria for the south block
 			temporaryResult = evaluationCriteria.calculate(x, y + 2);
-			if (temporaryResult < criteriaResult) {
+			insideBounds = (x >= initialX) && (x < finalX) && (y + 2 >= initialY) && (y + 2 < finalY);
+			
+			if (temporaryResult < criteriaResult && insideBounds) {
 				criteriaResult = temporaryResult;
 				resultX = x; 
 				resultY = y + 2;
@@ -81,7 +85,9 @@ public class DiamondSearch extends SearchAlgorithm implements ISearchAlgorithm {
 			
 			// Apply the evaluation criteria for the southwest block
 			temporaryResult = evaluationCriteria.calculate(x - 1, y + 1);
-			if (temporaryResult < criteriaResult) {
+			insideBounds = (x - 1 >= initialX) && (x - 1 < finalX) && (y + 1 >= initialY) && (y + 1 < finalY);
+			
+			if (temporaryResult < criteriaResult && insideBounds) {
 				criteriaResult = temporaryResult;
 				resultX = x - 1; 
 				resultY = y + 1;
@@ -89,7 +95,9 @@ public class DiamondSearch extends SearchAlgorithm implements ISearchAlgorithm {
 			
 			// Apply the evaluation criteria for the west block
 			temporaryResult = evaluationCriteria.calculate(x - 2, y);
-			if (temporaryResult < criteriaResult) {
+			insideBounds = (x - 2 >= initialX) && (x - 2 < finalX) && (y >= initialY) && (y < finalY);
+			
+			if (temporaryResult < criteriaResult && insideBounds) {
 				criteriaResult = temporaryResult;
 				resultX = x - 2; 
 				resultY = y;
@@ -97,10 +105,21 @@ public class DiamondSearch extends SearchAlgorithm implements ISearchAlgorithm {
 			
 			// Apply the evaluation criteria for the northwest block
 			temporaryResult = evaluationCriteria.calculate(x - 1, y -1);
-			if (temporaryResult < criteriaResult) {
+			insideBounds = (x - 1 >= initialX) && (x - 1 < finalX) && (y - 1 >= initialY) && (y - 1 < finalY);
+			
+			if (temporaryResult < criteriaResult && insideBounds) {
 				criteriaResult = temporaryResult;
 				resultX = x - 1; 
 				resultY = y - 1;
+			}
+			
+			// Apply the evaluation criteria for the central block
+			temporaryResult = evaluationCriteria.calculate(x, y);
+			
+			if (temporaryResult < criteriaResult) {
+				criteriaResult = temporaryResult;
+				resultX = x; 
+				resultY = y;
 			}
 			
 			blocksVisited += 9;
@@ -113,17 +132,11 @@ public class DiamondSearch extends SearchAlgorithm implements ISearchAlgorithm {
 			x = resultX;
 			y = resultY;
 			
-			// Apply the evaluation criteria for the central block
-			temporaryResult = evaluationCriteria.calculate(x, y);
-			if (temporaryResult < criteriaResult) {
-				criteriaResult = temporaryResult;
-				resultX = x; 
-				resultY = y;
-			}
-			
 			// Apply the evaluation criteria for the north block
 			temporaryResult = evaluationCriteria.calculate(x, y - 1);
-			if (temporaryResult < criteriaResult) {
+			insideBounds = (x >= initialX) && (x < finalX) && (y - 1 >= initialY) && (y - 1 < finalY);
+			
+			if (temporaryResult < criteriaResult && insideBounds) {
 				criteriaResult = temporaryResult;
 				resultX = x; 
 				resultY = y - 1;
@@ -131,7 +144,9 @@ public class DiamondSearch extends SearchAlgorithm implements ISearchAlgorithm {
 			
 			// Apply the evaluation criteria for the east block
 			temporaryResult = evaluationCriteria.calculate(x + 1, y);
-			if (temporaryResult < criteriaResult) {
+			insideBounds = (x + 1 >= initialX) && (x + 1 < finalX) && (y >= initialY) && (y < finalY);
+			
+			if (temporaryResult < criteriaResult && insideBounds) {
 				criteriaResult = temporaryResult;
 				resultX = x + 1; 
 				resultY = y;
@@ -139,7 +154,9 @@ public class DiamondSearch extends SearchAlgorithm implements ISearchAlgorithm {
 			
 			// Apply the evaluation criteria for the south block
 			temporaryResult = evaluationCriteria.calculate(x, y + 1);
-			if (temporaryResult < criteriaResult) {
+			insideBounds = (x >= initialX) && (x < finalX) && (y + 1 >= initialY) && (y + 1 < finalY);
+			
+			if (temporaryResult < criteriaResult && insideBounds) {
 				criteriaResult = temporaryResult;
 				resultX = x; 
 				resultY = y + 1;
@@ -147,9 +164,20 @@ public class DiamondSearch extends SearchAlgorithm implements ISearchAlgorithm {
 
 			// Apply the evaluation criteria for the west block
 			temporaryResult = evaluationCriteria.calculate(x - 1, y);
-			if (temporaryResult < criteriaResult) {
+			insideBounds = (x - 1 >= initialX) && (x - 1 < finalX) && (y >= initialY) && (y < finalY);
+			
+			if (temporaryResult < criteriaResult && insideBounds) {
 				criteriaResult = temporaryResult;
 				resultX = x - 1; 
+				resultY = y;
+			}
+			
+			// Apply the evaluation criteria for the central block
+			temporaryResult = evaluationCriteria.calculate(x, y);
+			
+			if (temporaryResult < criteriaResult) {
+				criteriaResult = temporaryResult;
+				resultX = x; 
 				resultY = y;
 			}
 			
