@@ -216,7 +216,6 @@ public class ApplicationController extends JFrame {
 		frameWidth = setupView.getFrameWidth();
 		frameHeight = setupView.getFrameHeight();
 		samplingYCbCr = setupView.getSampling();
-		framesTotal = setupView.getTotalFrames();
 		selectedAlgorithm = setupView.getSearchAlgorithm();
 		searchAreaWidth = setupView.getSearchAreaWidth(); 
 		searchAreaHeight = setupView.getSearchAreaHeight();
@@ -241,6 +240,7 @@ public class ApplicationController extends JFrame {
 	
 	private void setUpModels() {
 		videoReader = new YUVReader(inputFile, frameWidth, frameHeight, samplingYCbCr);
+		framesTotal = videoReader.getFramesTotal();
 		
 		actualFrame = new Frame(frameWidth, frameHeight);
 		referenceFrame = new Frame(frameWidth, frameHeight);

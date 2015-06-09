@@ -28,7 +28,6 @@ public class SetupView extends JPanel {
 	private JTextField resolutionWidth;
 	private JTextField resolutionHeight;
 	private JComboBox<String> comboBoxSampling;
-	private JTextField inputFrames;
 	
 	private JPanel motionEstimationConfigPanel;
 	
@@ -68,13 +67,11 @@ public class SetupView extends JPanel {
 		JLabel resolutionWidthLabel = new JLabel("Largura da resolução:");
 		JLabel resolutionHeightLabel = new JLabel("Altura da resolução:");
 		JLabel samplingLabel = new JLabel("Amostragem:");
-		JLabel framesLabel = new JLabel("Total de quadros:");
 		
 		btnOpenVideo = new JButton("Abrir arquivo YUV");
 		resolutionWidth = new JTextField();
 		resolutionHeight = new JTextField();
 		comboBoxSampling = new JComboBox<String>(ME.SAMPLING_ITEMS);
-		inputFrames = new JTextField("1");
 		
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;  
@@ -109,14 +106,6 @@ public class SetupView extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy = 6;
 		videoConfigPanel.add(comboBoxSampling, constraints);
-		
-		constraints.gridx = 0;
-		constraints.gridy = 7;
-		videoConfigPanel.add(framesLabel, constraints);
-		
-		constraints.gridx = 0;
-		constraints.gridy = 8;
-		videoConfigPanel.add(inputFrames, constraints);
 	}
 	
 	private void createMotionEstimationConfigPanel() {
@@ -224,11 +213,6 @@ public class SetupView extends JPanel {
 		constraints.gridy = 2;
 		
 		this.add(footerPanel, constraints);
-	}
-	
-	public int getTotalFrames() {
-		String totalFrames = inputFrames.getText();
-		return Integer.parseInt(totalFrames);
 	}
 	
 	public int getFrameWidth() {

@@ -35,6 +35,21 @@ public class YUVReader {
     	}
     }
     
+    
+    public int getFramesTotal() { 
+    	double luminancePixels = getLuminancePixelsPerFrame();
+    	double chrominancePixels = getChrominancePixelsPerFrame(); 
+    	long fileSize = 0;
+    	
+    	try {
+    		fileSize = fileChannel.size();
+    	} catch (IOException error) {
+    		System.out.println(error.getMessage());
+    	}
+    	
+    	return (int) (fileSize / (luminancePixels + chrominancePixels * 2));
+    }
+    
     private void writeImageOnFrame(Frame frame) throws IOException {
     	byte[][] image = frame.getImage();
     	int line = 0;
