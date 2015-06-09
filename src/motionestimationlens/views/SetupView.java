@@ -34,7 +34,8 @@ public class SetupView extends JPanel {
 	private JComboBox<String> comboBoxAlgorithm;
 	private JTextField searchAreaWidth;
 	private JTextField searchAreaHeight;
-	private JComboBox<String> comboBoxBlockSize;
+	private JTextField blockWidth;
+	private JTextField blockHeight;
 	private JCheckBox checkBoxKeepReferenceFrame;
 	
 	private JPanel footerPanel;
@@ -123,12 +124,14 @@ public class SetupView extends JPanel {
 		JLabel algorithmLabel = new JLabel("Algoritmo de busca:");
 		JLabel searchAreaWidthLabel = new JLabel("Largura da área de busca:");
 		JLabel searchAreaHeightLabel = new JLabel("Altura da área de busca:");
-		JLabel blockLabel = new JLabel("Tamanho do bloco:");
+		JLabel blockWidthLabel = new JLabel("Largura do bloco:");
+		JLabel blockHeightLabel = new JLabel("Altura do bloco:");
 		
 		comboBoxAlgorithm = new JComboBox<String>(ME.ALGORITHM_ITEMS);
 		searchAreaWidth = new JTextField();
 		searchAreaHeight = new JTextField();
-		comboBoxBlockSize = new JComboBox<String>(ME.BLOCK_SIZE_ITEMS);
+		blockWidth = new JTextField();
+		blockHeight = new JTextField();
 		checkBoxKeepReferenceFrame = new JCheckBox("Fixar quadro de referência");
 		
 		GridBagConstraints constraints = new GridBagConstraints();
@@ -163,11 +166,19 @@ public class SetupView extends JPanel {
         
 		constraints.gridx = 0;
 		constraints.gridy =  4;
-		motionEstimationConfigPanel.add(blockLabel, constraints);
+		motionEstimationConfigPanel.add(blockWidthLabel, constraints);
         
         constraints.gridx = 0;
 		constraints.gridy = 5;
-		motionEstimationConfigPanel.add(comboBoxBlockSize, constraints);
+		motionEstimationConfigPanel.add(blockWidth, constraints);
+		
+		constraints.gridx = 1;
+		constraints.gridy =  4;
+		motionEstimationConfigPanel.add(blockHeightLabel, constraints);
+        
+        constraints.gridx = 1;
+		constraints.gridy = 5;
+		motionEstimationConfigPanel.add(blockHeight, constraints);
 		
 		constraints.gridx = 0;
 		constraints.gridy = 6;
@@ -266,13 +277,13 @@ public class SetupView extends JPanel {
 	}
 	
 	public int getBlockWidth() {
-		String selected = (String) comboBoxBlockSize.getSelectedItem();
-		return ME.getWidth(selected);
+		String width = (String) blockWidth.getText();
+		return Integer.parseInt(width.trim());
 	}
 	
 	public int getBlockHeight() {
-		String selected = (String) comboBoxBlockSize.getSelectedItem();
-		return ME.getHeight(selected);
+		String height = (String) blockHeight.getText();
+		return Integer.parseInt(height);
 	}
 	
 	public boolean getKeepReferenceFrameState() {
