@@ -44,9 +44,9 @@ public class ApplicationController extends JFrame {
 	private int blockHeight;
 	private boolean keepReferenceFrame;
 	
-	private int actualFrameIndex;
-	private int referenceFrameIndex;
-	private Position codingBlockPosition;
+	private int actualFrameIndex = ME.SECOND_FRAME;
+	private int referenceFrameIndex = ME.FIRST_FRAME;
+	private Position codingBlockPosition = new Position(ME.FIRST_BLOCK_X, ME.FIRST_BLOCK_Y);
 	
 	// Data generation related
 	private YUVReader videoReader;
@@ -74,11 +74,11 @@ public class ApplicationController extends JFrame {
 		
 		setLayout(layout);
 		
-		startSetupPanel();
-		startMainPanel();
+		startSetupView();
+		startMainView();
 	}
 	
-	private void startSetupPanel() {
+	private void startSetupView() {
 		setupView = new SetupView();
 		videoChooser = new JFileChooser();
 		
@@ -109,7 +109,7 @@ public class ApplicationController extends JFrame {
 		container.add(setupView, ME.SETUP_PANEL);
 	}
 	
-	private void startMainPanel() {
+	private void startMainView() {
 		mainView = new MainView();
 		
 		mainView.setBtnPreviousFrameEnabled(false);
@@ -161,7 +161,6 @@ public class ApplicationController extends JFrame {
 				if (response != "") {
 					actualFrameIndex = Integer.parseInt(response) - 1;
 					videoReader.setFrameWithImage(actualFrame, actualFrameIndex);
-					setCodingBlockPosition(0, 0);
 					showResults();
 					setControlButtonsState();
 				}
@@ -177,7 +176,6 @@ public class ApplicationController extends JFrame {
 				if (response != "") {
 					referenceFrameIndex = Integer.parseInt(response) - 1;
 					videoReader.setFrameWithImage(referenceFrame, referenceFrameIndex);
-					setCodingBlockPosition(0, 0);
 					showResults();
 					setControlButtonsState();
 				}
@@ -242,11 +240,6 @@ public class ApplicationController extends JFrame {
 	}
 	
 	private void setUpModels() {
-		actualFrameIndex = ME.SECOND_FRAME;
-		referenceFrameIndex = ME.FIRST_FRAME;
-		
-		codingBlockPosition = new Position(ME.FIRST_BLOCK_X, ME.FIRST_BLOCK_Y);
-		
 		videoReader = new YUVReader(inputFile, frameWidth, frameHeight, samplingYCbCr);
 		
 		actualFrame = new Frame(frameWidth, frameHeight);
@@ -287,6 +280,9 @@ public class ApplicationController extends JFrame {
 		
 		searchAlgorithmME.setActualFrame(actualFrame);
 		searchAlgorithmME.setReferenceFrame(referenceFrame);
+		
+		System.out.println(codingBlockPosition.getX() + "   "  +  codingBlockPosition.getY());
+		setCodingBlockPosition(codingBlockPosition.getX(), codingBlockPosition.getY());
 	}
 	
 	private void showResults() {
@@ -336,8 +332,6 @@ public class ApplicationController extends JFrame {
 				referenceFrameIndex--;
 				videoReader.setFrameWithImage(referenceFrame, referenceFrameIndex);
 			}
-			
-			setCodingBlockPosition(0, 0);
 		}
 	}
 	
@@ -351,8 +345,6 @@ public class ApplicationController extends JFrame {
 				referenceFrameIndex++;
 				videoReader.setFrameWithImage(referenceFrame, referenceFrameIndex);
 			}
-			
-			setCodingBlockPosition(0, 0);
 		}
 	}
 	
@@ -388,8 +380,6 @@ public class ApplicationController extends JFrame {
 	}
 	
 	private void setControlButtonsState() {
-		int totalCodingBlocks = (frameWidth / blockWidth + 1) * (frameHeight / blockHeight + 1);
-		
 		// Set previous frame button state
 		if (actualFrameIndex == 1) {
 			mainView.setBtnPreviousFrameEnabled(false);
@@ -407,7 +397,7 @@ public class ApplicationController extends JFrame {
 		}
 		
 		// Set previous block button state
-		if (codingBlockPosition.getX() == 0 && codingBlockPosition.getY() == 0) {
+		if (codingBlockPosition.getX() <= 0 && codingBlockPosition.getY() <= 0) {
 			mainView.setBtnPreviousBlockEnabled(false);
 		}
 		else {
