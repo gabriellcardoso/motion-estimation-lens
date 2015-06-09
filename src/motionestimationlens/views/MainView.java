@@ -1,9 +1,10 @@
 package motionestimationlens.views;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 
@@ -55,7 +56,8 @@ public class MainView extends JPanel {
 	public MainView() {
 		super();
 		
-		setLayout(new GridBagLayout());
+		setBorder(new EmptyBorder(10, 10, 10, 10));
+		setLayout(new BorderLayout(10, 10));
 		
 		createControlPanel();
 		createReferenceFramePanel();
@@ -65,10 +67,7 @@ public class MainView extends JPanel {
 		createFooterPanel();
 
 		addControlPanel();
-		addReferenceFramePanel();
-		addActualFramePanel();
-		addHeatMapPanel();
-		addResultsPanel();
+		addMotionEstimationPanels();
 		addFooterPanel();
     }
 	
@@ -78,8 +77,8 @@ public class MainView extends JPanel {
 		
 		btnPreviousFrame = new JButton("Quadro anterior");
 		btnPreviousBlock = new JButton("Bloco anterior");
-		btnNextBlock = new JButton("PrÃ³ximo bloco");
-		btnNextFrame = new JButton("PrÃ³ximo quadro");
+		btnNextBlock = new JButton("Próximo bloco");
+		btnNextFrame = new JButton("Próximo quadro");
 		
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
@@ -104,27 +103,21 @@ public class MainView extends JPanel {
 	
 	private void createActualFramePanel() {
 		actualFramePanel = new FramePanel(null);
-		actualFramePanel.setPreferredSize(new Dimension(350, 350));
-		
 		actualFramePanel.setTitle("Quadro atual");
 		actualFramePanel.setDrawTitle(true);
 	}
 	
 	private void createReferenceFramePanel() {
 		referenceFramePanel = new FramePanel(null);
-		referenceFramePanel.setPreferredSize(new Dimension(350, 350));
-		
-		referenceFramePanel.setTitle("Quadro de referÃªncia");
+		referenceFramePanel.setTitle("Quadro de referência");
 		referenceFramePanel.setDrawTitle(true);
 	}
 	
     private void createHeatMapPanel() {
         heatMapPanel = new HeatMapPanel(null);
-        heatMapPanel.setPreferredSize(new Dimension(350, 350));
-        
         heatMapPanel.setDrawLegend(false);
 
-        heatMapPanel.setTitle("Mapa de calor da Ã¡rea de busca");
+        heatMapPanel.setTitle("Mapa de calor da área de busca");
         heatMapPanel.setDrawTitle(true);
 
         heatMapPanel.setXAxisTitle("X Axis");
@@ -142,24 +135,23 @@ public class MainView extends JPanel {
     
     private void createResultsPanel() {
     	Border border = BorderFactory.createTitledBorder(
-    						"Resultados da EstimaÃ§Ã£o Movimento",
+    						"Resultados da Estimação Movimento",
     						new EmptyBorder(10, 10, 10, 10)
     					);
     	
     	resultsPanel = new JPanel();
-    	resultsPanel.setPreferredSize(new Dimension(350, 350));
     	resultsPanel.setLayout(new GridBagLayout());
     	resultsPanel.setBorder(border);
     	
-    	lblReferenceFrame = new JLabel("Quadro de referÃªncia: 0/0");
+    	lblReferenceFrame = new JLabel("Quadro de referência: 0/0");
     	lblActualFrame = new JLabel("Quadro atual: 0/0");
     	lblCodingBlock = new JLabel("Bloco: x, y");
     	lblBestVector = new JLabel("Melhor bloco candidato: x, y");
     	lblBestSad = new JLabel("SAD do melhor bloco candidato: 0");
     	lblVector = new JLabel("Bloco escolhido pelo algoritmo: x, y");
     	lblSad = new JLabel("SAD do bloco escolhido pelo algoritmo: 0");
-    	lblNumberOfBlocks = new JLabel("NÃºmero de blocos candidatos: 0");
-    	lblNumberOfBlocksVisited = new JLabel("NÃºmero de blocos candidatos visitados: 0");
+    	lblNumberOfBlocks = new JLabel("Número de blocos candidatos: 0");
+    	lblNumberOfBlocksVisited = new JLabel("Número de blocos candidatos visitados: 0");
     	
     	GridBagConstraints constraints = new GridBagConstraints();
     	constraints.anchor = GridBagConstraints.NORTH;
@@ -207,10 +199,10 @@ public class MainView extends JPanel {
     	footerPanel = new JPanel();
     	footerPanel.setLayout(new GridBagLayout());
     	
-    	btnSetReferenceFrame = new JButton("Especificar quadro de referÃªncia");
+    	btnSetReferenceFrame = new JButton("Especificar quadro de referência");
     	btnSetActualFrame = new JButton("Especificar quadro atual");
     	btnSetCodingBlock = new JButton("Especificar bloco a ser codificado");
-    	btnBackToSetup = new JButton("Voltar para configuraÃ§Ãµes");
+    	btnBackToSetup = new JButton("Voltar para configurações");
     	
     	GridBagConstraints constraints = new GridBagConstraints();
     	constraints.anchor = GridBagConstraints.PAGE_END;
@@ -235,77 +227,22 @@ public class MainView extends JPanel {
     }
 	
 	private void addControlPanel() {
-		GridBagConstraints constraints = new GridBagConstraints();
-		
-		constraints.anchor = GridBagConstraints.PAGE_START;
-		constraints.fill = GridBagConstraints.BOTH;
-    	constraints.insets = new Insets(5, 5, 5, 5);
-    	constraints.gridx = 0;
-    	constraints.gridx = 0;
-    	constraints.gridwidth = 2;
-    	
-		this.add(controlPanel, constraints);
+		this.add(controlPanel, BorderLayout.PAGE_START);
 	}
 	
-	
-	private void addReferenceFramePanel() {
-		GridBagConstraints constraints = new GridBagConstraints();
+	private void addMotionEstimationPanels() {
+		JPanel motionEstimationPanels = new JPanel(new GridLayout(0, 2, 5, 5));
 		
-		constraints.fill = GridBagConstraints.BOTH;
-    	constraints.insets = new Insets(5, 5, 5, 5);
-        constraints.gridx = 0;
-        constraints.gridy = 1;
-        constraints.weightx = 0.7;
-        constraints.weighty = 0.7;
-        
-        this.add(referenceFramePanel, constraints);
-	}
-	
-	private void addActualFramePanel() {
-		GridBagConstraints constraints = new GridBagConstraints();
+		motionEstimationPanels.add(this.referenceFramePanel);
+		motionEstimationPanels.add(this.actualFramePanel);
+		motionEstimationPanels.add(this.heatMapPanel);
+		motionEstimationPanels.add(this.resultsPanel);
 		
-		constraints.fill = GridBagConstraints.BOTH;
-    	constraints.insets = new Insets(5, 5, 5, 5);
-        constraints.gridx = 1;
-        constraints.gridy = 1;
-        constraints.weightx = 0.3;
-        constraints.weighty = 0.3;
-        
-        this.add(actualFramePanel, constraints);
-	}
-	
-	private void addHeatMapPanel() {
-		GridBagConstraints constraints = new GridBagConstraints();
-		
-		constraints.fill = GridBagConstraints.BOTH;
-    	constraints.insets = new Insets(5, 5, 5, 5);
-        constraints.gridx = 0;
-        constraints.gridy = 2;
-        
-        this.add(heatMapPanel, constraints);
-	}
-	
-	private void addResultsPanel() {
-		GridBagConstraints constraints = new GridBagConstraints();
-		
-		constraints.fill = GridBagConstraints.BOTH;
-    	constraints.insets = new Insets(5, 5, 5, 5);
-        constraints.gridx = 1;
-        constraints.gridy = 2;
-        
-        this.add(resultsPanel, constraints);
+		this.add(motionEstimationPanels, BorderLayout.CENTER);
 	}
 	
 	private void addFooterPanel() {
-		GridBagConstraints constraints = new GridBagConstraints();
-		
-		constraints.fill = GridBagConstraints.BOTH;
-    	constraints.insets = new Insets(5, 5, 5, 5);
-        constraints.gridx = 0;
-        constraints.gridy = 3;
-        constraints.gridwidth = 2;
-        
-        this.add(footerPanel, constraints);
+		this.add(footerPanel, BorderLayout.PAGE_END);
 	}
 	
    public void setActualFrame(Frame frame) {
@@ -325,7 +262,7 @@ public class MainView extends JPanel {
     }
     
     public void setReferenceFrameIndex(int referenceFrameIndex, int framesTotal) {
-    	lblReferenceFrame.setText("Quadro de referÃªncia: " + referenceFrameIndex + "/" + framesTotal);
+    	lblReferenceFrame.setText("Quadro de referência: " + referenceFrameIndex + "/" + framesTotal);
     }
     
     public void setCodingBlock(CodingBlock codingBlock) {
@@ -363,11 +300,11 @@ public class MainView extends JPanel {
     }
 
     public void setNumberOfBlocks(int numberOfBlocks) {
-    	lblNumberOfBlocks.setText("NÃºmero de blocos candidatos: " + numberOfBlocks);
+    	lblNumberOfBlocks.setText("Número de blocos candidatos: " + numberOfBlocks);
     }
     
     public void setNumberOfBlocksVisited(int numberOfBlocksVisited) {
-    	lblNumberOfBlocksVisited.setText("NÃºmero de blocos candidatos visitados: " + numberOfBlocksVisited);
+    	lblNumberOfBlocksVisited.setText("Número de blocos candidatos visitados: " + numberOfBlocksVisited);
     }
 	
 	public void setBtnPreviousFrameListener(ActionListener listener) {

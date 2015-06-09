@@ -25,7 +25,8 @@ public class SetupView extends JPanel {
 	private JPanel videoConfigPanel;
 	
 	private JButton btnOpenVideo;
-	private JComboBox<String> comboBoxResolution;
+	private JTextField resolutionWidth;
+	private JTextField resolutionHeight;
 	private JComboBox<String> comboBoxSampling;
 	private JTextField inputFrames;
 	
@@ -64,12 +65,14 @@ public class SetupView extends JPanel {
 		videoConfigPanel.setLayout(new GridBagLayout());
 		videoConfigPanel.setBorder(border);
 		
-		JLabel resolutionLabel = new JLabel("Resolução:");
+		JLabel resolutionWidthLabel = new JLabel("Largura da resolução:");
+		JLabel resolutionHeightLabel = new JLabel("Altura da resolução:");
 		JLabel samplingLabel = new JLabel("Amostragem:");
 		JLabel framesLabel = new JLabel("Total de quadros:");
 		
 		btnOpenVideo = new JButton("Abrir arquivo YUV");
-		comboBoxResolution = new JComboBox<String>(ME.RESOLUTION_ITEMS);
+		resolutionWidth = new JTextField();
+		resolutionHeight = new JTextField();
 		comboBoxSampling = new JComboBox<String>(ME.SAMPLING_ITEMS);
 		inputFrames = new JTextField("1");
 		
@@ -80,32 +83,39 @@ public class SetupView extends JPanel {
         
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.gridwidth = 2;
+        constraints.gridwidth = 1;
         videoConfigPanel.add(btnOpenVideo, constraints);
 
 		constraints.gridx = 0;
 		constraints.gridy = 1;
-		constraints.gridwidth = 1;
-		videoConfigPanel.add(resolutionLabel, constraints);
+		videoConfigPanel.add(resolutionWidthLabel, constraints);
 		
 		constraints.gridx = 0;
 		constraints.gridy = 2;
-		videoConfigPanel.add(comboBoxResolution, constraints);
-
-		constraints.gridx = 1;
-		constraints.gridy = 1;
-		videoConfigPanel.add(samplingLabel, constraints);
-		
-		constraints.gridx = 1;
-		constraints.gridy = 2;
-		videoConfigPanel.add(comboBoxSampling, constraints);
+		videoConfigPanel.add(resolutionWidth, constraints);
 		
 		constraints.gridx = 0;
 		constraints.gridy = 3;
-		videoConfigPanel.add(framesLabel, constraints);
+		videoConfigPanel.add(resolutionHeightLabel, constraints);
 		
 		constraints.gridx = 0;
 		constraints.gridy = 4;
+		videoConfigPanel.add(resolutionHeight, constraints);
+
+		constraints.gridx = 0;
+		constraints.gridy = 5;
+		videoConfigPanel.add(samplingLabel, constraints);
+		
+		constraints.gridx = 0;
+		constraints.gridy = 6;
+		videoConfigPanel.add(comboBoxSampling, constraints);
+		
+		constraints.gridx = 0;
+		constraints.gridy = 7;
+		videoConfigPanel.add(framesLabel, constraints);
+		
+		constraints.gridx = 0;
+		constraints.gridy = 8;
 		videoConfigPanel.add(inputFrames, constraints);
 	}
 	
@@ -222,13 +232,13 @@ public class SetupView extends JPanel {
 	}
 	
 	public int getFrameWidth() {
-		String selected = (String) comboBoxResolution.getSelectedItem();
-		return ME.getWidth(selected);
+		String width = (String) resolutionWidth.getText();
+		return Integer.parseInt(width.trim());
 	}
 	
 	public int getFrameHeight() {
-		String selected = (String) comboBoxResolution.getSelectedItem();
-		return ME.getHeight(selected);
+		String height = (String) resolutionHeight.getText();
+		return Integer.parseInt(height.trim());
 	}
 	
 	public int getSampling() {

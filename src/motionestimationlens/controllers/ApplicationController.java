@@ -357,38 +357,34 @@ public class ApplicationController extends JFrame {
 	}
 	
 	private void goToPreviousBlock() {
-		int nextBlockX = codingBlockPosition.getX() - blockWidth;
+		int nextBlockX = codingBlockPosition.getX() - 1;
 		int nextBlockY = codingBlockPosition.getY();
 		
 		if (nextBlockX < 0) {
-			if (frameWidth % blockWidth == 0) {
-				nextBlockX = (frameWidth / blockWidth - 1) * blockWidth;
-			}
-			else {
-				nextBlockX = (frameWidth / blockWidth) * blockWidth;
-			}
-			 
-			nextBlockY -= blockHeight;
+			nextBlockY--;
 		}
 		
 		setCodingBlockPosition(nextBlockX, nextBlockY);
 	}
 	
 	private void goToNextBlock() {
-		int nextBlockX = codingBlockPosition.getX() + blockWidth;
+		int widthMaxBlocks = frameWidth / blockWidth;
+		int heightMaxBlocks = frameHeight / blockHeight;
+		
+		int nextBlockX = codingBlockPosition.getX() + 1;
 		int nextBlockY = codingBlockPosition.getY();
 		
-		if (nextBlockX >= frameWidth) {
+		if (nextBlockX >= widthMaxBlocks) {
 			nextBlockX = 0;
-			nextBlockY += blockHeight;
+			nextBlockY++;
 		}
 		
 		setCodingBlockPosition(nextBlockX, nextBlockY);
 	}
 	
 	private void goToBlock(int x, int y) {
-		this.fullSearchME.setCodingBlockPosition(x, y);
-		this.searchAlgorithmME.setCodingBlockPosition(x, y);
+		this.fullSearchME.setCodingBlockPosition(x * blockWidth, y * blockHeight);
+		this.searchAlgorithmME.setCodingBlockPosition(x * blockWidth, y * blockHeight);
 	}
 	
 	private void setControlButtonsState() {
@@ -419,7 +415,7 @@ public class ApplicationController extends JFrame {
 		}
 		
 		// Set next block button state
-		if (codingBlockPosition.getX() + blockWidth >= frameWidth && codingBlockPosition.getY() + blockHeight >= frameHeight) {
+		if (codingBlockPosition.getX() >= frameWidth / blockWidth && codingBlockPosition.getY() >= frameHeight / blockHeight ) {
 			mainView.setBtnNextBlockEnabled(false);
 		}
 		else {
