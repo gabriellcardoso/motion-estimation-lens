@@ -32,7 +32,8 @@ public class SetupView extends JPanel {
 	private JPanel motionEstimationConfigPanel;
 	
 	private JComboBox<String> comboBoxAlgorithm;
-	private JComboBox<String> comboBoxSearchArea;
+	private JTextField searchAreaWidth;
+	private JTextField searchAreaHeight;
 	private JComboBox<String> comboBoxBlockSize;
 	private JCheckBox checkBoxKeepReferenceFrame;
 	
@@ -80,31 +81,32 @@ public class SetupView extends JPanel {
         
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.gridwidth = 1;
+        constraints.gridwidth = 2;
         videoConfigPanel.add(btnOpenVideo, constraints);
 
 		constraints.gridx = 0;
 		constraints.gridy = 1;
+		constraints.gridwidth = 1;
 		videoConfigPanel.add(resolutionWidthLabel, constraints);
 		
 		constraints.gridx = 0;
 		constraints.gridy = 2;
 		videoConfigPanel.add(resolutionWidth, constraints);
 		
-		constraints.gridx = 0;
-		constraints.gridy = 3;
+		constraints.gridx = 1;
+		constraints.gridy = 1;
 		videoConfigPanel.add(resolutionHeightLabel, constraints);
 		
-		constraints.gridx = 0;
-		constraints.gridy = 4;
+		constraints.gridx = 1;
+		constraints.gridy = 2;
 		videoConfigPanel.add(resolutionHeight, constraints);
 
 		constraints.gridx = 0;
-		constraints.gridy = 5;
+		constraints.gridy = 3;
 		videoConfigPanel.add(samplingLabel, constraints);
 		
 		constraints.gridx = 0;
-		constraints.gridy = 6;
+		constraints.gridy = 4;
 		videoConfigPanel.add(comboBoxSampling, constraints);
 	}
 	
@@ -119,11 +121,13 @@ public class SetupView extends JPanel {
 		motionEstimationConfigPanel.setBorder(border);
 
 		JLabel algorithmLabel = new JLabel("Algoritmo de busca:");
-		JLabel searchAreaLabel = new JLabel("Área de busca:");
+		JLabel searchAreaWidthLabel = new JLabel("Largura da área de busca:");
+		JLabel searchAreaHeightLabel = new JLabel("Altura da área de busca:");
 		JLabel blockLabel = new JLabel("Tamanho do bloco:");
 		
 		comboBoxAlgorithm = new JComboBox<String>(ME.ALGORITHM_ITEMS);
-		comboBoxSearchArea = new JComboBox<String>(ME.SEARCH_AREA_ITEMS);
+		searchAreaWidth = new JTextField();
+		searchAreaHeight = new JTextField();
 		comboBoxBlockSize = new JComboBox<String>(ME.BLOCK_SIZE_ITEMS);
 		checkBoxKeepReferenceFrame = new JCheckBox("Fixar quadro de referência");
 		
@@ -143,22 +147,30 @@ public class SetupView extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy =  2;
 		constraints.gridwidth = 1;
-		motionEstimationConfigPanel.add(searchAreaLabel, constraints);
+		motionEstimationConfigPanel.add(searchAreaWidthLabel, constraints);
 		
         constraints.gridx = 0;
 		constraints.gridy =  3;
-		motionEstimationConfigPanel.add(comboBoxSearchArea, constraints);
-        
+		motionEstimationConfigPanel.add(searchAreaWidth, constraints);
+		
 		constraints.gridx = 1;
 		constraints.gridy =  2;
+		motionEstimationConfigPanel.add(searchAreaHeightLabel, constraints);
+		
+        constraints.gridx = 1;
+		constraints.gridy =  3;
+		motionEstimationConfigPanel.add(searchAreaHeight, constraints);
+        
+		constraints.gridx = 0;
+		constraints.gridy =  4;
 		motionEstimationConfigPanel.add(blockLabel, constraints);
         
-        constraints.gridx = 1;
-		constraints.gridy = 3;
+        constraints.gridx = 0;
+		constraints.gridy = 5;
 		motionEstimationConfigPanel.add(comboBoxBlockSize, constraints);
 		
 		constraints.gridx = 0;
-		constraints.gridy = 4;
+		constraints.gridy = 6;
 		constraints.gridwidth = 2;
 		motionEstimationConfigPanel.add(checkBoxKeepReferenceFrame, constraints);
 	}
@@ -244,13 +256,13 @@ public class SetupView extends JPanel {
 	}
 	
 	public int getSearchAreaWidth() {
-		String selected = (String) comboBoxSearchArea.getSelectedItem();
-		return ME.getWidth(selected);
+		String width = (String) searchAreaWidth.getText();
+		return Integer.parseInt(width.trim());
 	}
 	
 	public int getSearchAreaHeight() {
-		String selected = (String) comboBoxSearchArea.getSelectedItem();
-		return ME.getHeight(selected);
+		String height = (String) searchAreaHeight.getText();
+		return Integer.parseInt(height.trim());
 	}
 	
 	public int getBlockWidth() {
