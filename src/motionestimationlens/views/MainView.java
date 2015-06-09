@@ -77,8 +77,8 @@ public class MainView extends JPanel {
 		
 		btnPreviousFrame = new JButton("Quadro anterior");
 		btnPreviousBlock = new JButton("Bloco anterior");
-		btnNextBlock = new JButton("Próximo bloco");
-		btnNextFrame = new JButton("Próximo quadro");
+		btnNextBlock = new JButton("PrÃ³ximo bloco");
+		btnNextFrame = new JButton("PrÃ³ximo quadro");
 		
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
@@ -109,7 +109,7 @@ public class MainView extends JPanel {
 	
 	private void createReferenceFramePanel() {
 		referenceFramePanel = new FramePanel(null);
-		referenceFramePanel.setTitle("Quadro de referência");
+		referenceFramePanel.setTitle("Quadro de referÃªncia");
 		referenceFramePanel.setDrawTitle(true);
 	}
 	
@@ -117,7 +117,7 @@ public class MainView extends JPanel {
         heatMapPanel = new HeatMapPanel(null);
         heatMapPanel.setDrawLegend(false);
 
-        heatMapPanel.setTitle("Mapa de calor da área de busca");
+        heatMapPanel.setTitle("Mapa de calor da Ã¡rea de busca");
         heatMapPanel.setDrawTitle(true);
 
         heatMapPanel.setXAxisTitle("X Axis");
@@ -135,7 +135,7 @@ public class MainView extends JPanel {
     
     private void createResultsPanel() {
     	Border border = BorderFactory.createTitledBorder(
-    						"Resultados da Estimação Movimento",
+    						"Resultados da EstimaÃ§Ã£o Movimento",
     						new EmptyBorder(10, 10, 10, 10)
     					);
     	
@@ -143,15 +143,15 @@ public class MainView extends JPanel {
     	resultsPanel.setLayout(new GridBagLayout());
     	resultsPanel.setBorder(border);
     	
-    	lblReferenceFrame = new JLabel("Quadro de referência: 0/0");
+    	lblReferenceFrame = new JLabel("Quadro de referÃªncia: 0/0");
     	lblActualFrame = new JLabel("Quadro atual: 0/0");
     	lblCodingBlock = new JLabel("Bloco: x, y");
     	lblBestVector = new JLabel("Melhor bloco candidato: x, y");
     	lblBestSad = new JLabel("SAD do melhor bloco candidato: 0");
     	lblVector = new JLabel("Bloco escolhido pelo algoritmo: x, y");
     	lblSad = new JLabel("SAD do bloco escolhido pelo algoritmo: 0");
-    	lblNumberOfBlocks = new JLabel("Número de blocos candidatos: 0");
-    	lblNumberOfBlocksVisited = new JLabel("Número de blocos candidatos visitados: 0");
+    	lblNumberOfBlocks = new JLabel("NÃºmero de blocos candidatos: 0");
+    	lblNumberOfBlocksVisited = new JLabel("NÃºmero de blocos candidatos visitados: 0");
     	
     	GridBagConstraints constraints = new GridBagConstraints();
     	constraints.anchor = GridBagConstraints.NORTH;
@@ -199,10 +199,10 @@ public class MainView extends JPanel {
     	footerPanel = new JPanel();
     	footerPanel.setLayout(new GridBagLayout());
     	
-    	btnSetReferenceFrame = new JButton("Especificar quadro de referência");
+    	btnSetReferenceFrame = new JButton("Especificar quadro de referÃªncia");
     	btnSetActualFrame = new JButton("Especificar quadro atual");
     	btnSetCodingBlock = new JButton("Especificar bloco a ser codificado");
-    	btnBackToSetup = new JButton("Voltar para configurações");
+    	btnBackToSetup = new JButton("Voltar para configuraÃ§Ãµes");
     	
     	GridBagConstraints constraints = new GridBagConstraints();
     	constraints.anchor = GridBagConstraints.PAGE_END;
@@ -262,15 +262,17 @@ public class MainView extends JPanel {
     }
     
     public void setReferenceFrameIndex(int referenceFrameIndex, int framesTotal) {
-    	lblReferenceFrame.setText("Quadro de referência: " + referenceFrameIndex + "/" + framesTotal);
+    	lblReferenceFrame.setText("Quadro de referÃªncia: " + referenceFrameIndex + "/" + framesTotal);
     }
     
     public void setCodingBlock(CodingBlock codingBlock) {
     	Position blockPosition = codingBlock.getPosition();
+    	int blockX = blockPosition.getX() / codingBlock.getWidth();
+    	int blockY = blockPosition.getY() / codingBlock.getHeight();
     	
     	actualFramePanel.setCodingBlock(codingBlock);
     	
-    	lblCodingBlock.setText("Bloco: " + blockPosition.getX() + "," + blockPosition.getY());
+    	lblCodingBlock.setText("Bloco: " + blockX + "," + blockY);
     }
     
     public void setSearchArea(CodingBlock codingBlock, int width, int height) {
@@ -300,11 +302,11 @@ public class MainView extends JPanel {
     }
 
     public void setNumberOfBlocks(int numberOfBlocks) {
-    	lblNumberOfBlocks.setText("Número de blocos candidatos: " + numberOfBlocks);
+    	lblNumberOfBlocks.setText("NÃºmero de blocos candidatos: " + numberOfBlocks);
     }
     
     public void setNumberOfBlocksVisited(int numberOfBlocksVisited) {
-    	lblNumberOfBlocksVisited.setText("Número de blocos candidatos visitados: " + numberOfBlocksVisited);
+    	lblNumberOfBlocksVisited.setText("NÃºmero de blocos candidatos visitados: " + numberOfBlocksVisited);
     }
 	
 	public void setBtnPreviousFrameListener(ActionListener listener) {
