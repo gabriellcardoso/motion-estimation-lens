@@ -1,6 +1,7 @@
 package motionestimationlens.views;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 
 import motionestimationlens.models.MotionEstimationVector;
@@ -10,7 +11,7 @@ import org.mblecker.heatmap.HeatMap;
 
 public class HeatMapPanel extends HeatMap {
 	
-	private static final Color[] GRADIENT_COLORS = Gradient.createMultiGradient(new Color[]{new Color(181, 32, 255), Color.blue, Color.green, Color.yellow, Color.orange, Color.red}, 5000);
+	private static final Color[] GRADIENT_COLORS = Gradient.createMultiGradient(new Color[]{ Color.BLACK, new Color(102, 0, 205), new Color(163, 16, 148), Color.RED, Color.ORANGE, Color.YELLOW}, 5000);
 	private static final boolean USE_GRAPHICS_Y_AXIS = true;
 
 	public HeatMapPanel(double[][] data) {
@@ -19,6 +20,12 @@ public class HeatMapPanel extends HeatMap {
 	}
 	
 	public void updateData(double[][] data) {
+		Dimension size = new Dimension(data[0].length, data.length);
+
+		setMinimumSize(size);
+		setPreferredSize(size);
+		setMaximumSize(size);
+		
 		updateData(data, USE_GRAPHICS_Y_AXIS);
 	}
 	
