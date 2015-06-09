@@ -1,5 +1,7 @@
 package motionestimationlens.models;
 
+import motionestimationlens.utils.ME;
+
 
 public class SumOfAbsoluteDifferences extends EvaluationCriteria implements IEvaluationCriteria {
 	
@@ -31,7 +33,7 @@ public class SumOfAbsoluteDifferences extends EvaluationCriteria implements IEva
 				if (blockPositionY + y < actualFrame.getHeight()
 					&& blockPositionX + x < actualFrame.getWidth())
 				{
-					actualImagePixel = actualImage[blockPositionY + y][blockPositionX + x];
+					actualImagePixel = ME.byteToInt(actualImage[blockPositionY + y][blockPositionX + x]);
 				}
 				else {
 					actualImagePixel = 0;
@@ -42,7 +44,7 @@ public class SumOfAbsoluteDifferences extends EvaluationCriteria implements IEva
 					&& positionY + y < actualFrame.getHeight() 
 					&& positionX + x < actualFrame.getWidth())
 				{
-					referenceImagePixel = referenceImage[positionY + y][positionX + x];
+					referenceImagePixel = ME.byteToInt(referenceImage[positionY + y][positionX + x]);
 				}
 				else {
 					referenceImagePixel = 0;

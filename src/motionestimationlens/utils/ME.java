@@ -62,4 +62,8 @@ public class ME {
 		return Integer.parseInt(y);
 	}
 	
+	public static int byteToInt(byte b) {
+		return (int) b & 0xFF;
+	}
+	
 }
