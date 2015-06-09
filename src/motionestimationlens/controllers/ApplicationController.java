@@ -281,7 +281,6 @@ public class ApplicationController extends JFrame {
 		searchAlgorithmME.setActualFrame(actualFrame);
 		searchAlgorithmME.setReferenceFrame(referenceFrame);
 		
-		System.out.println(codingBlockPosition.getX() + "   "  +  codingBlockPosition.getY());
 		setCodingBlockPosition(codingBlockPosition.getX(), codingBlockPosition.getY());
 	}
 	
