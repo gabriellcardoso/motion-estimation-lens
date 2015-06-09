@@ -24,16 +24,22 @@ public abstract class EvaluationCriteria {
 		
 		double[][] heatMap;
 		
-		int initialX = codingBlock.getPosition().getX() - width / 2;
-		int initialY = codingBlock.getPosition().getY() - height / 2;
+		int rangeX = (width - codingBlock.getWidth()) / 2;
+		int rangeY = (height - codingBlock.getHeight()) / 2;
+		
+		int initialX = codingBlock.getPosition().getX() - rangeX;
+		int initialY = codingBlock.getPosition().getY() - rangeY;
+		
+		int finalX = codingBlock.getPosition().getX() + rangeX;
+		int finalY = codingBlock.getPosition().getY() + rangeY;
 		
 		int x, y;
 		
-		heatMap = new double[width][height];
+		heatMap = new double[finalX - initialX][finalY - initialY];
 		
-		for (y = 0; y < height; y++) {
-			for (x = 0; x < width; x++) {
-				heatMap[x][y] = calculate(initialX + x, initialY + y);
+		for (y = initialY; y < finalY; y++) {
+			for (x = initialX; x < finalX; x++) {
+				heatMap[x - initialX][y - initialY] = calculate(x, y);
 			}
 		}
 		

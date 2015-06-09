@@ -30,11 +30,12 @@ public class ME {
 	
 	public static final int FIRST_FRAME = 0;
 	public static final int SECOND_FRAME = 1;
-	public static final int FIRST_BLOCK = 0;
+	public static final int FIRST_BLOCK_X = 0;
+	public static final int FIRST_BLOCK_Y = 0;
 	
 	public static final String[] RESOLUTION_ITEMS = { UHD, QHD, FULL_HD, HD };
 	public static final String[] SAMPLING_ITEMS = { S_444, S_422, S_420, S_411, S_400 };
-	public static final String[] ALGORITHM_ITEMS = { DS, TSS };
+	public static final String[] ALGORITHM_ITEMS = { FS, DS, TSS };
 	public static final String[] SEARCH_AREA_ITEMS = { SA_16, SA_32, SA_64, SA_128, SA_256 };
 	public static final String[] BLOCK_SIZE_ITEMS = { BS_8, BS_16, BS_32, BS_64 };
 	
@@ -49,6 +50,16 @@ public class ME {
 	public static int getHeight(String resolution) {
 		String height = resolution.split("x")[1];
 		return Integer.parseInt(height);
+	}
+	
+	public static int getX(String vector) {
+		String x = vector.split(",")[0];
+		return Integer.parseInt(x);
+	}
+	
+	public static int getY(String vector) {
+		String y = vector.split(",")[1];
+		return Integer.parseInt(y);
 	}
 	
 }

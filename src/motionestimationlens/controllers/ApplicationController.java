@@ -7,6 +7,7 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import motionestimationlens.models.CodingBlock;
 import motionestimationlens.models.DiamondSearch;
@@ -17,6 +18,7 @@ import motionestimationlens.models.ISearchAlgorithm;
 import motionestimationlens.models.MotionEstimation;
 import motionestimationlens.models.MotionEstimationData;
 import motionestimationlens.models.MotionEstimationVector;
+import motionestimationlens.models.Position;
 import motionestimationlens.models.SumOfAbsoluteDifferences;
 import motionestimationlens.models.ThreeStepSearch;
 import motionestimationlens.utils.ME;
@@ -44,7 +46,7 @@ public class ApplicationController extends JFrame {
 	
 	private int actualFrameIndex;
 	private int referenceFrameIndex;
-	private int codingBlockIndex;
+	private Position codingBlockPosition;
 	
 	// Data generation related
 	private YUVReader videoReader;
@@ -98,7 +100,6 @@ public class ApplicationController extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				getConfigs();
-				printConfigs();
 				setUpModels();
 				showResults();
 				goToMainView();
@@ -152,6 +153,52 @@ public class ApplicationController extends JFrame {
 			}
 		});
 		
+		mainView.setBtnSetActualFrameListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String response = JOptionPane.showInputDialog(null, "Escolha o quadro atual: ");
+				
+				if (response != "") {
+					actualFrameIndex = Integer.parseInt(response) - 1;
+					videoReader.setFrameWithImage(actualFrame, actualFrameIndex);
+					setCodingBlockPosition(0, 0);
+					showResults();
+					setControlButtonsState();
+				}
+				
+			}
+		});
+		
+		mainView.setBtnSetReferenceFrameListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String response = JOptionPane.showInputDialog(null, "Escolha o quadro de referência: ");
+
+				if (response != "") {
+					referenceFrameIndex = Integer.parseInt(response) - 1;
+					videoReader.setFrameWithImage(referenceFrame, referenceFrameIndex);
+					setCodingBlockPosition(0, 0);
+					showResults();
+					setControlButtonsState();
+				}
+			}
+		});
+		
+		mainView.setBtnSetCodingBlockListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String response = JOptionPane.showInputDialog(null, "Escolha as coordenadas do bloco a ser codificado (x,y): ");
+				
+				if (response != "") {
+					int x = ME.getX(response);
+					int y = ME.getY(response);
+					setCodingBlockPosition(x, y);
+					showResults();
+					setControlButtonsState();
+				}
+			}
+		});
+		
 		mainView.setBtnBackToSetupListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -162,9 +209,9 @@ public class ApplicationController extends JFrame {
 		container.add(mainView, ME.MAIN_PANEL);
 	}
 	
-	private void setCodingBlockIndex(int index) {
-		codingBlockIndex = index;
-		goToBlock(index);
+	private void setCodingBlockPosition(int x, int y) {
+		codingBlockPosition.setPosition(x, y);
+		goToBlock(x, y);
 	}
 	
 	private void getConfigs() {
@@ -197,7 +244,8 @@ public class ApplicationController extends JFrame {
 	private void setUpModels() {
 		actualFrameIndex = ME.SECOND_FRAME;
 		referenceFrameIndex = ME.FIRST_FRAME;
-		codingBlockIndex = ME.FIRST_BLOCK;
+		
+		codingBlockPosition = new Position(ME.FIRST_BLOCK_X, ME.FIRST_BLOCK_Y);
 		
 		videoReader = new YUVReader(inputFile, frameWidth, frameHeight, samplingYCbCr);
 		
@@ -208,7 +256,7 @@ public class ApplicationController extends JFrame {
 		videoReader.setFrameWithImage(referenceFrame, referenceFrameIndex);
 		
 		mainView.setActualFrame(actualFrame);
-		mainView.setReferenceFrame(actualFrame);
+		mainView.setReferenceFrame(referenceFrame);
 		
 		fullSearchSad = new SumOfAbsoluteDifferences();
 		fullSearch = new FullSearch();
@@ -257,8 +305,8 @@ public class ApplicationController extends JFrame {
 		
 		mainView.setHeatMap(heatMap);
 		
-		mainView.setActualFrameIndex(actualFrameIndex, framesTotal);
-		mainView.setReferenceFrameIndex(referenceFrameIndex, framesTotal);
+		mainView.setActualFrameIndex(actualFrameIndex + 1, framesTotal);
+		mainView.setReferenceFrameIndex(referenceFrameIndex + 1, framesTotal);
 		
 		mainView.setSearchArea(codingBlock, searchAreaWidth, searchAreaHeight);
 		mainView.setCodingBlock(codingBlock);
@@ -289,7 +337,7 @@ public class ApplicationController extends JFrame {
 				videoReader.setFrameWithImage(referenceFrame, referenceFrameIndex);
 			}
 			
-			setCodingBlockIndex(0);
+			setCodingBlockPosition(0, 0);
 		}
 	}
 	
@@ -304,36 +352,43 @@ public class ApplicationController extends JFrame {
 				videoReader.setFrameWithImage(referenceFrame, referenceFrameIndex);
 			}
 			
-			setCodingBlockIndex(0);
+			setCodingBlockPosition(0, 0);
 		}
 	}
 	
 	private void goToPreviousBlock() {
-		if (codingBlockIndex > 0) {
-			setCodingBlockIndex(codingBlockIndex - 1);
+		int nextBlockX = codingBlockPosition.getX() - blockWidth;
+		int nextBlockY = codingBlockPosition.getY();
+		
+		if (nextBlockX < 0) {
+			if (frameWidth % blockWidth == 0) {
+				nextBlockX = (frameWidth / blockWidth - 1) * blockWidth;
+			}
+			else {
+				nextBlockX = (frameWidth / blockWidth) * blockWidth;
+			}
+			 
+			nextBlockY -= blockHeight;
 		}
+		
+		setCodingBlockPosition(nextBlockX, nextBlockY);
 	}
 	
 	private void goToNextBlock() {
-		int totalCodingBlocks = (frameWidth / blockWidth + 1) * (frameHeight / blockHeight + 1);
-
-		if (codingBlockIndex < totalCodingBlocks) {
-			setCodingBlockIndex(codingBlockIndex + 1);
+		int nextBlockX = codingBlockPosition.getX() + blockWidth;
+		int nextBlockY = codingBlockPosition.getY();
+		
+		if (nextBlockX >= frameWidth) {
+			nextBlockX = 0;
+			nextBlockY += blockHeight;
 		}
+		
+		setCodingBlockPosition(nextBlockX, nextBlockY);
 	}
 	
-	private void goToBlock(int index) {
-		int blockShifting = blockWidth * index;
-		int blockRow = blockShifting / frameWidth;
-		int blockPositionX = blockShifting;
-		int blockPositionY = blockRow * blockHeight;
-		
-		if (blockRow > 0) {
-			blockPositionX = ((blockShifting % frameWidth) / blockWidth) * blockWidth;
-		}
-		
-		this.fullSearchME.setCodingBlockPosition(blockPositionX, blockPositionY);
-		this.searchAlgorithmME.setCodingBlockPosition(blockPositionX, blockPositionY);
+	private void goToBlock(int x, int y) {
+		this.fullSearchME.setCodingBlockPosition(x, y);
+		this.searchAlgorithmME.setCodingBlockPosition(x, y);
 	}
 	
 	private void setControlButtonsState() {
@@ -356,7 +411,7 @@ public class ApplicationController extends JFrame {
 		}
 		
 		// Set previous block button state
-		if (codingBlockIndex == 0) {
+		if (codingBlockPosition.getX() == 0 && codingBlockPosition.getY() == 0) {
 			mainView.setBtnPreviousBlockEnabled(false);
 		}
 		else {
@@ -364,7 +419,7 @@ public class ApplicationController extends JFrame {
 		}
 		
 		// Set next block button state
-		if (codingBlockIndex == totalCodingBlocks - 1) {
+		if (codingBlockPosition.getX() + blockWidth >= frameWidth && codingBlockPosition.getY() + blockHeight >= frameHeight) {
 			mainView.setBtnNextBlockEnabled(false);
 		}
 		else {

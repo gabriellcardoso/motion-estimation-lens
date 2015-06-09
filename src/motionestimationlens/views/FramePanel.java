@@ -113,14 +113,14 @@ public class FramePanel extends JPanel {
 	    }
 	    
 	    public void setSearchArea(CodingBlock codingBlock, int searchWidth, int searchHeight) {
-	    	int rangeX = searchWidth / 2;
-	    	int rangeY = searchHeight / 2;
+	    	int rangeX = (searchWidth - codingBlock.getWidth()) / 2;
+	    	int rangeY = (searchHeight - codingBlock.getHeight()) / 2;
 	    	
 	    	int x = codingBlock.getPosition().getX() - rangeX;
 	    	int y = codingBlock.getPosition().getY() - rangeY;
 	    	
-	    	int width = codingBlock.getPosition().getX() + codingBlock.getWidth() + rangeX - x;
-	    	int height = codingBlock.getPosition().getY() + codingBlock.getHeight() + rangeY - y;
+	    	int width = searchWidth;
+	    	int height = searchHeight;
 	    	
 	    	if (x < 0) {
 	    		x = 0;

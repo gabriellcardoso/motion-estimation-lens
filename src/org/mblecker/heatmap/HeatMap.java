@@ -63,8 +63,8 @@ import javax.swing.*;
 
 public class HeatMap extends JPanel
 {
-    private double[][] data;
-    private int[][] dataColorIndices;
+	protected double[][] data;
+    protected int[][] dataColorIndices;
 
     // these four variables are used to print the axis labels
     private double xMin;
@@ -83,7 +83,7 @@ public class HeatMap extends JPanel
     private boolean drawXTicks = false;
     private boolean drawYTicks = false;
 
-    private Color[] colors;
+    protected Color[] colors;
     private Color bg = Color.white;
     private Color fg = Color.black;
 
@@ -350,7 +350,7 @@ public class HeatMap extends JPanel
      * assigns a color index to each data point, stored in the dataColorIndices
      * array, which is used by the drawData() method to plot the points.
      */
-    private void updateDataColors()
+    protected void updateDataColors()
     {
         //We need to find the range of the data values,
         // in order to assign proper colors.
