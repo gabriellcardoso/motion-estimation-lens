@@ -67,25 +67,25 @@ public class HeatMap extends JPanel
     protected int[][] dataColorIndices;
 
     // these four variables are used to print the axis labels
-    private double xMin;
-    private double xMax;
-    private double yMin;
-    private double yMax;
+    protected double xMin;
+    protected double xMax;
+    protected double yMin;
+    protected double yMax;
 
-    private String title;
-    private String xAxis;
-    private String yAxis;
+    protected String title;
+    protected String xAxis;
+    protected String yAxis;
 
-    private boolean drawTitle = false;
-    private boolean drawXTitle = false;
-    private boolean drawYTitle = false;
-    private boolean drawLegend = false;
-    private boolean drawXTicks = false;
-    private boolean drawYTicks = false;
+    protected boolean drawTitle = false;
+    protected boolean drawXTitle = false;
+    protected boolean drawYTitle = false;
+    protected boolean drawLegend = false;
+    protected boolean drawXTicks = false;
+    protected boolean drawYTicks = false;
 
     protected Color[] colors;
-    private Color bg = Color.white;
-    private Color fg = Color.black;
+    protected Color bg = Color.white;
+    protected Color fg = Color.black;
 
     protected BufferedImage bufferedImage;
     protected Graphics2D bufferedGraphics;

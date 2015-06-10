@@ -2,7 +2,10 @@ package motionestimationlens.views;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.text.DecimalFormat;
 
 import motionestimationlens.models.MotionEstimationVector;
 
@@ -16,7 +19,6 @@ public class HeatMapPanel extends HeatMap {
 
 	public HeatMapPanel(double[][] data) {
 		super(data, USE_GRAPHICS_Y_AXIS, GRADIENT_COLORS);
-		setDrawLegend(true);
 	}
 	
 	public void updateData(double[][] data) {
@@ -42,9 +44,66 @@ public class HeatMapPanel extends HeatMap {
 	private void setBlock(Color color, int x, int y) {
 		bufferedGraphics = bufferedImage.createGraphics();
 	    bufferedGraphics.setColor(color);
-	    bufferedGraphics.fillRect(x, y, 1, 1);
+	    
+	    bufferedGraphics.fillRect(x - 2, y, 5, 1);
+	    bufferedGraphics.fillRect(x, y - 2, 1, 5);
 	    
 		repaint();
+	}
+	
+	@Override
+	public void paintComponent(Graphics g) {
+	    super.paintComponent(g);
+	    Graphics2D g2d = (Graphics2D) g;
+	    
+	    int width = this.getWidth();
+	    int height = this.getHeight();
+	    
+	    int borderWidth, borderHeight;
+	    
+	    this.setOpaque(true);
+	
+	    // clear the panel
+	    g2d.setColor(bg);
+	    g2d.fillRect(0, 0, width, height);
+	
+	    // draw the heat map
+	    if (bufferedImage == null)
+	    {
+	        // Ideally, we only to call drawData in the constructor, or if we
+	        // change the data or gradients. We include this just to be safe.
+	        drawData();
+	    }
+
+	    if (width < height) {
+	    	borderWidth = 30;
+	    	borderHeight = (height - width) / 2;
+	    } else {
+	    	borderHeight = 30;
+	    	borderWidth = (width - height) / 2;
+	    }
+	    
+	    // The data plot itself is drawn with 1 pixel per data point, and the
+	    // drawImage method scales that up to fit our current window size. This
+	    // is very fast, and is much faster than the previous version, which 
+	    // redrew the data plot each time we had to repaint the screen.
+	    g2d.drawImage(bufferedImage,
+	                  borderWidth - 1, borderHeight -1,
+	                  width - borderWidth,
+	                  height - borderHeight,
+	                  0, 0,
+	                  bufferedImage.getWidth(), bufferedImage.getHeight(),
+	                  null);
+	
+	    // border
+	    g2d.setColor(fg);
+	    g2d.drawRect(borderWidth, borderHeight, width - borderWidth * 2, height - borderHeight * 2);
+	    
+	    // title
+	    if (drawTitle && title != null)
+	    {
+	        g2d.drawString(title, (width / 2) - 4 * title.length(), 20);
+	    }
 	}
 	
 }
