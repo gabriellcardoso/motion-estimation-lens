@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import motionestimationlens.models.CodingBlock;
 import motionestimationlens.models.Frame;
+import motionestimationlens.utils.ME;
 
 public class FramePanel extends JPanel {
 	 	
@@ -178,9 +179,9 @@ public class FramePanel extends JPanel {
 	        {
 	            for (int x = 0; x < frame.getWidth(); x++)
 	            {
-	            	r = Math.abs(image[y][x]);
-	            	g = Math.abs(image[y][x]);
-	            	b = Math.abs(image[y][x]);
+	            	r = Math.abs(ME.byteToInt(image[y][x]));
+	            	g = Math.abs(ME.byteToInt(image[y][x]));
+	            	b = Math.abs(ME.byteToInt(image[y][x]));
 	            	
 	                bufferedGraphics.setColor(new Color((int) r, (int) g, (int) b));
 	                bufferedGraphics.fillRect(x, y, 1, 1);
