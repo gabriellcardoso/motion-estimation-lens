@@ -197,6 +197,10 @@ public class FramePanel extends JPanel {
 	        int width = this.getWidth();
 	        int height = this.getHeight();
 	        
+	        int imageWidth, imageHeight;
+	        int borderWidth, borderHeight;
+	        double proportion;
+	        
 	        this.setOpaque(true);
 
 	        // clear the panel
@@ -211,21 +215,34 @@ public class FramePanel extends JPanel {
 	            drawFrame();
 	        }
 	        
+	        imageWidth = bufferedImage.getWidth();
+	        imageHeight = bufferedImage.getHeight();
+	        
+	        if (width < height) {
+	        	borderWidth = 30;
+	        	proportion = (double) imageWidth / (double) (width - borderWidth * 2);
+		    	borderHeight = (int) (height - imageHeight / proportion) / 2;
+		    } else {
+		    	borderHeight = 30;
+		    	proportion = (double) imageHeight / (double) (height - borderHeight * 2);
+		    	borderWidth = (int) (width - imageWidth / proportion) / 2;
+		    }
+	        
 	        // The data plot itself is drawn with 1 pixel per data point, and the
 	        // drawImage method scales that up to fit our current window size. This
 	        // is very fast, and is much faster than the previous version, which 
 	        // redrew the data plot each time we had to repaint the screen.
 	        g2d.drawImage(bufferedImage,
-	                      31, 31,
-	                      width - 30,
-	                      height - 30,
-	                      0, 0,
-	                      bufferedImage.getWidth(), bufferedImage.getHeight(),
-	                      null);
+	                  borderWidth - 1, borderHeight -1,
+	                  width - borderWidth,
+	                  height - borderHeight,
+	                  0, 0,
+	                  bufferedImage.getWidth(), bufferedImage.getHeight(),
+	                  null);
 
 	        // border
 	        g2d.setColor(fg);
-	        g2d.drawRect(30, 30, width - 60, height - 60);
+	        g2d.drawRect(borderWidth, borderHeight, width - borderWidth * 2, height - borderHeight * 2);;
 	        
 	        // title
 	        if (drawTitle && title != null)

@@ -42,11 +42,34 @@ public class HeatMapPanel extends HeatMap {
 	}
 	
 	private void setBlock(Color color, int x, int y) {
+		int imageHeight = bufferedImage.getHeight();
+		int imageWidth = bufferedImage.getWidth();
+		
+		int crossSize, crossStrokeWidth, startingShift;
+
 		bufferedGraphics = bufferedImage.createGraphics();
 	    bufferedGraphics.setColor(color);
 	    
-	    bufferedGraphics.fillRect(x - 2, y, 5, 1);
-	    bufferedGraphics.fillRect(x, y - 2, 1, 5);
+	    crossSize = 3;
+	    crossStrokeWidth = 1;
+	    
+	    if (imageWidth >= 200 && imageHeight >= 200) {
+	    	crossStrokeWidth = 3;
+	    	crossSize = 9;
+	    }
+	    else if (imageWidth >= 50 && imageHeight >= 50) {
+	    	crossSize = 5;
+	    }
+	    
+	    if (imageWidth >= 200 && imageHeight >= 200) {
+	    	startingShift = (int) Math.floor(crossSize / 2) + (int) Math.floor(crossStrokeWidth / 2) - 2;
+	    }
+	    else {
+	    	startingShift = (int) Math.floor(crossSize / 2) + (int) Math.floor(crossStrokeWidth / 2);
+	    }
+	    
+	    bufferedGraphics.fillRect(x - startingShift, y, crossSize, crossStrokeWidth);
+	    bufferedGraphics.fillRect(x, y - startingShift, crossStrokeWidth, crossSize);
 	    
 		repaint();
 	}
@@ -59,7 +82,9 @@ public class HeatMapPanel extends HeatMap {
 	    int width = this.getWidth();
 	    int height = this.getHeight();
 	    
-	    int borderWidth, borderHeight;
+	    int imageWidth, imageHeight;
+        int borderWidth, borderHeight;
+        double proportion;
 	    
 	    this.setOpaque(true);
 	
@@ -75,12 +100,17 @@ public class HeatMapPanel extends HeatMap {
 	        drawData();
 	    }
 
-	    if (width < height) {
-	    	borderWidth = 30;
-	    	borderHeight = (height - width) / 2;
+	    imageWidth = bufferedImage.getWidth();
+        imageHeight = bufferedImage.getHeight();
+        
+        if (width < height) {
+        	borderWidth = 30;
+        	proportion = (double) imageWidth / (double) (width - borderWidth * 2);
+	    	borderHeight = (int) (height - imageHeight / proportion) / 2;
 	    } else {
 	    	borderHeight = 30;
-	    	borderWidth = (width - height) / 2;
+	    	proportion = (double) imageHeight / (double) (height - borderHeight * 2);
+	    	borderWidth = (int) (width - imageWidth / proportion) / 2;
 	    }
 	    
 	    // The data plot itself is drawn with 1 pixel per data point, and the
