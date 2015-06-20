@@ -2,8 +2,10 @@ package motionestimationlens.views;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -31,7 +33,7 @@ public class SetupView extends JPanel {
 	
 	private JPanel motionEstimationConfigPanel;
 	
-	private JComboBox<String> comboBoxAlgorithm;
+	private ArrayList<JCheckBox> checkBoxAlgorithms;
 	private JTextField searchAreaWidth;
 	private JTextField searchAreaHeight;
 	private JTextField blockWidth;
@@ -122,16 +124,30 @@ public class SetupView extends JPanel {
 		motionEstimationConfigPanel.setBorder(border);
 
 		JLabel algorithmLabel = new JLabel("Algoritmo de busca:");
+		JCheckBox algorithmBox;
+		
 		JLabel searchAreaWidthLabel = new JLabel("Largura da área de busca:");
 		JLabel searchAreaHeightLabel = new JLabel("Altura da área de busca:");
+		
 		JLabel blockWidthLabel = new JLabel("Largura do bloco:");
 		JLabel blockHeightLabel = new JLabel("Altura do bloco:");
 		
-		comboBoxAlgorithm = new JComboBox<String>(ME.ALGORITHM_ITEMS);
+		JPanel algorithmsPanel = new JPanel(new GridLayout(0,2,5,5));
+		
+		checkBoxAlgorithms = new ArrayList<JCheckBox>();
+		
+		for (String algorithm : ME.ALGORITHM_ITEMS) {
+			algorithmBox = new JCheckBox(algorithm);
+			algorithmsPanel.add(algorithmBox);
+			checkBoxAlgorithms.add(algorithmBox);
+		}
+		
 		searchAreaWidth = new JTextField();
 		searchAreaHeight = new JTextField();
+		
 		blockWidth = new JTextField();
 		blockHeight = new JTextField();
+		
 		checkBoxKeepReferenceFrame = new JCheckBox("Fixar quadro de referência");
 		
 		GridBagConstraints constraints = new GridBagConstraints();
@@ -145,7 +161,7 @@ public class SetupView extends JPanel {
 		constraints.gridx = 0;
 		constraints.gridy =  1;
 		constraints.gridwidth = 2;
-		motionEstimationConfigPanel.add(comboBoxAlgorithm, constraints);
+		motionEstimationConfigPanel.add(algorithmsPanel, constraints);
 		
 		constraints.gridx = 0;
 		constraints.gridy =  2;
@@ -262,8 +278,9 @@ public class SetupView extends JPanel {
 		return 0;
 	}
 	
-	public String getSearchAlgorithm() {
-		return (String) comboBoxAlgorithm.getSelectedItem();
+	public String[] getSearchAlgorithms() {
+		// TODO Fix to return each algorithms were selected
+		return ME.ALGORITHM_ITEMS;//checkBoxAlgorithms.getSelectedItem();
 	}
 	
 	public int getSearchAreaWidth() {

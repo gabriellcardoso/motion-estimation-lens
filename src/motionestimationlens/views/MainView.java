@@ -133,6 +133,7 @@ public class MainView extends JPanel {
         heatMapPanel.setColorForeground(Color.black);
     }
     
+    // TODO Fix it to show more than algorithm
     private void createResultsPanel() {
     	Border border = BorderFactory.createTitledBorder(
     						"Resultados da Estimação Movimento",
@@ -290,6 +291,7 @@ public class MainView extends JPanel {
     	lblBestSad.setText("SAD do melhor bloco candidato: " + bestSad);
     }
     
+    // TODO More than one vector
     public void setResultVector(MotionEstimationVector resultVector) {
     	int resultBlockX = resultVector.getPosition().getX();
     	int resultBlockY = resultVector.getPosition().getY();

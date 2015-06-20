@@ -37,7 +37,7 @@ public class ApplicationController extends JFrame {
 	private int frameHeight;
 	private int samplingYCbCr;
 	private int framesTotal;
-	private String selectedAlgorithm;
+	private String[] selectedAlgorithms;
 	private int searchAreaWidth;
 	private int searchAreaHeight;
 	private int blockWidth;
@@ -216,26 +216,12 @@ public class ApplicationController extends JFrame {
 		frameWidth = setupView.getFrameWidth();
 		frameHeight = setupView.getFrameHeight();
 		samplingYCbCr = setupView.getSampling();
-		selectedAlgorithm = setupView.getSearchAlgorithm();
+		selectedAlgorithms = setupView.getSearchAlgorithms();
 		searchAreaWidth = setupView.getSearchAreaWidth(); 
 		searchAreaHeight = setupView.getSearchAreaHeight();
 		blockWidth = setupView.getBlockWidth();
 		blockHeight = setupView.getBlockHeight();
 		keepReferenceFrame = setupView.getKeepReferenceFrameState();
-	}
-	
-	private void printConfigs() {
-		System.out.println("Input file: " + inputFile.getPath());
-		System.out.println("Frame width: " + frameWidth);
-		System.out.println("Frame height: " + frameHeight);
-		System.out.println("Video sampling: " + samplingYCbCr);
-		System.out.println("Total frames: " + framesTotal);
-		System.out.println("Selected algorithm: " + selectedAlgorithm);
-		System.out.println("Search area width: " + searchAreaWidth);
-		System.out.println("Search area height: " + searchAreaHeight);
-		System.out.println("Block width: " + blockWidth);
-		System.out.println("Block height: " + blockHeight);
-		System.out.println("Keep reference frame: " + keepReferenceFrame);
 	}
 	
 	private void setUpModels() {
@@ -258,28 +244,34 @@ public class ApplicationController extends JFrame {
 		fullSearchME.setActualFrame(actualFrame);
 		fullSearchME.setReferenceFrame(referenceFrame);
 		
-		switch (selectedAlgorithm) {
+		// TODO Adjust to create more than one algorithm
+		for (String selectedAlgorithm: selectedAlgorithms) {
+			
+			switch (selectedAlgorithm) {
+			
 			case ME.FS:
 				searchAlgorithm = new FullSearch();
 				break;
-				
+			
 			case ME.DS:
 				searchAlgorithm = new DiamondSearch();
 				break;
-				
+			
 			case ME.TSS:
 				searchAlgorithm = new ThreeStepSearch();
 				break;
-				
+
 			default:
 				searchAlgorithm = new FullSearch();
+			
+			}
+			
+			searchAlgorithmSad = new SumOfAbsoluteDifferences();
+			searchAlgorithmME = new MotionEstimation(searchAlgorithm, searchAlgorithmSad, blockWidth, blockHeight, searchAreaWidth, searchAreaHeight);
+			
+			searchAlgorithmME.setActualFrame(actualFrame);
+			searchAlgorithmME.setReferenceFrame(referenceFrame);
 		}
-		
-		searchAlgorithmSad = new SumOfAbsoluteDifferences();
-		searchAlgorithmME = new MotionEstimation(searchAlgorithm, searchAlgorithmSad, blockWidth, blockHeight, searchAreaWidth, searchAreaHeight);
-		
-		searchAlgorithmME.setActualFrame(actualFrame);
-		searchAlgorithmME.setReferenceFrame(referenceFrame);
 		
 		setCodingBlockPosition(codingBlockPosition.getX(), codingBlockPosition.getY());
 	}
@@ -307,6 +299,8 @@ public class ApplicationController extends JFrame {
 		mainView.setCodingBlock(codingBlock);
 		
 		mainView.setBestVector(fullSearchVector);
+		
+		// TODO Result Vectors
 		mainView.setResultVector(searchAlgorithmVector);
 		
 		mainView.setNumberOfBlocks(candidateBlocksTotal);
