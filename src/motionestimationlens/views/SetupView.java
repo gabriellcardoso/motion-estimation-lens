@@ -22,27 +22,25 @@ import motionestimationlens.utils.ME;
 
 public class SetupView extends JPanel {
 	
-	private final static Border EMPTY_BORDER = new EmptyBorder(0, 0, 0, 0);
-	
 	private JPanel videoConfigPanel;
 	
-	private JButton btnOpenVideo;
-	private JTextField resolutionWidth;
-	private JTextField resolutionHeight;
-	private JComboBox<String> comboBoxSampling;
+		private JButton btnOpenVideo;
+		private JTextField resolutionWidth;
+		private JTextField resolutionHeight;
+		private JComboBox<String> comboBoxSampling;
 	
 	private JPanel motionEstimationConfigPanel;
 	
-	private ArrayList<JCheckBox> checkBoxAlgorithms;
-	private JTextField searchAreaWidth;
-	private JTextField searchAreaHeight;
-	private JTextField blockWidth;
-	private JTextField blockHeight;
-	private JCheckBox checkBoxKeepReferenceFrame;
+		private ArrayList<JCheckBox> checkBoxAlgorithms;
+		private JTextField searchAreaWidth;
+		private JTextField searchAreaHeight;
+		private JTextField blockWidth;
+		private JTextField blockHeight;
+		private JCheckBox checkBoxKeepReferenceFrame;
 	
 	private JPanel footerPanel;
 	
-	private JButton btnStart;
+		private JButton btnStart;
 	
 	public SetupView() {
 		super();
@@ -278,9 +276,15 @@ public class SetupView extends JPanel {
 		return 0;
 	}
 	
-	public String[] getSearchAlgorithms() {
-		// TODO Fix to return each algorithms were selected
-		return ME.ALGORITHM_ITEMS;//checkBoxAlgorithms.getSelectedItem();
+	public ArrayList<String> getSelectedAlgorithms() {
+		ArrayList<String> selectedAlgorithms = new ArrayList<String>();
+		
+		for (JCheckBox checkbox : checkBoxAlgorithms) {
+			if (checkbox.isSelected()) {
+				selectedAlgorithms.add(checkbox.getText());
+			}
+		}
+		return selectedAlgorithms;
 	}
 	
 	public int getSearchAreaWidth() {

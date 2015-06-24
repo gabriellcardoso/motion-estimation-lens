@@ -4,6 +4,7 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -37,27 +38,27 @@ public class ApplicationController extends JFrame {
 	private int frameHeight;
 	private int samplingYCbCr;
 	private int framesTotal;
-	private String[] selectedAlgorithms;
+	private ArrayList<String> selectedAlgorithms;
 	private int searchAreaWidth;
 	private int searchAreaHeight;
 	private int blockWidth;
 	private int blockHeight;
 	private boolean keepReferenceFrame;
 	
-	private int actualFrameIndex = ME.SECOND_FRAME;
-	private int referenceFrameIndex = ME.FIRST_FRAME;
-	private Position codingBlockPosition = new Position(ME.FIRST_BLOCK_X, ME.FIRST_BLOCK_Y);
-	
 	// Data generation related
 	private YUVReader videoReader;
 	private Frame actualFrame;
 	private Frame referenceFrame;
-	private MotionEstimation fullSearchME;
-	private ISearchAlgorithm fullSearch;
-	private IEvaluationCriteria fullSearchSad;
+	private MotionEstimation bestCaseME;
+	private ISearchAlgorithm bestCaseAlgorithm;
+	private IEvaluationCriteria bestCaseSad;
 	private MotionEstimation searchAlgorithmME;
 	private ISearchAlgorithm searchAlgorithm;
 	private IEvaluationCriteria searchAlgorithmSad;
+
+	private int actualFrameIndex = ME.SECOND_FRAME;
+	private int referenceFrameIndex = ME.FIRST_FRAME;
+	private Position codingBlockPosition = new Position(ME.FIRST_BLOCK_X, ME.FIRST_BLOCK_Y);
 
 	// User interface related
 	private Container container;
@@ -114,8 +115,6 @@ public class ApplicationController extends JFrame {
 		
 		mainView.setBtnPreviousFrameEnabled(false);
 		mainView.setBtnPreviousBlockEnabled(false);
-		
-		mainView.setHeatMap(HeatMap.generateRampTestData());
 		
 		mainView.setBtnPreviousFrameListener(new ActionListener() {
 			@Override
@@ -216,7 +215,7 @@ public class ApplicationController extends JFrame {
 		frameWidth = setupView.getFrameWidth();
 		frameHeight = setupView.getFrameHeight();
 		samplingYCbCr = setupView.getSampling();
-		selectedAlgorithms = setupView.getSearchAlgorithms();
+		selectedAlgorithms = setupView.getSelectedAlgorithms();
 		searchAreaWidth = setupView.getSearchAreaWidth(); 
 		searchAreaHeight = setupView.getSearchAreaHeight();
 		blockWidth = setupView.getBlockWidth();
@@ -234,24 +233,17 @@ public class ApplicationController extends JFrame {
 		videoReader.setFrameWithImage(actualFrame, actualFrameIndex);
 		videoReader.setFrameWithImage(referenceFrame, referenceFrameIndex);
 		
-		mainView.setActualFrame(actualFrame);
-		mainView.setReferenceFrame(referenceFrame);
+		bestCaseSad = new SumOfAbsoluteDifferences();
+		bestCaseAlgorithm = new FullSearch();
+		bestCaseME = new MotionEstimation(bestCaseAlgorithm, bestCaseSad, blockWidth, blockHeight, searchAreaWidth, searchAreaHeight);
 		
-		fullSearchSad = new SumOfAbsoluteDifferences();
-		fullSearch = new FullSearch();
-		fullSearchME = new MotionEstimation(fullSearch, fullSearchSad, blockWidth, blockHeight, searchAreaWidth, searchAreaHeight);
-		
-		fullSearchME.setActualFrame(actualFrame);
-		fullSearchME.setReferenceFrame(referenceFrame);
+		bestCaseME.setActualFrame(actualFrame);
+		bestCaseME.setReferenceFrame(referenceFrame);
 		
 		// TODO Adjust to create more than one algorithm
 		for (String selectedAlgorithm: selectedAlgorithms) {
 			
 			switch (selectedAlgorithm) {
-			
-			case ME.FS:
-				searchAlgorithm = new FullSearch();
-				break;
 			
 			case ME.DS:
 				searchAlgorithm = new DiamondSearch();
@@ -268,43 +260,47 @@ public class ApplicationController extends JFrame {
 			
 			searchAlgorithmSad = new SumOfAbsoluteDifferences();
 			searchAlgorithmME = new MotionEstimation(searchAlgorithm, searchAlgorithmSad, blockWidth, blockHeight, searchAreaWidth, searchAreaHeight);
-			
 			searchAlgorithmME.setActualFrame(actualFrame);
 			searchAlgorithmME.setReferenceFrame(referenceFrame);
+			
+			// Dar um push nas MEs para um array
 		}
 		
 		setCodingBlockPosition(codingBlockPosition.getX(), codingBlockPosition.getY());
 	}
 	
 	private void showResults() {
-		MotionEstimationData fullSearchResult = fullSearchME.run();
+		// Get results from best case
+		MotionEstimationData bestCaseResult = bestCaseME.run();
+		MotionEstimationVector bestCaseVector = bestCaseResult.getResultVector();
+		
+		CodingBlock codingBlock = bestCaseResult.getResultVector().getCodingBlock();
+		int candidateBlocksTotal = bestCaseResult.getCandidateBlocksTotal();
+		
+		// Show those results in the main view
+//		mainView.setActualFrameIndex(actualFrameIndex + 1, framesTotal);
+//		mainView.setReferenceFrameIndex(referenceFrameIndex + 1, framesTotal);
+//		
+//		mainView.setSearchArea(codingBlock, searchAreaWidth, searchAreaHeight);
+//		mainView.setCodingBlock(codingBlock);
+//		
+//		mainView.setNumberOfBlocks(candidateBlocksTotal);
+//
+		// TODO
+		// Rodar a ME, pegar todos os resultados adicionar em um array e enviar para a main view
 		MotionEstimationData searchAlgorithmResult = searchAlgorithmME.run();
-		
-		CodingBlock codingBlock = searchAlgorithmResult.getResultVector().getCodingBlock();
-		
-		MotionEstimationVector fullSearchVector = fullSearchResult.getResultVector();
 		MotionEstimationVector searchAlgorithmVector = searchAlgorithmResult.getResultVector();
 		
 		double[][] heatMap = searchAlgorithmResult.getHeatMap();
-		
-		int candidateBlocksTotal = searchAlgorithmResult.getCandidateBlocksTotal();
 		int blocksVisited = searchAlgorithmResult.getResultVector().getBlocksVisited();
 		
-		mainView.setHeatMap(heatMap);
+//		mainView.setHeatMap(heatMap);
+//		mainView.setBestVector(bestCaseVector);
+//		
+//		mainView.setResultVector(searchAlgorithmVector);
+//		mainView.setNumberOfBlocksVisited(blocksVisited);
 		
-		mainView.setActualFrameIndex(actualFrameIndex + 1, framesTotal);
-		mainView.setReferenceFrameIndex(referenceFrameIndex + 1, framesTotal);
-		
-		mainView.setSearchArea(codingBlock, searchAreaWidth, searchAreaHeight);
-		mainView.setCodingBlock(codingBlock);
-		
-		mainView.setBestVector(fullSearchVector);
-		
-		// TODO Result Vectors
-		mainView.setResultVector(searchAlgorithmVector);
-		
-		mainView.setNumberOfBlocks(candidateBlocksTotal);
-		mainView.setNumberOfBlocksVisited(blocksVisited);
+		mainView.setResults(actualFrameIndex + 1, referenceFrameIndex + 1, framesTotal, codingBlock, searchAreaWidth, searchAreaHeight);
 	}
 	
 	private void goToMainView() {
@@ -368,7 +364,7 @@ public class ApplicationController extends JFrame {
 	}
 	
 	private void goToBlock(int x, int y) {
-		this.fullSearchME.setCodingBlockPosition(x * blockWidth, y * blockHeight);
+		this.bestCaseME.setCodingBlockPosition(x * blockWidth, y * blockHeight);
 		this.searchAlgorithmME.setCodingBlockPosition(x * blockWidth, y * blockHeight);
 	}
 	

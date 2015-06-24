@@ -23,35 +23,36 @@ import motionestimationlens.utils.BorderFactory;
 public class MainView extends JPanel {
 	
 	private JPanel controlPanel;
-	
-	private JButton btnPreviousFrame;
-	private JButton btnNextFrame;
-	private JButton btnPreviousBlock;
-	private JButton btnNextBlock;
+		
+		private JButton btnPreviousFrame;
+		private JButton btnNextFrame;
+		private JButton btnPreviousBlock;
+		private JButton btnNextBlock;
 	
 	private FramePanel actualFramePanel;
+	
 	private FramePanel referenceFramePanel;
 	
 	private HeatMapPanel heatMapPanel;
 	
 	private JPanel resultsPanel;
 	
-	private JLabel lblActualFrame;
-	private JLabel lblReferenceFrame;
-	private JLabel lblCodingBlock;
-	private JLabel lblNumberOfBlocks;
-	private JLabel lblBestVector;
-	private JLabel lblBestSad;
-	private JLabel lblNumberOfBlocksVisited;
-	private JLabel lblVector;
-	private JLabel lblSad;
+		private JLabel lblActualFrame;
+		private JLabel lblReferenceFrame;
+		private JLabel lblCodingBlock;
+		private JLabel lblNumberOfBlocks;
+		private JLabel lblBestVector;
+		private JLabel lblBestSad;
+		private JLabel lblNumberOfBlocksVisited;
+		private JLabel lblVector;
+		private JLabel lblSad;
 	
 	private JPanel footerPanel;
 	
-	private JButton btnSetActualFrame;
-	private JButton btnSetReferenceFrame;
-	private JButton btnSetCodingBlock;
-	private JButton btnBackToSetup;
+		private JButton btnSetActualFrame;
+		private JButton btnSetReferenceFrame;
+		private JButton btnSetCodingBlock;
+		private JButton btnBackToSetup;
 	
 	public MainView() {
 		super();
@@ -141,59 +142,8 @@ public class MainView extends JPanel {
     					);
     	
     	resultsPanel = new JPanel();
-    	resultsPanel.setLayout(new GridBagLayout());
+    	resultsPanel.setLayout(new GridLayout(0, 3, 5, 5));
     	resultsPanel.setBorder(border);
-    	
-    	lblReferenceFrame = new JLabel("Quadro de referência: 0/0");
-    	lblActualFrame = new JLabel("Quadro atual: 0/0");
-    	lblCodingBlock = new JLabel("Bloco: x, y");
-    	lblBestVector = new JLabel("Melhor bloco candidato: x, y");
-    	lblBestSad = new JLabel("SAD do melhor bloco candidato: 0");
-    	lblVector = new JLabel("Bloco escolhido pelo algoritmo: x, y");
-    	lblSad = new JLabel("SAD do bloco escolhido pelo algoritmo: 0");
-    	lblNumberOfBlocks = new JLabel("Número de blocos candidatos: 0");
-    	lblNumberOfBlocksVisited = new JLabel("Número de blocos candidatos visitados: 0");
-    	
-    	GridBagConstraints constraints = new GridBagConstraints();
-    	constraints.anchor = GridBagConstraints.NORTH;
-    	constraints.fill = GridBagConstraints.BOTH;
-    	constraints.insets = new Insets(5, 5, 5, 5);
-    	
-    	constraints.gridx = 0;
-    	constraints.gridy = 0;
-    	resultsPanel.add(lblReferenceFrame, constraints);
-    	
-    	constraints.gridx = 0;
-    	constraints.gridy = 1;
-    	resultsPanel.add(lblActualFrame, constraints);
-    	
-    	constraints.gridx = 0;
-    	constraints.gridy = 2;
-    	resultsPanel.add(lblCodingBlock, constraints);
-    	
-    	constraints.gridx = 0;
-    	constraints.gridy = 3;
-    	resultsPanel.add(lblBestVector, constraints);
-    	
-    	constraints.gridx = 0;
-    	constraints.gridy = 4;
-    	resultsPanel.add(lblBestSad, constraints);
-    	
-    	constraints.gridx = 0;
-    	constraints.gridy = 5;
-    	resultsPanel.add(lblVector, constraints);
-    	
-    	constraints.gridx = 0;
-    	constraints.gridy = 6;
-    	resultsPanel.add(lblSad, constraints);
-    	
-    	constraints.gridx = 0;
-    	constraints.gridy = 7;
-    	resultsPanel.add(lblNumberOfBlocks, constraints);
-    	
-    	constraints.gridx = 0;
-    	constraints.gridy = 8;
-    	resultsPanel.add(lblNumberOfBlocksVisited, constraints);
     }
     
     private void createFooterPanel() {
@@ -245,72 +195,36 @@ public class MainView extends JPanel {
 	private void addFooterPanel() {
 		this.add(footerPanel, BorderLayout.PAGE_END);
 	}
-	
-   public void setActualFrame(Frame frame) {
-    	actualFramePanel.setFrame(frame);
-    }
     
-    public void setReferenceFrame(Frame frame) {
-    	referenceFramePanel.setFrame(frame);
-    }
-    
-    public void setHeatMap(double[][] data) {
-    	heatMapPanel.updateData(data);
-    }
-    
-    public void setActualFrameIndex(int actualFrameIndex, int framesTotal) {
-    	lblActualFrame.setText("Quadro atual: " + actualFrameIndex + "/" + framesTotal);
-    }
-    
-    public void setReferenceFrameIndex(int referenceFrameIndex, int framesTotal) {
-    	lblReferenceFrame.setText("Quadro de referência: " + referenceFrameIndex + "/" + framesTotal);
-    }
-    
-    public void setCodingBlock(CodingBlock codingBlock) {
-    	Position blockPosition = codingBlock.getPosition();
-    	int blockX = blockPosition.getX() / codingBlock.getWidth();
-    	int blockY = blockPosition.getY() / codingBlock.getHeight();
+    public void setResults(int framesTotal, int referenceFrameIndex, int actualFrameIndex, CodingBlock codingBlock, int searchWidth, int searchHeight) {
+    	resultsPanel.removeAll();
     	
-    	actualFramePanel.setCodingBlock(codingBlock);
+    	resultsPanel.add(new JLabel("Quadro de referência: " + referenceFrameIndex + "/" + framesTotal, JLabel.CENTER));
+    	resultsPanel.add(new JLabel("Quadro atual: " + actualFrameIndex + "/" + framesTotal, JLabel.CENTER));
+    	resultsPanel.add(new JLabel("Bloco: [" + codingBlock.getPosition().getX() + "," + codingBlock.getPosition().getY() + "]"), JLabel.CENTER);
+    	resultsPanel.add(new JLabel("Número de blocos candidatos: 0"), JLabel.CENTER);
+    	resultsPanel.add(new JLabel("Melhor bloco candidato: x, y"), JLabel.CENTER);
+    	resultsPanel.add(new JLabel("SAD do melhor bloco candidato: 0"), JLabel.CENTER);
+    	resultsPanel.add(new JLabel("Bloco escolhido pelo algoritmo: x, y"), JLabel.CENTER);
+    	resultsPanel.add(new JLabel("SAD do bloco escolhido pelo algoritmo: 0"), JLabel.CENTER);
+    	resultsPanel.add(new JLabel("Número de blocos candidatos visitados: 0"), JLabel.CENTER);
+    
+//    	actualFramePanel.setFrame(frame);
+//    	referenceFramePanel.setFrame(frame);
+//    	Position blockPosition = codingBlock.getPosition();
+//    	int blockX = blockPosition.getX() / codingBlock.getWidth();
+//    	int blockY = blockPosition.getY() / codingBlock.getHeight();
+//    	
+//    	actualFramePanel.setCodingBlock(codingBlock);
+//    	
+//    	lblCodingBlock.setText("Bloco: " + blockX + "," + blockY);
+//    	referenceFramePanel.setSearchArea(codingBlock, width, height);
+//    	heatMapPanel.updateData(data);
+//    	heatMapPanel.setResultBlock(resultVector);
     	
-    	lblCodingBlock.setText("Bloco: " + blockX + "," + blockY);
+    	resultsPanel.validate();
     }
     
-    public void setSearchArea(CodingBlock codingBlock, int width, int height) {
-    	referenceFramePanel.setSearchArea(codingBlock, width, height);
-    }
-    
-    public void setBestVector(MotionEstimationVector bestVector) {
-    	int bestBlockX = bestVector.getPosition().getX();
-    	int bestBlockY = bestVector.getPosition().getY();
-    	int bestSad = bestVector.getCriteriaResult();
-    	
-    	heatMapPanel.setBestBlock(bestVector);
-    	
-    	lblBestVector.setText("Vetor do melhor bloco candidato: " + bestBlockX + "," + bestBlockY);
-    	lblBestSad.setText("SAD do melhor bloco candidato: " + bestSad);
-    }
-    
-    // TODO More than one vector
-    public void setResultVector(MotionEstimationVector resultVector) {
-    	int resultBlockX = resultVector.getPosition().getX();
-    	int resultBlockY = resultVector.getPosition().getY();
-    	int resultSad = resultVector.getCriteriaResult();
-    	
-    	heatMapPanel.setResultBlock(resultVector);
-    	
-    	lblVector.setText("Vetor do bloco candidato escolhido: " + resultBlockX + "," + resultBlockY);
-    	lblSad.setText("SAD do bloco candidato escolhido: " + resultSad);
-    }
-
-    public void setNumberOfBlocks(int numberOfBlocks) {
-    	lblNumberOfBlocks.setText("Número de blocos candidatos: " + numberOfBlocks);
-    }
-    
-    public void setNumberOfBlocksVisited(int numberOfBlocksVisited) {
-    	lblNumberOfBlocksVisited.setText("Número de blocos candidatos visitados: " + numberOfBlocksVisited);
-    }
-	
 	public void setBtnPreviousFrameListener(ActionListener listener) {
     	btnPreviousFrame.addActionListener(listener);
     }

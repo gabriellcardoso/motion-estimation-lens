@@ -68,11 +68,11 @@ public class HeatMapPanel extends HeatMap {
 	    else {
 	    	startingShift = (int) Math.floor(crossSize / 2) + (int) Math.floor(crossStrokeWidth / 2);
 	    }
-//	    
-//	    bufferedGraphics.fillRect(x - startingShift, y, crossSize, crossStrokeWidth);
-//	    bufferedGraphics.fillRect(x, y - startingShift, crossStrokeWidth, crossSize);
-//	    
-//		repaint();
+	    
+	    bufferedGraphics.fillRect(x - startingShift, y, crossSize, crossStrokeWidth);
+	    bufferedGraphics.fillRect(x, y - startingShift, crossStrokeWidth, crossSize);
+	    
+		repaint();
 	}
 	
 	@Override
