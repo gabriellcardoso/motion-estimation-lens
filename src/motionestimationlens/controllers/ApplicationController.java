@@ -98,10 +98,26 @@ public class ApplicationController extends JFrame {
 		setupView.setBtnStartListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				
 				getConfigs();
-				setUpModels();
-				showResults();
-				goToMainView();
+				
+				if (frameWidth <= 0 && frameHeight <= 0) {
+					showMessage("Informe uma resolução válida");
+				}
+				else if (selectedAlgorithms.size() == 0) {
+					showMessage("Selecione ao menos um algoritmo");
+				}
+				else if (searchAreaWidth <= 0 && searchAreaHeight <= 0) {
+					showMessage("Informe um tamanho de área de busca válido");
+				}
+				else if (blockWidth <= 0 && blockHeight <= 0) {
+					showMessage("Informe o tamanho de bloco válido");
+				}
+				else {
+					setUpModels();
+					showResults();
+					goToMainView();
+				}
 			}
 		});
 		
@@ -219,6 +235,10 @@ public class ApplicationController extends JFrame {
 		blockWidth = setupView.getBlockWidth();
 		blockHeight = setupView.getBlockHeight();
 		keepReferenceFrame = setupView.getKeepReferenceFrameState();
+	}
+	
+	private void showMessage(String message) {
+		JOptionPane.showMessageDialog(this, message);
 	}
 	
 	private void setUpModels() {

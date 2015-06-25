@@ -1,5 +1,9 @@
 package motionestimationlens.utils;
 
+import java.awt.Color;
+
+import javax.swing.JLabel;
+
 public class ME {
 
 	public static final String S_444 = "4:4:4";
@@ -58,6 +62,24 @@ public class ME {
 	
 	public static int byteToInt(byte b) {
 		return (int) b & 0xFF;
+	}
+	
+	public static JLabel createCenteredLabel(String message, Color color) {
+		JLabel label = new JLabel(message, JLabel.CENTER);
+		label.setForeground(color);
+		return label;
+	}
+	
+	public static JLabel createCenteredLabel(String message) {
+		return createCenteredLabel(message, Color.BLACK);
+	}
+	
+	public static JLabel createEmptyLabel() {
+		return createCenteredLabel("");
+	}
+	
+	public static JLabel createAlgorithmLabel(String message, Color color) {
+		return createCenteredLabel(message, color.darker());
 	}
 	
 }

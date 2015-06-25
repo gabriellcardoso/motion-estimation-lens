@@ -80,8 +80,8 @@ public class MainView extends JPanel {
 		
 		btnPreviousFrame = new JButton("Quadro anterior");
 		btnPreviousBlock = new JButton("Bloco anterior");
-		btnNextBlock = new JButton("PrÃ³ximo bloco");
-		btnNextFrame = new JButton("PrÃ³ximo quadro");
+		btnNextBlock = new JButton("Próximo bloco");
+		btnNextFrame = new JButton("Próximo quadro");
 		
 		GridBagConstraints constraints = new GridBagConstraints();
 		constraints.fill = GridBagConstraints.BOTH;
@@ -112,7 +112,7 @@ public class MainView extends JPanel {
 	
 	private void createReferenceFramePanel() {
 		referenceFramePanel = new FramePanel(null);
-		referenceFramePanel.setTitle("Quadro de referÃªncia");
+		referenceFramePanel.setTitle("Quadro de referência");
 		referenceFramePanel.setDrawTitle(true);
 	}
 	
@@ -120,7 +120,7 @@ public class MainView extends JPanel {
         heatMapPanel = new HeatMapPanel(null);
         heatMapPanel.setDrawLegend(false);
 
-        heatMapPanel.setTitle("Mapa de calor da Ã¡rea de busca");
+        heatMapPanel.setTitle("Mapa de calor da área de busca");
         heatMapPanel.setDrawTitle(true);
 
         heatMapPanel.setXAxisTitle("X Axis");
@@ -143,19 +143,18 @@ public class MainView extends JPanel {
     					);
     	
     	resultsPanel = new JPanel();
-    	resultsPanel.setLayout(new GridLayout(0, 4, 5, 5));
+    	resultsPanel.setLayout(new GridLayout(0, 5, 5, 5));
     	resultsPanel.setBorder(border);
-    	resultsPanel.setForeground(Color.WHITE);
     }
     
     private void createFooterPanel() {
     	footerPanel = new JPanel();
     	footerPanel.setLayout(new GridBagLayout());
     	
-    	btnSetReferenceFrame = new JButton("Especificar quadro de referÃªncia");
+    	btnSetReferenceFrame = new JButton("Especificar quadro de referência");
     	btnSetActualFrame = new JButton("Especificar quadro atual");
     	btnSetCodingBlock = new JButton("Especificar bloco a ser codificado");
-    	btnBackToSetup = new JButton("Voltar para configuraÃ§Ãµes");
+    	btnBackToSetup = new JButton("Voltar para configurações");
     	
     	GridBagConstraints constraints = new GridBagConstraints();
     	constraints.anchor = GridBagConstraints.PAGE_END;
@@ -236,27 +235,31 @@ public class MainView extends JPanel {
     	resultsPanel.removeAll();
     	
     	// Video estimation header info
-    	resultsPanel.add(new JLabel("Quadro de referência", JLabel.CENTER), componentIndex++);
-    	resultsPanel.add(new JLabel("Quadro atual", JLabel.CENTER), componentIndex++);
-    	resultsPanel.add(new JLabel("Area de busca", JLabel.CENTER), componentIndex++);
-    	resultsPanel.add(new JLabel("Bloco", JLabel.CENTER), componentIndex++);
+    	resultsPanel.add(ME.createCenteredLabel("Quadro de referência"), componentIndex++);
+    	resultsPanel.add(ME.createCenteredLabel("Quadro atual"), componentIndex++);
+    	resultsPanel.add(ME.createCenteredLabel("Area de busca"), componentIndex++);
+    	resultsPanel.add(ME.createCenteredLabel("Bloco"), componentIndex++);
+    	resultsPanel.add(ME.createCenteredLabel("Blocos candidatos"), componentIndex++);
     	
     	// Video estimation info
-    	resultsPanel.add(new JLabel("" + referenceFrameIndex + "/" + framesTotal, JLabel.CENTER), componentIndex++);
-    	resultsPanel.add(new JLabel("" + actualFrameIndex + "/" + framesTotal, JLabel.CENTER), componentIndex++);
-    	resultsPanel.add(new JLabel("" + searchWidth + "x" + searchHeight, JLabel.CENTER), componentIndex++);
-    	resultsPanel.add(new JLabel("[" + blockX + "," + blockY + "]", JLabel.CENTER), componentIndex++);
+    	resultsPanel.add(ME.createCenteredLabel("" + referenceFrameIndex + "/" + framesTotal), componentIndex++);
+    	resultsPanel.add(ME.createCenteredLabel("" + actualFrameIndex + "/" + framesTotal), componentIndex++);
+    	resultsPanel.add(ME.createCenteredLabel("" + searchWidth + "x" + searchHeight), componentIndex++);
+    	resultsPanel.add(ME.createCenteredLabel("[" + blockX + "," + blockY + "]"), componentIndex++);
+    	resultsPanel.add(ME.createCenteredLabel("" + candidateBlocksTotal), componentIndex++);
     	
-    	resultsPanel.add(new JLabel("Blocos candidatos: " + candidateBlocksTotal, JLabel.CENTER), componentIndex++);
-    	resultsPanel.add(new JLabel("", JLabel.CENTER), componentIndex++);
-    	resultsPanel.add(new JLabel("", JLabel.CENTER), componentIndex++);
-    	resultsPanel.add(new JLabel("", JLabel.CENTER), componentIndex++);
+    	resultsPanel.add(ME.createEmptyLabel(), componentIndex++);
+    	resultsPanel.add(ME.createEmptyLabel(), componentIndex++);
+    	resultsPanel.add(ME.createEmptyLabel(), componentIndex++);
+    	resultsPanel.add(ME.createEmptyLabel(), componentIndex++);
+    	resultsPanel.add(ME.createEmptyLabel(), componentIndex++);
     	
     	// Algorithm header
-    	resultsPanel.add(new JLabel("", JLabel.CENTER), componentIndex++);
-    	resultsPanel.add(new JLabel("SAD", JLabel.CENTER), componentIndex++);
-    	resultsPanel.add(new JLabel("Blocos comparados", JLabel.CENTER), componentIndex++);
-    	resultsPanel.add(new JLabel("Vetor", JLabel.CENTER), componentIndex++);
+    	resultsPanel.add(ME.createEmptyLabel(), componentIndex++);
+    	resultsPanel.add(ME.createCenteredLabel("Vetor"), componentIndex++);
+    	resultsPanel.add(ME.createCenteredLabel("SAD"), componentIndex++);
+    	resultsPanel.add(ME.createCenteredLabel("Blocos comparados"), componentIndex++);
+    	resultsPanel.add(ME.createEmptyLabel(), componentIndex++);
     	
     	// Algorithm info
     	for (index = 0; index < resultsSize; index++) {
@@ -283,22 +286,16 @@ public class MainView extends JPanel {
     		
     		heatMapPanel.setBlock(result, algorithmColor);
     		
-    		algorithmLabel = new JLabel(algorithm, JLabel.CENTER);
-    		algorithmLabel.setForeground(algorithmColor);
-    		
-    		criteriaResultLabel = new JLabel("" + result.getCriteriaResult(), JLabel.CENTER);
-    		criteriaResultLabel.setForeground(algorithmColor);
-    		
-    		blockVisitedLabel = new JLabel("" + result.getBlocksVisited(), JLabel.CENTER);
-    		blockVisitedLabel.setForeground(algorithmColor);
-    		
-    		vectorLabel = new JLabel("[" + result.getPosition().getX() + "," + result.getPosition().getY() + "]", JLabel.CENTER);
-    		vectorLabel.setForeground(algorithmColor);
+    		algorithmLabel = ME.createAlgorithmLabel(algorithm, algorithmColor);
+    		vectorLabel = ME.createAlgorithmLabel("[" + result.getPosition().getX() + "," + result.getPosition().getY() + "]", algorithmColor);
+    		criteriaResultLabel =  ME.createAlgorithmLabel("" + result.getCriteriaResult(), algorithmColor);
+    		blockVisitedLabel = ME.createAlgorithmLabel("" + result.getBlocksVisited(), algorithmColor);
     		
     		resultsPanel.add(algorithmLabel, componentIndex++);
+    		resultsPanel.add(vectorLabel, componentIndex++);
     		resultsPanel.add(criteriaResultLabel, componentIndex++);
     		resultsPanel.add(blockVisitedLabel, componentIndex++);
-    		resultsPanel.add(vectorLabel, componentIndex++);
+    		resultsPanel.add(ME.createEmptyLabel(), componentIndex++);
     	}
     
     	resultsPanel.revalidate();
