@@ -254,12 +254,30 @@ public class SetupView extends JPanel {
 	
 	public int getFrameWidth() {
 		String width = (String) resolutionWidth.getText();
-		return Integer.parseInt(width.trim());
+		int frameWidth = 0;
+		
+		try {
+			frameWidth = Integer.parseInt(width.trim());
+		}
+		catch (NumberFormatException exception) {
+			System.out.println(exception.getMessage());
+		}
+		
+		return frameWidth;
 	}
 	
 	public int getFrameHeight() {
 		String height = (String) resolutionHeight.getText();
-		return Integer.parseInt(height.trim());
+		int frameHeight = 0;
+		
+		try {
+			frameHeight = Integer.parseInt(height.trim());
+		}
+		catch (NumberFormatException exception) {
+			System.out.println(exception.getMessage());
+		}
+		
+		return frameHeight;
 	}
 	
 	public int getSampling() {
@@ -289,22 +307,58 @@ public class SetupView extends JPanel {
 	
 	public int getSearchAreaWidth() {
 		String width = (String) searchAreaWidth.getText();
-		return Integer.parseInt(width.trim());
+		int searchAreaWidth = 0;
+		
+		try {
+			searchAreaWidth = Integer.parseInt(width.trim());
+		}
+		catch (NumberFormatException exception) {
+			System.out.println(exception.getMessage());
+		}
+		
+		return searchAreaWidth;
 	}
 	
 	public int getSearchAreaHeight() {
 		String height = (String) searchAreaHeight.getText();
-		return Integer.parseInt(height.trim());
+		int searchAreaHeight = 0;
+		
+		try {
+			searchAreaHeight = Integer.parseInt(height.trim());
+		}
+		catch (NumberFormatException exception) {
+			System.out.println(exception.getMessage());
+		}
+		
+		return searchAreaHeight;
 	}
 	
 	public int getBlockWidth() {
 		String width = (String) blockWidth.getText();
-		return Integer.parseInt(width.trim());
+		int blockWidth = 0;
+		
+		try {
+			blockWidth = Integer.parseInt(width.trim());
+		}
+		catch (NumberFormatException exception) {
+			System.out.println(exception.getMessage());
+		}
+		
+		return blockWidth;
 	}
 	
 	public int getBlockHeight() {
 		String height = (String) blockHeight.getText();
-		return Integer.parseInt(height);
+		int blockHeight = 0;
+		
+		try {
+			blockHeight = Integer.parseInt(height.trim());
+		}
+		catch (NumberFormatException exception) {
+			System.out.println(exception.getMessage());
+		}
+		
+		return blockHeight;
 	}
 	
 	public boolean getKeepReferenceFrameState() {
