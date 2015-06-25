@@ -47,18 +47,16 @@ public class ApplicationController extends JFrame {
 	
 	// Data generation related
 	private YUVReader videoReader;
-	private Frame actualFrame;
-	private Frame referenceFrame;
-	private MotionEstimation bestCaseME;
-	private ISearchAlgorithm bestCaseAlgorithm;
-	private IEvaluationCriteria bestCaseSad;
-	private MotionEstimation searchAlgorithmME;
-	private ISearchAlgorithm searchAlgorithm;
-	private IEvaluationCriteria searchAlgorithmSad;
-
-	private int actualFrameIndex = ME.SECOND_FRAME;
+	
 	private int referenceFrameIndex = ME.FIRST_FRAME;
+	private Frame referenceFrame;
+	
+	private int actualFrameIndex = ME.SECOND_FRAME;
+	private Frame actualFrame;
+	
 	private Position codingBlockPosition = new Position(ME.FIRST_BLOCK_X, ME.FIRST_BLOCK_Y);
+	
+	ArrayList<MotionEstimation> motionEstimationList = new ArrayList();
 
 	// User interface related
 	private Container container;
@@ -224,6 +222,10 @@ public class ApplicationController extends JFrame {
 	}
 	
 	private void setUpModels() {
+		MotionEstimation searchAlgorithmME;
+		ISearchAlgorithm searchAlgorithm;
+		IEvaluationCriteria searchAlgorithmSad;
+		
 		videoReader = new YUVReader(inputFile, frameWidth, frameHeight, samplingYCbCr);
 		framesTotal = videoReader.getFramesTotal();
 		
@@ -233,17 +235,15 @@ public class ApplicationController extends JFrame {
 		videoReader.setFrameWithImage(actualFrame, actualFrameIndex);
 		videoReader.setFrameWithImage(referenceFrame, referenceFrameIndex);
 		
-		bestCaseSad = new SumOfAbsoluteDifferences();
-		bestCaseAlgorithm = new FullSearch();
-		bestCaseME = new MotionEstimation(bestCaseAlgorithm, bestCaseSad, blockWidth, blockHeight, searchAreaWidth, searchAreaHeight);
+		motionEstimationList.clear();
 		
-		bestCaseME.setActualFrame(actualFrame);
-		bestCaseME.setReferenceFrame(referenceFrame);
-		
-		// TODO Adjust to create more than one algorithm
 		for (String selectedAlgorithm: selectedAlgorithms) {
 			
 			switch (selectedAlgorithm) {
+			
+			case ME.FS:
+				searchAlgorithm = new FullSearch();
+				break;
 			
 			case ME.DS:
 				searchAlgorithm = new DiamondSearch();
@@ -263,44 +263,33 @@ public class ApplicationController extends JFrame {
 			searchAlgorithmME.setActualFrame(actualFrame);
 			searchAlgorithmME.setReferenceFrame(referenceFrame);
 			
-			// Dar um push nas MEs para um array
+			motionEstimationList.add(searchAlgorithmME);
 		}
 		
 		setCodingBlockPosition(codingBlockPosition.getX(), codingBlockPosition.getY());
 	}
 	
 	private void showResults() {
-		// Get results from best case
-		MotionEstimationData bestCaseResult = bestCaseME.run();
-		MotionEstimationVector bestCaseVector = bestCaseResult.getResultVector();
+		ArrayList<MotionEstimationVector> results = new ArrayList<MotionEstimationVector>();
 		
-		CodingBlock codingBlock = bestCaseResult.getResultVector().getCodingBlock();
-		int candidateBlocksTotal = bestCaseResult.getCandidateBlocksTotal();
+		double[][] heatMap;
+		CodingBlock codingBlock;
+		int candidateBlocksTotal;
 		
-		// Show those results in the main view
-//		mainView.setActualFrameIndex(actualFrameIndex + 1, framesTotal);
-//		mainView.setReferenceFrameIndex(referenceFrameIndex + 1, framesTotal);
-//		
-//		mainView.setSearchArea(codingBlock, searchAreaWidth, searchAreaHeight);
-//		mainView.setCodingBlock(codingBlock);
-//		
-//		mainView.setNumberOfBlocks(candidateBlocksTotal);
-//
-		// TODO
-		// Rodar a ME, pegar todos os resultados adicionar em um array e enviar para a main view
-		MotionEstimationData searchAlgorithmResult = searchAlgorithmME.run();
-		MotionEstimationVector searchAlgorithmVector = searchAlgorithmResult.getResultVector();
+		MotionEstimationData algorithmResult = null;
+		MotionEstimationVector algorithmVector = null;
 		
-		double[][] heatMap = searchAlgorithmResult.getHeatMap();
-		int blocksVisited = searchAlgorithmResult.getResultVector().getBlocksVisited();
+		for (MotionEstimation motionEstimation : motionEstimationList) {
+			algorithmResult = motionEstimation.run();
+			algorithmVector = algorithmResult.getResultVector();
+			results.add(algorithmVector);
+		}
 		
-//		mainView.setHeatMap(heatMap);
-//		mainView.setBestVector(bestCaseVector);
-//		
-//		mainView.setResultVector(searchAlgorithmVector);
-//		mainView.setNumberOfBlocksVisited(blocksVisited);
+		heatMap = algorithmResult.getHeatMap();
+		codingBlock = algorithmResult.getResultVector().getCodingBlock();
+		candidateBlocksTotal = algorithmResult.getCandidateBlocksTotal();
 		
-		mainView.setResults(actualFrameIndex + 1, referenceFrameIndex + 1, framesTotal, codingBlock, searchAreaWidth, searchAreaHeight);
+		mainView.setResults(framesTotal, referenceFrame, referenceFrameIndex + 1, actualFrame, actualFrameIndex + 1, searchAreaWidth, searchAreaHeight, codingBlock, candidateBlocksTotal, heatMap, selectedAlgorithms, results);
 	}
 	
 	private void goToMainView() {
@@ -364,8 +353,9 @@ public class ApplicationController extends JFrame {
 	}
 	
 	private void goToBlock(int x, int y) {
-		this.bestCaseME.setCodingBlockPosition(x * blockWidth, y * blockHeight);
-		this.searchAlgorithmME.setCodingBlockPosition(x * blockWidth, y * blockHeight);
+		for (MotionEstimation motionEstimation : motionEstimationList) {
+			motionEstimation.setCodingBlockPosition(x * blockWidth, y * blockHeight);
+		}
 	}
 	
 	private void setControlButtonsState() {

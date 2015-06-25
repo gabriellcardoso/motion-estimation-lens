@@ -25,26 +25,12 @@ public class HeatMapPanel extends HeatMap {
 		updateData(data, USE_GRAPHICS_Y_AXIS);
 	}
 	
-	public void setBestBlock(MotionEstimationVector vector) {
-		setBlock(
-			Color.GREEN,
-			vector.getHeatMapPosition().getX(),
-			vector.getHeatMapPosition().getY()
-		);
-	}
-	
-	// TODO Add more than one result block type
-	public void setResultBlock(MotionEstimationVector vector) {
-		setBlock(
-			Color.YELLOW,
-			vector.getHeatMapPosition().getX(),
-			vector.getHeatMapPosition().getY()
-		);
-	}
-	
-	private void setBlock(Color color, int x, int y) {
+	public void setBlock(MotionEstimationVector vector, Color color) {
 		int imageHeight = bufferedImage.getHeight();
 		int imageWidth = bufferedImage.getWidth();
+		
+		int x = vector.getHeatMapPosition().getX();
+		int y = vector.getHeatMapPosition().getY();
 		
 		int crossSize, crossStrokeWidth, startingShift;
 

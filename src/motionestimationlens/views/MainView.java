@@ -7,6 +7,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -19,6 +20,7 @@ import motionestimationlens.models.Frame;
 import motionestimationlens.models.MotionEstimationVector;
 import motionestimationlens.models.Position;
 import motionestimationlens.utils.BorderFactory;
+import motionestimationlens.utils.ME;
 
 public class MainView extends JPanel {
 	
@@ -134,16 +136,16 @@ public class MainView extends JPanel {
         heatMapPanel.setColorForeground(Color.black);
     }
     
-    // TODO Fix it to show more than algorithm
     private void createResultsPanel() {
     	Border border = BorderFactory.createTitledBorder(
-    						"Resultados da EstimaÃ§Ã£o Movimento",
+    						"Resultados da Estimação Movimento",
     						new EmptyBorder(10, 10, 10, 10)
     					);
     	
     	resultsPanel = new JPanel();
-    	resultsPanel.setLayout(new GridLayout(0, 3, 5, 5));
+    	resultsPanel.setLayout(new GridLayout(0, 4, 5, 5));
     	resultsPanel.setBorder(border);
+    	resultsPanel.setForeground(Color.WHITE);
     }
     
     private void createFooterPanel() {
@@ -196,33 +198,110 @@ public class MainView extends JPanel {
 		this.add(footerPanel, BorderLayout.PAGE_END);
 	}
     
-    public void setResults(int framesTotal, int referenceFrameIndex, int actualFrameIndex, CodingBlock codingBlock, int searchWidth, int searchHeight) {
+    public void setResults(int framesTotal, 
+    						Frame referenceFrame, int referenceFrameIndex,
+    						Frame actualFrame, int actualFrameIndex, 
+    						int searchWidth, int searchHeight,
+    						CodingBlock codingBlock,
+    						int candidateBlocksTotal,
+    						double[][] heatMap,
+    						ArrayList<String> selectedAlgorithms, ArrayList<MotionEstimationVector> results) {
+    	
+    	int componentIndex = 0;
+    	
+    	Position blockPosition = codingBlock.getPosition();
+    	int blockX = blockPosition.getX() / codingBlock.getWidth();
+    	int blockY = blockPosition.getY() / codingBlock.getHeight();
+    	
+    	int resultsSize = selectedAlgorithms.size();
+    	
+    	int index;
+    	String algorithm;
+    	MotionEstimationVector result;
+    	Color algorithmColor;
+    	
+    	JLabel algorithmLabel;
+    	JLabel criteriaResultLabel;
+    	JLabel blockVisitedLabel;
+    	JLabel vectorLabel;
+    	
+    	referenceFramePanel.setFrame(actualFrame);
+    	referenceFramePanel.setSearchArea(codingBlock, searchWidth, searchHeight);
+    	
+    	actualFramePanel.setFrame(referenceFrame);
+    	actualFramePanel.setCodingBlock(codingBlock);
+    	
+    	heatMapPanel.updateData(heatMap);
+    	
     	resultsPanel.removeAll();
     	
-    	resultsPanel.add(new JLabel("Quadro de referÃªncia: " + referenceFrameIndex + "/" + framesTotal, JLabel.CENTER));
-    	resultsPanel.add(new JLabel("Quadro atual: " + actualFrameIndex + "/" + framesTotal, JLabel.CENTER));
-    	resultsPanel.add(new JLabel("Bloco: [" + codingBlock.getPosition().getX() + "," + codingBlock.getPosition().getY() + "]"), JLabel.CENTER);
-    	resultsPanel.add(new JLabel("NÃºmero de blocos candidatos: 0"), JLabel.CENTER);
-    	resultsPanel.add(new JLabel("Melhor bloco candidato: x, y"), JLabel.CENTER);
-    	resultsPanel.add(new JLabel("SAD do melhor bloco candidato: 0"), JLabel.CENTER);
-    	resultsPanel.add(new JLabel("Bloco escolhido pelo algoritmo: x, y"), JLabel.CENTER);
-    	resultsPanel.add(new JLabel("SAD do bloco escolhido pelo algoritmo: 0"), JLabel.CENTER);
-    	resultsPanel.add(new JLabel("NÃºmero de blocos candidatos visitados: 0"), JLabel.CENTER);
-    
-//    	actualFramePanel.setFrame(frame);
-//    	referenceFramePanel.setFrame(frame);
-//    	Position blockPosition = codingBlock.getPosition();
-//    	int blockX = blockPosition.getX() / codingBlock.getWidth();
-//    	int blockY = blockPosition.getY() / codingBlock.getHeight();
-//    	
-//    	actualFramePanel.setCodingBlock(codingBlock);
-//    	
-//    	lblCodingBlock.setText("Bloco: " + blockX + "," + blockY);
-//    	referenceFramePanel.setSearchArea(codingBlock, width, height);
-//    	heatMapPanel.updateData(data);
-//    	heatMapPanel.setResultBlock(resultVector);
+    	// Video estimation header info
+    	resultsPanel.add(new JLabel("Quadro de referência", JLabel.CENTER), componentIndex++);
+    	resultsPanel.add(new JLabel("Quadro atual", JLabel.CENTER), componentIndex++);
+    	resultsPanel.add(new JLabel("Area de busca", JLabel.CENTER), componentIndex++);
+    	resultsPanel.add(new JLabel("Bloco", JLabel.CENTER), componentIndex++);
     	
-    	resultsPanel.validate();
+    	// Video estimation info
+    	resultsPanel.add(new JLabel("" + referenceFrameIndex + "/" + framesTotal, JLabel.CENTER), componentIndex++);
+    	resultsPanel.add(new JLabel("" + actualFrameIndex + "/" + framesTotal, JLabel.CENTER), componentIndex++);
+    	resultsPanel.add(new JLabel("" + searchWidth + "x" + searchHeight, JLabel.CENTER), componentIndex++);
+    	resultsPanel.add(new JLabel("[" + blockX + "," + blockY + "]", JLabel.CENTER), componentIndex++);
+    	
+    	resultsPanel.add(new JLabel("Blocos candidatos: " + candidateBlocksTotal, JLabel.CENTER), componentIndex++);
+    	resultsPanel.add(new JLabel("", JLabel.CENTER), componentIndex++);
+    	resultsPanel.add(new JLabel("", JLabel.CENTER), componentIndex++);
+    	resultsPanel.add(new JLabel("", JLabel.CENTER), componentIndex++);
+    	
+    	// Algorithm header
+    	resultsPanel.add(new JLabel("", JLabel.CENTER), componentIndex++);
+    	resultsPanel.add(new JLabel("SAD", JLabel.CENTER), componentIndex++);
+    	resultsPanel.add(new JLabel("Blocos comparados", JLabel.CENTER), componentIndex++);
+    	resultsPanel.add(new JLabel("Vetor", JLabel.CENTER), componentIndex++);
+    	
+    	// Algorithm info
+    	for (index = 0; index < resultsSize; index++) {
+    		algorithm = selectedAlgorithms.get(index);
+    		result = results.get(index);
+    		
+    		switch(algorithm) {
+    		
+    		case ME.FS:
+    			algorithmColor = Color.GREEN;
+    			break;
+    			
+    		case ME.DS:
+    			algorithmColor = Color.YELLOW;
+    			break;
+    			
+    		case ME.TSS:
+    			algorithmColor = Color.CYAN;
+    			break;
+    			
+    		default:
+    			algorithmColor = Color.WHITE;
+    		}
+    		
+    		heatMapPanel.setBlock(result, algorithmColor);
+    		
+    		algorithmLabel = new JLabel(algorithm, JLabel.CENTER);
+    		algorithmLabel.setForeground(algorithmColor);
+    		
+    		criteriaResultLabel = new JLabel("" + result.getCriteriaResult(), JLabel.CENTER);
+    		criteriaResultLabel.setForeground(algorithmColor);
+    		
+    		blockVisitedLabel = new JLabel("" + result.getBlocksVisited(), JLabel.CENTER);
+    		blockVisitedLabel.setForeground(algorithmColor);
+    		
+    		vectorLabel = new JLabel("[" + result.getPosition().getX() + "," + result.getPosition().getY() + "]", JLabel.CENTER);
+    		vectorLabel.setForeground(algorithmColor);
+    		
+    		resultsPanel.add(algorithmLabel, componentIndex++);
+    		resultsPanel.add(criteriaResultLabel, componentIndex++);
+    		resultsPanel.add(blockVisitedLabel, componentIndex++);
+    		resultsPanel.add(vectorLabel, componentIndex++);
+    	}
+    
+    	resultsPanel.revalidate();
     }
     
 	public void setBtnPreviousFrameListener(ActionListener listener) {
