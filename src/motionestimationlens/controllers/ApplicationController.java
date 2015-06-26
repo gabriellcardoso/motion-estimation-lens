@@ -326,7 +326,7 @@ public class ApplicationController extends JFrame {
 			actualFrameIndex--;
 			videoReader.setFrameWithImage(actualFrame, actualFrameIndex);
 			
-			if (!keepReferenceFrame) {
+			if (!keepReferenceFrame && referenceFrameIndex > 1) {
 				referenceFrameIndex--;
 				videoReader.setFrameWithImage(referenceFrame, referenceFrameIndex);
 			}
@@ -339,7 +339,7 @@ public class ApplicationController extends JFrame {
 			actualFrameIndex++;
 			videoReader.setFrameWithImage(actualFrame, actualFrameIndex);
 			
-			if (!keepReferenceFrame) {
+			if (!keepReferenceFrame && referenceFrameIndex < framesTotal) {
 				referenceFrameIndex++;
 				videoReader.setFrameWithImage(referenceFrame, referenceFrameIndex);
 			}
