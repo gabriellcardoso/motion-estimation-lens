@@ -224,10 +224,10 @@ public class MainView extends JPanel {
     	JLabel blockVisitedLabel;
     	JLabel vectorLabel;
     	
-    	referenceFramePanel.setFrame(actualFrame);
+    	referenceFramePanel.setFrame(referenceFrame);
     	referenceFramePanel.setSearchArea(codingBlock, searchWidth, searchHeight);
     	
-    	actualFramePanel.setFrame(referenceFrame);
+    	actualFramePanel.setFrame(actualFrame);
     	actualFramePanel.setCodingBlock(codingBlock);
     	
     	heatMapPanel.updateData(heatMap);
